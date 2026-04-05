@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,9 +7,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>NYEG Acquisition Database</title>
 <script>
-function onGoogleMapsLoaded() {
+window._googleMapsReady = false;
+window.onGoogleMapsLoaded = function() {
   window._googleMapsReady = true;
-}
+};
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARQWBlAzzijttWAQtUHzIdlo7tFES0waI&libraries=places&callback=onGoogleMapsLoaded" async defer></script>
 <style>
