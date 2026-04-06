@@ -447,7 +447,7 @@ function derive(p){
   return{rehab:rehab,down:down,loan:loan,ct:ct,totalIn:totalIn,pitiMo:pitiMo,piMo:piMo,opExMo:ox.mo,carryMo:carryMo,equity:eq,noi:noi,cap:cap,cf:cf,coc:coc,pur:pur,isCash:isCash,isBrrrr:false,isFF:false,bdata:null,fdata:null,carryTotal:cc.total,carryMoBase:cc.mo,carryMonths:cc.months,taxMo:ox.taxMo,insMo:ox.insMo};
 }
 
-function availEq(p,d){var arv=nv(p.arv);var loan=d.loan||0;var ae=arv-loan-(d.rehab||0)-(d.ct||0);return{amt:ae,pct:arv?(ae/arv)*100:0};}
+function availEq(p,d){var arv=nv(p.arv);var pur=d.pur||(nv(p.purchasePrice)||nv(p.amountOffered));var loan=d.loan||0;var ae=arv-pur-loan-(d.rehab||0)-(d.ct||0);return{amt:ae,pct:arv?(ae/arv)*100:0};}
 
 // ── Stats ─────────────────────────────────────────────────────────────────────
 function renderStats(){
