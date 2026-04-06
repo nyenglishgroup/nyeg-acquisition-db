@@ -456,8 +456,11 @@ function derive(p){
   var carryMo=isCash?ox.mo:(piMo+ox.mo);
   var eq=arv-pur-rehab-ct;
   var rent=nv(p.grossRent);
+  // Cap Rate = NOI / Purchase Price (NOI already nets out all operating expenses)
   var noi=nv(p.noi)||(rent*12-ox.total);
   var cap=pur?(noi/pur)*100:0;
+  // Cash flow = rent minus ALL costs including mortgage
+  var carryMo=isCash?ox.mo:(piMo+ox.mo);
   var cf=rent-carryMo;
   var coc=totalIn?(cf*12/totalIn)*100:0;
   var d2={piMo:piMo,bdata:null,fdata:null,rehab:rehab,ct:ct,loan:loan};
@@ -685,9 +688,18 @@ function renderDetails(){
   var bBrrrr='<button type="button" onclick="setDT(\'brrrr\')" class="deal-toggle"'+(isB?' style="border-color:#15803d;background:#15803d;color:#fff;"':'')+'>♻️ BRRRR</button>';
   var bFF='<button type="button" onclick="setDT(\'fixflip\')" class="deal-toggle"'+(isFF?' style="border-color:#92400e;background:#d97706;color:#fff;"':'')+'>🔨 Fix&amp;Flip</button>';
   var mortF=isMort?sfld('downPct','Down Payment %',[{v:'10',l:'10%'},{v:'15',l:'15%'},{v:'20',l:'20%'},{v:'25',l:'25%'},{v:'30',l:'30%'}])+fld('mortgageRate','Rate (%)','number')+sfld('mortgageTerm','Term',[{v:'15',l:'15 yr'},{v:'20',l:'20 yr'},{v:'30',l:'30 yr'}]):'';
-  var brrF=isB?'<div style="font-size:10px;color:#64748b;margin:-4px 0 6px;">Buy · Rehab · Rent · Refi · Repeat</div>'+fld('brrrrRefiLTV','Refi LTV %','number','e.g. 75')+fld('mortgageRate','Refi Rate (%)','number')+sfld('mortgageTerm','Refi Term',[{v:'15',l:'15 yr'},{v:'20',l:'20 yr'},{v:'30',l:'30 yr'}])+fld('brrrrHoldMonths','Hold Period (months)','number')+fld('brrrrHoldCostPerMonth','Monthly Hold Cost ($)','number'):'';
+  var brrF=isB?'<div style="font-size:10px;color:#64748b;margin:-4px 0 6px;">Buy · Rehab · Rent · Refi · Repeat</div>'
+    +fld('brrrrRefiLTV','Refi LTV %','number','e.g. 75')
+    +fld('mortgageRate','Refi Rate (%)','number')
+    +sfld('mortgageTerm','Refi Term',[{v:'15',l:'15 yr'},{v:'20',l:'20 yr'},{v:'30',l:'30 yr'}])
+    +fld('brrrrHoldMonths','Hold Period (months)','number')
+    +fld('brrrrHoldCostPerMonth','Monthly Hold Cost ($)','number')
+    +'<div style="font-size:10px;color:#64748b;margin-top:4px;">Refi loan = ARV × LTV%. Enter LTV to calculate.</div>'
+    :'';
   var ffF=isFF?'<div style="font-size:10px;color:#64748b;margin:-4px 0 6px;">Hard money loan — purchase, rehab &amp; flip</div>'+fld('ffLoanAmt','Hard Money Loan ($)','number')+fld('ffRate','Interest Rate (%)','number','e.g. 12')+fld('ffTerm','Loan Term (months)','number','e.g. 12')+fld('ffOriginationPts','Origination Points (%)','number','e.g. 2')+fld('ffHoldMonths','Hold Period (months)','number')+fld('ffHoldCostPerMonth','Other Monthly Hold Cost ($)','number'):'';
-  var panel=isB?'<div id="bpanel">'+bPanel(CF)+'</div>':isFF?'<div id="ffpanel">'+ffPanel(CF)+'</div>':'';
+  var panel=isB?'<div id="bpanel">'+bPanel(CF)+'</div>'
+    :isFF?'<div id="ffpanel">'+ffPanel(CF)+'</div>'
+    :'';
   return'<div class="form-grid">'
     +'<div><div class="form-section"><div class="section-title">Location &amp; Status</div>'
     +'<div class="field addr-wrap"><label>Street Address</label><input type="text" data-field="address" value="'+esc(CF.address)+'" placeholder="123 Main St" oninput="onFC(this)"><div id="ac-dd" class="autocomplete-dropdown" style="display:none;"></div></div>'
@@ -890,16 +902,27 @@ function updateCalcBoxes(){var el=document.getElementById('calc-grid');if(el)el.
 function buildComparison(){
   var DTS=['mortgage','cash','brrrr','fixflip'];
   var DLBL={mortgage:'🏦 Mortgage',cash:'💵 Cash',brrrr:'♻️ BRRRR',fixflip:'🔨 Fix&Flip'};
+
+  // Collect current deal into its storage slot before comparing
+  saveDealFields(CF.dealType);
+
+  var hasPurchase=nv(CF.purchasePrice)||nv(CF.amountOffered);
+
   var filled=DTS.filter(function(dt){
-    if(dt===CF.dealType)return nv(CF.purchasePrice)||nv(CF.amountOffered);
     var st=CF['_deal_'+dt]||{};
-    if(dt==='mortgage')return st.mortgageRate;
-    if(dt==='cash')return nv(CF.purchasePrice)||nv(CF.amountOffered);
-    if(dt==='brrrr')return st.brrrrRefiLTV;
-    if(dt==='fixflip')return st.ffLoanAmt;
+    // Always include current deal type if we have a purchase price
+    if(dt===CF.dealType) return !!hasPurchase;
+    // For other deal types check their key fields AND that we have a purchase price
+    if(!hasPurchase) return false;
+    if(dt==='mortgage') return !!(st.mortgageRate);
+    if(dt==='cash') return true; // Cash just needs purchase price
+    if(dt==='brrrr') return !!(st.brrrrRefiLTV);
+    if(dt==='fixflip') return !!(st.ffLoanAmt);
     return false;
   });
-  if(filled.length<2)return'';
+
+  if(filled.length<2)return'<div style="margin-top:16px;font-size:11px;color:#94a3b8;text-align:center;">Fill in at least 2 financing scenarios to see side-by-side comparison.</div>';
+
   var METRICS=[
     ['ARV',function(p,d){return f$(nv(p.arv));}],
     ['Purchase Price',function(p,d){return f$(d.pur);}],
@@ -908,31 +931,36 @@ function buildComparison(){
     ['Closing Costs',function(p,d){return f$(d.ct);}],
     ['Total Cash Needed',function(p,d){return f$(d.totalIn);}],
     ['Loan Amount',function(p,d){return d.isCash?'—':f$(d.loan);}],
-    ['P&I / mo',function(p,d){return d.isCash?'—':f$(d.piMo,2);}],
+    ['P&I / mo',function(p,d){return (d.isCash||d.isFF)?'—':f$(d.piMo,2);}],
     ['Taxes / mo',function(p,d){return f$(d.taxMo,2);}],
     ['Insurance / mo',function(p,d){return f$(d.insMo,2);}],
-    ['PITI / mo',function(p,d){return d.isCash?'—':f$(d.pitiMo,2);}],
-    ['Op Ex / mo',function(p,d){return f$(d.opExMo,2);}],
+    ['PITI / mo',function(p,d){return (d.isCash||d.isFF)?'—':f$(d.pitiMo,2);}],
+    ['Op Ex / mo',function(p,d){return d.isFF?'N/A':f$(d.opExMo,2);}],
     ['Monthly Carry',function(p,d){return f$(d.carryMo,2);}],
     ['Cash Flow',function(p,d){return f$(d.cf,2)+'/mo';}],
-    ['Cap Rate',function(p,d){return fPct(d.cap);}],
+    ['Cap Rate',function(p,d){return d.isFF?'N/A':fPct(d.cap);}],
     ['CoC / ROI',function(p,d){return d.coc>=9999?'∞ %':fPct(d.coc);}],
     ['6-Mo Carry',function(p,d){return f$(d.sixMo);}],
     ['Equity',function(p,d){return f$(d.equity);}],
     ['NOI / yr',function(p,d){return d.isFF?'N/A':f$(d.noi);}]
   ];
+
   var hdr='<tr><td class="comp-lbl" style="padding:8px 9px;">Select for Dashboard</td>';
   filled.forEach(function(dt){
     var act=dt===CF.dealType;
-    hdr+='<td class="comp-hdr'+(act?' act':'')+'">'+DLBL[dt]+'<br><input type="radio" name="cmp" value="'+dt+'"'+(act?' checked':'')+' onchange="setCompPrimary(this.value)" style="margin-top:4px;width:16px;height:16px;cursor:pointer;accent-color:#6366f1;"></td>';
+    hdr+='<td class="comp-hdr'+(act?' act':'')+'">'+DLBL[dt]+'<br>'
+      +'<input type="radio" name="cmp" value="'+dt+'"'+(act?' checked':'')+' onchange="setCompPrimary(this.value)" style="margin-top:4px;width:16px;height:16px;cursor:pointer;accent-color:#6366f1;"></td>';
   });
   hdr+='</tr>';
+
   var rows='';
   METRICS.forEach(function(m,mi){
     rows+='<tr'+(mi%2?' style="background:#fafafa;"':'')+'>'; 
     rows+='<td class="comp-lbl" style="padding:5px 9px;">'+m[0]+'</td>';
     filled.forEach(function(dt){
-      var tmp=Object.assign({},CF,{dealType:dt},CF['_deal_'+dt]||{});
+      // Build a temp form merging base CF with stored deal fields
+      var stored=CF['_deal_'+dt]||{};
+      var tmp=Object.assign({},CF,stored,{dealType:dt});
       var dd=derive(tmp);
       var v=m[1](tmp,dd);
       var act=dt===CF.dealType;
@@ -940,9 +968,12 @@ function buildComparison(){
     });
     rows+='</tr>';
   });
-  return'<div style="margin-top:18px;"><div class="section-title" style="margin-bottom:8px;">📊 Side-by-Side Comparison — Select Dashboard Scenario</div>'
+
+  return'<div style="margin-top:18px;">'
+    +'<div class="section-title" style="margin-bottom:8px;">📊 Side-by-Side Comparison — Select Dashboard Scenario</div>'
     +'<div style="overflow-x:auto;"><table class="comp-table"><tbody>'+hdr+rows+'</tbody></table></div>'
-    +'<div style="font-size:10px;color:#94a3b8;margin-top:5px;">Select a scenario to set it as the primary. Click Save Property to apply.</div></div>';
+    +'<div style="font-size:10px;color:#94a3b8;margin-top:5px;">Select a scenario to set it as the primary. Click Save Property to apply.</div>'
+    +'</div>';
 }
 
 // ── Save ──────────────────────────────────────────────────────────────────────
