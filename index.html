@@ -457,7 +457,7 @@ function renderStats(){
     totMo+=d.carryMoBase||0;
     totCarry+=d.carryTotal||0;
     totEq+=d.equity||0;
-    totARV+=nv(active[i].arv);
+    for(var m=0;m<properties.length;m++){if(properties[m].stage!=='Passed')totARV+=nv(properties[m].arv);}
   }
   var acqEq=0,acqMo=0,acqCarry=0;
   for(var k=0;k<acquired.length;k++){var da=derive(acquired[k]);acqEq+=da.equity||0;acqMo+=da.carryMoBase||0;acqCarry+=da.carryTotal||0;}
