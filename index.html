@@ -198,7 +198,7 @@ button{cursor:pointer;border:none;border-radius:10px;font-weight:600;transition:
 </div>
 <div class="stats" id="stats-row"></div>
 <div class="carry-banner" id="carry-banner" style="display:none;">
-  <div><div class="cb-label">💰 Pipeline Equity</div><div class="cb-sub">ARV − purchase − loan − rehab − closing</div><div class="cb-val green" id="eq-val">—</div></div>
+  <div><div class="cb-label">💰 Acquired Equity</div><div class="cb-sub">ARV − purchase − loan − rehab − closing</div><div class="cb-val green" id="eq-val">—</div></div>
   <div class="divider"></div>
   <div><div class="cb-label">📅 Monthly Carry</div><div class="cb-sub">Mortgage + taxes + ins + utils + addl</div><div class="cb-val" id="mo-val">—</div></div>
   <div class="divider"></div>
@@ -451,7 +451,7 @@ function derive(p){
 
 // ── Stats ─────────────────────────────────────────────────────────────────────
 function renderStats(){
-  var active=properties.filter(function(p){return['Acquired','Passed'].indexOf(p.stage)===-1;});
+  var active=properties.filter(function(p){return p.stage==='Acquired';});
   var totMo=0,totCarry=0,totEq=0,totARV=0;
   for(var i=0;i<active.length;i++){
     var d=derive(active[i]);
@@ -460,7 +460,7 @@ function renderStats(){
     totEq+=d.equity||0;
     totARV+=nv(active[i].arv);
   }
-  var st=[['Total',properties.length,''],['Active',active.length,''],['Acquired',properties.filter(function(p){return p.stage==='Acquired';}).length,''],['Total ARV',f$(totARV),''],['Pipeline Equity',f$(totEq),'hl'],['Monthly Carry',f$(totMo),'hl'],['Carry Total',f$(totCarry),'hl']];
+  var st=[['Total',properties.length,''],['Active',active.length,''],['Acquired',properties.filter(function(p){return p.stage==='Acquired';}).length,''],['Total ARV',f$(totARV),''],['Acquired Equity',f$(totEq),'hl'],['Monthly Carry',f$(totMo),'hl'],['Carry Total',f$(totCarry),'hl']];
   document.getElementById('stats-row').innerHTML=st.map(function(s){return'<div class="stat-card '+s[2]+'"><div class="lbl">'+s[0]+'</div><div class="val">'+s[1]+'</div></div>';}).join('');
   document.getElementById('hdr-sub').textContent='NY English Group · '+properties.length+' properties';
   var ban=document.getElementById('carry-banner');
