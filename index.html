@@ -356,7 +356,18 @@ function closingItems(c,dealType){
 }
 function closingTotal(c,dealType){return closingItems(c,dealType).reduce(function(s,i){return s+i.v;},0);}
 
-// ── Operating Expenses ────────────────────────────────────────────────────────
+// ── 6-Month Carry (mortgage + taxes + insurance + utilities only) ─────────────
+function calcSixMoCarry(p, d) {
+  var taxesMo = nv(p.taxes) / 12;
+  var insuranceMo = nv(p.insurance);
+  var utilsMo = nv(p.waterUsage) + nv(p.sanitation) + nv(p.otherElectric) + nv(p.heating) + nv(p.sewerTax) + nv(p.waterHeating) + nv(p.cooking);
+  var mortgageMo = 0;
+  if (p.dealType === 'mortgage') mortgageMo = d.piMo || 0;
+  else if (p.dealType === 'brrrr' && d.bData) mortgageMo = d.bData.refiPmt || 0;
+  else if (p.dealType === 'fixflip' && d.ffData) mortgageMo = d.ffData.ioPmt || 0;
+  var monthlyCost = mortgageMo + taxesMo + insuranceMo + utilsMo;
+  return monthlyCost * 6;
+}
 function calcOpEx(p){
   var rent=nv(p.grossRent);
   var propMgmt=rent*(nv(p.propMgmtPct)/100)*12;
@@ -434,11 +445,15 @@ function fixFlipCalc(p){
 function derive(p){
   if(p.dealType==='brrrr'){
     var b=brrrrCalc(p);
-    return{rehab:b.rehab,down:b.purchase,loan:b.refiLoan,cTotal:b.cTotal,totalIn:b.totalInvested,pitiMo:b.refiPmt,opExMo:calcOpEx(p).monthly,carryMo:b.carry,equity:b.equity,noi:b.noi,capRate:b.capRate,cashFlow:b.cashFlow,coc:b.coc,purchase:b.purchase,isCash:false,isBrrrr:true,isFixFlip:false,bData:b,ffData:null,sixMoCarry:b.carry*6};
+    var dTemp={piMo:0,bData:b,ffData:null};
+    var sixMo=calcSixMoCarry(p,dTemp);
+    return{rehab:b.rehab,down:b.purchase,loan:b.refiLoan,cTotal:b.cTotal,totalIn:b.totalInvested,pitiMo:b.refiPmt,opExMo:calcOpEx(p).monthly,carryMo:b.carry,equity:b.equity,noi:b.noi,capRate:b.capRate,cashFlow:b.cashFlow,coc:b.coc,purchase:b.purchase,isCash:false,isBrrrr:true,isFixFlip:false,bData:b,ffData:null,sixMoCarry:sixMo};
   }
   if(p.dealType==='fixflip'){
     var ff=fixFlipCalc(p);
-    return{rehab:ff.rehab,down:ff.downPayment,loan:ff.loanAmt,cTotal:ff.cTotal,totalIn:ff.totalInvestedIO,pitiMo:ff.ioPmt,opExMo:0,carryMo:ff.ioPmt+nv(p.ffHoldCostPerMonth),equity:ff.equity,noi:0,capRate:0,cashFlow:ff.profitIO/nv(p.ffHoldMonths||6),coc:ff.roiIO,purchase:ff.purchase,isCash:false,isBrrrr:false,isFixFlip:true,bData:null,ffData:ff,sixMoCarry:ff.sixMoCarryIO};
+    var dTemp2={piMo:0,bData:null,ffData:ff};
+    var sixMoFF=calcSixMoCarry(p,dTemp2);
+    return{rehab:ff.rehab,down:ff.downPayment,loan:ff.loanAmt,cTotal:ff.cTotal,totalIn:ff.totalInvestedIO,pitiMo:ff.ioPmt,opExMo:0,carryMo:ff.ioPmt+nv(p.ffHoldCostPerMonth),equity:ff.equity,noi:0,capRate:0,cashFlow:ff.profitIO/nv(p.ffHoldMonths||6),coc:ff.roiIO,purchase:ff.purchase,isCash:false,isBrrrr:false,isFixFlip:true,bData:null,ffData:ff,sixMoCarry:sixMoFF};
   }
   var sqft=nv(p.sqft),arv=nv(p.arv);
   var purchase=nv(p.purchasePrice)||nv(p.amountOffered);
@@ -461,7 +476,7 @@ function derive(p){
   var capRate=purchase?(noi/purchase)*100:0;
   var cashFlow=rent-totalCarryMo;
   var coc=totalIn?(cashFlow*12/totalIn)*100:0;
-  var sixMoCarry=totalCarryMo*6;
+  var sixMoCarry=calcSixMoCarry(p,{piMo:piMo,bData:null,ffData:null});
   return{rehab:rehab,down:down,loan:loan,cTotal:cTotal,totalIn:totalIn,pitiMo:pitiMo,piMo:piMo,opExMo:opex.monthly,carryMo:totalCarryMo,equity:equity,noi:noi,capRate:capRate,cashFlow:cashFlow,coc:coc,purchase:purchase,isCash:isCash,isBrrrr:false,isFixFlip:false,bData:null,ffData:null,sixMoCarry:sixMoCarry,taxesMo:opex.taxesMo,insuranceMo:opex.insuranceMo};
 }
 
