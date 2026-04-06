@@ -341,6 +341,30 @@ var SAMPLE = [
 
 function loadData(){try{var d=localStorage.getItem(STORAGE_KEY);properties=d?JSON.parse(d):SAMPLE;}catch(e){properties=SAMPLE;}}
 function saveData(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(properties));}catch(e){}}
+var DEAL_DEFAULTS = {
+  mortgage: {downPct:'20',mortgageRate:'',mortgageTerm:'30'},
+  cash: {},
+  brrrr: {brrrrRefiLTV:'',brrrrHoldMonths:'',brrrrHoldCostPerMonth:'',mortgageRate:'',mortgageTerm:'30'},
+  fixflip: {ffLoanAmt:'',ffRate:'',ffTerm:'12',ffOriginationPts:'',ffHoldMonths:'',ffHoldCostPerMonth:'',ffSaleTransferTaxPct:'2.5',ffSaleBrokerPct:'5',ffSaleOtherCosts:''}
+};
+
+// Store each deal type's fields separately in currentForm
+function getDealFields(form, dealType) {
+  var key = 'deal_' + dealType;
+  return form[key] || {};
+}
+function setDealFields(form, dealType, fields) {
+  var key = 'deal_' + dealType;
+  form[key] = Object.assign({}, form[key]||{}, fields);
+}
+function mergeDealFields(form) {
+  // Merge currently active deal type's stored fields into top-level form
+  var key = 'deal_' + form.dealType;
+  var stored = form[key] || {};
+  return Object.assign({}, form, stored);
+}
+
+function saveData(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(properties));}catch(e){}}
 function nv(v){return Number(v)||0;}
 function f$(v,dec){dec=dec||0;if(v===''||v===null||v===undefined||isNaN(Number(v)))return'—';return'$'+Number(v).toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec});}
 function fPct(v){return v?Number(v).toFixed(2)+'%':'—';}
@@ -787,7 +811,23 @@ function renderDetailsTab(){
     +'</div></div>';
 }
 
-function setDealType(dt){currentForm.dealType=dt;renderTab();}
+function setDealType(dt){
+  // Save current deal type's fields before switching
+  collectForm();
+  var oldType = currentForm.dealType;
+  var dealSpecificKeys = ['downPct','mortgageRate','mortgageTerm','brrrrRefiLTV','brrrrHoldMonths','brrrrHoldCostPerMonth','ffLoanAmt','ffRate','ffTerm','ffOriginationPts','ffHoldMonths','ffHoldCostPerMonth','ffSaleTransferTaxPct','ffSaleBrokerPct','ffSaleOtherCosts'];
+  var savedFields = {};
+  dealSpecificKeys.forEach(function(k){ savedFields[k] = currentForm[k]; });
+  setDealFields(currentForm, oldType, savedFields);
+  // Switch deal type and restore saved fields for new type
+  currentForm.dealType = dt;
+  var restored = getDealFields(currentForm, dt);
+  dealSpecificKeys.forEach(function(k){
+    if (restored[k] !== undefined) currentForm[k] = restored[k];
+    else currentForm[k] = DEAL_DEFAULTS[dt] && DEAL_DEFAULTS[dt][k] !== undefined ? DEAL_DEFAULTS[dt][k] : '';
+  });
+  renderTab();
+}
 function updateBrrrrPanel(){var el=document.getElementById('brrrr-panel');if(el)el.innerHTML=brrrrPanelHTML(currentForm);}
 function updateFixFlipPanel(){var el=document.getElementById('fixflip-panel');if(el)el.innerHTML=fixFlipPanelHTML(currentForm);}
 
@@ -801,7 +841,7 @@ function renderClosingTab(){
   groups.forEach(function(g){var gi=items.filter(function(i){return i.g===g&&i.v>0;});if(gi.length){summaryHTML+='<div class="closing-group"><div class="closing-group-title">'+g+'</div>';gi.forEach(function(i){summaryHTML+='<div class="closing-row"><span>'+i.l+'</span><span>'+f$(i.v)+'</span></div>';});summaryHTML+='</div>';}});
 
   // Fix & Flip sale analysis
-  var ffSaleHTML='';
+      var ffSaleHTML='';
   if(isFF){
     var ff=fixFlipCalc(currentForm);
     var arv=nv(currentForm.arv);
@@ -811,35 +851,29 @@ function renderClosingTab(){
     var saleTransferAmt=arv*(saleTransferPct/100);
     var saleBrokerAmt=arv*(saleBrokerPct/100);
     var totalSaleCosts=saleTransferAmt+saleBrokerAmt+saleOther;
-    var totalInvested=ff.totalInvestedIO;
-    var totalAllIn=totalInvested+totalSaleCosts+tot;
     var netProfitIO=arv-ff.purchase-ff.rehab-ff.originationCost-ff.totalHoldCostIO-tot-totalSaleCosts;
-    var netProfitFixed=arv-ff.purchase-ff.rehab-ff.originationCost-ff.totalHoldCostFixed-tot-totalSaleCosts;
+    var totalAllIn=ff.totalInvestedIO+tot+totalSaleCosts;
     var roiIO=totalAllIn?(netProfitIO/totalAllIn)*100:0;
-    var roiFixed=totalAllIn?(netProfitFixed/totalAllIn)*100:0;
     ffSaleHTML='<div class="form-section" style="margin-top:16px;">'
       +'<div class="section-title" style="color:#92400e;border-color:#fcd34d;">🔨 Fix &amp; Flip — Sale Costs</div>'
       +'<div class="field-row">'+fld('ffSaleTransferTaxPct','Seller Transfer Tax (%)','number','e.g. 2.5')+fld('ffSaleBrokerPct','Broker Commission (%)','number','e.g. 5')+'</div>'
       +fld('ffSaleOtherCosts','Other Sale Costs ($)','number')
       +'<div class="fixflip-box" style="margin-top:10px;">'
-      +'<div class="section-title">📊 Sale Analysis</div>'
-      +'<div class="fixflip-result"><span>ARV (Sale Price)</span><strong>'+f$(arv)+'</strong></div>'
+      +'<div class="section-title">📊 Fix &amp; Flip Sale Analysis</div>'
+      +'<div class="fixflip-result" style="font-weight:700;font-size:14px;border-bottom:1px solid #fcd34d;padding-bottom:6px;margin-bottom:6px;"><span>ARV (Sale Price)</span><strong>'+f$(arv)+'</strong></div>'
+      +'<div class="fixflip-result"><span>Purchase Price</span><strong>'+f$(ff.purchase)+'</strong></div>'
+      +'<div class="fixflip-result"><span>Rehab Cost</span><strong>'+f$(ff.rehab)+'</strong></div>'
+      +'<div class="fixflip-result"><span>Hard Money Loan Origination</span><strong>'+f$(ff.originationCost)+'</strong></div>'
+      +'<div class="fixflip-result"><span>Carrying Cost ('+ff.holdMonths+' mo I/O)</span><strong>'+f$(ff.totalHoldCostIO)+'</strong></div>'
+      +'<div class="fixflip-result"><span>Purchase Closing Costs</span><strong>'+f$(tot)+'</strong></div>'
       +'<div class="fixflip-result"><span>Seller Transfer Tax ('+saleTransferPct+'%)</span><strong>'+f$(saleTransferAmt)+'</strong></div>'
       +'<div class="fixflip-result"><span>Broker Commission ('+saleBrokerPct+'%)</span><strong>'+f$(saleBrokerAmt)+'</strong></div>'
       +(saleOther?'<div class="fixflip-result"><span>Other Sale Costs</span><strong>'+f$(saleOther)+'</strong></div>':'')
-      +'<div class="fixflip-result"><span>Total Sale Costs</span><strong>'+f$(totalSaleCosts)+'</strong></div>'
-      +'<div class="fixflip-result"><span>Purchase Closing Costs</span><strong>'+f$(tot)+'</strong></div>'
-      +'<div style="background:#fff;border-radius:8px;padding:10px;margin:8px 0;">'
-      +'<div style="font-size:10px;font-weight:700;color:#92400e;text-transform:uppercase;margin-bottom:6px;">Interest-Only Scenario</div>'
-      +'<div class="fixflip-result"><span>Total All-In Cost</span><strong>'+f$(ff.totalInvestedIO+tot+totalSaleCosts)+'</strong></div>'
-      +'<div class="fixflip-total"><span>Net Profit</span><span class="'+(netProfitIO>0?'good':'red')+'">'+f$(netProfitIO)+'</span></div>'
-      +'<div class="fixflip-total"><span>ROI on All-In Cost</span><span class="'+(roiIO>0?'good':'red')+'">'+fPct(roiIO)+'</span></div>'
-      +'</div>'
-      +'<div style="background:#fff;border-radius:8px;padding:10px;margin:8px 0;">'
-      +'<div style="font-size:10px;font-weight:700;color:#1d4ed8;text-transform:uppercase;margin-bottom:6px;">Fixed Rate Scenario</div>'
-      +'<div class="fixflip-result"><span>Total All-In Cost</span><strong>'+f$(ff.totalInvestedFixed+tot+totalSaleCosts)+'</strong></div>'
-      +'<div class="fixflip-total"><span>Net Profit</span><span class="'+(netProfitFixed>0?'good':'red')+'">'+f$(netProfitFixed)+'</span></div>'
-      +'<div class="fixflip-total"><span>ROI on All-In Cost</span><span class="'+(roiFixed>0?'good':'red')+'">'+fPct(roiFixed)+'</span></div>'
+      +'<div class="fixflip-result" style="border-top:1px solid #fcd34d;padding-top:6px;margin-top:4px;"><span>Total All-In Cost</span><strong>'+f$(totalAllIn)+'</strong></div>'
+      +'<div style="background:#'+(netProfitIO>0?'dcfce7;border:1.5px solid #86efac':'fee2e2;border:1.5px solid #fca5a5')+'";border-radius:10px;padding:14px;margin-top:10px;text-align:center;">'
+      +'<div style="font-size:11px;font-weight:700;color:#'+(netProfitIO>0?'15803d':'b91c1c')+'";text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;">Net Profit</div>'
+      +'<div style="font-size:28px;font-weight:900;color:#'+(netProfitIO>0?'14532d':'7f1d1d')+'">'+(netProfitIO>0?'':'−')+f$(Math.abs(netProfitIO))+'</div>'
+      +'<div style="font-size:14px;font-weight:700;color:#'+(netProfitIO>0?'15803d':'b91c1c')+'";margin-top:4px;">'+fPct(roiIO)+' ROI on All-In Cost</div>'
       +'</div>'
       +'</div></div>';
   }
@@ -871,6 +905,53 @@ function updateClosingSummary(){
 function renderFinancialsTab(){
   var d=derive(currentForm);
   var isFF=currentForm.dealType==='fixflip';
+
+  // Build side-by-side comparison if multiple deal types have data
+  var dealTypes=['mortgage','cash','brrrr','fixflip'];
+  var dealLabels={mortgage:'🏦 Mortgage',cash:'💵 Cash',brrrr:'♻️ BRRRR',fixflip:'🔨 Fix&Flip'};
+  var filledDeals=dealTypes.filter(function(dt){
+    var stored=getDealFields(currentForm,dt);
+    if(dt===currentForm.dealType) return true;
+    return stored && (stored.mortgageRate || stored.ffRate || stored.brrrrRefiLTV || dt==='cash');
+  });
+
+  var comparisonHTML='';
+  if(filledDeals.length>1){
+    var compRows='';
+    var metrics=[
+      ['Total Cash In',function(p,dd){return f$(dd.totalIn);}],
+      ['PITI / mo',function(p,dd){return dd.isCash?'—':f$(dd.pitiMo,2);}],
+      ['Op Ex / mo',function(p,dd){return f$(dd.opExMo,2);}],
+      ['Cash Flow',function(p,dd){return f$(dd.cashFlow,2)+'/mo';}],
+      ['Cap Rate',function(p,dd){return fPct(dd.capRate);}],
+      ['CoC / ROI',function(p,dd){return dd.coc>=9999?'∞ %':fPct(dd.coc);}],
+      ['6-Mo Carry',function(p,dd){return f$(dd.sixMoCarry);}],
+      ['Equity',function(p,dd){return f$(dd.equity);}],
+    ];
+    compRows+='<tr><td style="padding:6px 10px;font-size:11px;font-weight:700;color:#64748b;"></td>';
+    filledDeals.forEach(function(dt){
+      var isActive=dt===currentForm.dealType;
+      compRows+='<td style="padding:6px 10px;font-size:12px;font-weight:700;color:'+(isActive?'#4338ca':'#475569')+';background:'+(isActive?'#eef2ff':'#f8fafc')+';text-align:center;border-radius:6px;">'+dealLabels[dt]+'</td>';
+    });
+    compRows+='</tr>';
+    metrics.forEach(function(m){
+      compRows+='<tr><td style="padding:5px 10px;font-size:11px;color:#64748b;white-space:nowrap;">'+m[0]+'</td>';
+      filledDeals.forEach(function(dt){
+        var tempForm=Object.assign({},currentForm,{dealType:dt},getDealFields(currentForm,dt));
+        var dd=derive(tempForm);
+        var val=m[1](tempForm,dd);
+        var isActive=dt===currentForm.dealType;
+        compRows+='<td style="padding:5px 10px;font-size:12px;font-weight:600;text-align:center;background:'+(isActive?'#eef2ff':'')+';">'+val+'</td>';
+      });
+      compRows+='</tr>';
+    });
+    comparisonHTML='<div style="margin-top:20px;">'
+      +'<div class="section-title">📊 Side-by-Side Comparison</div>'
+      +'<div style="overflow-x:auto;margin-top:8px;">'
+      +'<table style="width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.07);">'
+      +'<tbody>'+compRows+'</tbody></table></div></div>';
+  }
+
   return'<div class="form-grid"><div>'
     +'<div class="form-section"><div class="section-title">Fixed Annual Expenses</div>'
     +'<div class="field-row">'+fld('taxes','Property Taxes ($/yr)','number')+fld('insurance','Insurance ($/mo)','number')+'</div>'
@@ -893,7 +974,8 @@ function renderFinancialsTab(){
     +'<div class="form-section"><div class="section-title">Notes</div><div class="field"><textarea data-field="notes" oninput="onFieldChange(this)">'+esc(currentForm.notes||'')+'</textarea></div></div>'
     +'</div>'
     +'<div><div class="section-title">Live Calculations</div><div class="calc-grid" id="calc-grid">'+calcBoxesHTML(d,currentForm)+'</div></div>'
-    +'</div>';
+    +'</div>'
+    + comparisonHTML;
 }
 
 function calcBoxesHTML(d,f){
