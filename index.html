@@ -1051,7 +1051,81 @@ function openMailClient() {
   el.className='email-status ok'; el.textContent='✅ Mail client opened — check your mail app to send.';
 }
 
-// ── Init ──────────────────────────────────────────────────────────────────────
+// ── Address Autocomplete ──────────────────────────────────────────────────────
+var MAPS_KEY = 'AIzaSyARQWBlAzzijttWAQtUHzIdlo7tFES0waI';
+var acTimer = null;
+var acActive = -1;
+window.initAutocomplete = function() {
+  var input = document.querySelector('[data-field="address"]');
+  if (!input) return;
+  var old = document.getElementById('ac-dropdown');
+  if (old) old.parentNode.removeChild(old);
+  var wrap = input.parentNode;
+  if (!wrap.classList.contains('addr-wrap')) wrap.classList.add('addr-wrap');
+  var dropdown = document.createElement('div');
+  dropdown.id = 'ac-dropdown';
+  dropdown.className = 'autocomplete-dropdown';
+  dropdown.style.display = 'none';
+  wrap.appendChild(dropdown);
+  input.addEventListener('input', function() {
+    var val = input.value.trim();
+    if (val.length < 3) { dropdown.style.display = 'none'; return; }
+    clearTimeout(acTimer);
+    acTimer = setTimeout(function() { fetchSuggestions(val, dropdown); }, 400);
+  });
+  document.addEventListener('click', function(e) {
+    if (!wrap.contains(e.target)) dropdown.style.display = 'none';
+  });
+};
+function highlightItem(items) {
+  for (var i=0;i<items.length;i++) items[i].classList.toggle('active', i===acActive);
+}
+function fetchSuggestions(query, dropdown) {
+  var url = 'https://api.allorigins.win/get?url=' + encodeURIComponent('https://maps.googleapis.com/maps/api/place/autocomplete/json?input='+encodeURIComponent(query)+'&types=address&components=country:us&key='+MAPS_KEY);
+  fetch(url).then(function(r){ return r.json(); }).then(function(data) {
+    var parsed = JSON.parse(data.contents);
+    dropdown.innerHTML = ''; acActive = -1;
+    if (!parsed.predictions||!parsed.predictions.length) { dropdown.style.display='none'; return; }
+    parsed.predictions.slice(0,5).forEach(function(p) {
+      var item = document.createElement('div');
+      item.className = 'autocomplete-item';
+      item.innerHTML = '<strong>'+esc(p.structured_formatting.main_text)+'</strong> <span style="color:#94a3b8;font-size:12px;">'+esc(p.structured_formatting.secondary_text||'')+'</span>';
+      item.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        dropdown.style.display = 'none';
+        fetchPlaceDetails(p.place_id);
+      });
+      dropdown.appendChild(item);
+    });
+    dropdown.style.display = 'block';
+  }).catch(function(e){ console.error('Fetch error:',e); });
+}
+function fetchPlaceDetails(placeId) {
+  var url = 'https://api.allorigins.win/get?url=' + encodeURIComponent('https://maps.googleapis.com/maps/api/place/details/json?place_id='+placeId+'&fields=address_components&key='+MAPS_KEY);
+  fetch(url).then(function(r){ return r.json(); }).then(function(data) {
+    var parsed = JSON.parse(data.contents);
+    if (!parsed.result||!parsed.result.address_components) return;
+    var comps=parsed.result.address_components, num='',route='',city='',state='',zip='';
+    for (var i=0;i<comps.length;i++) {
+      var c=comps[i],t=c.types;
+      if (t.indexOf('street_number')!==-1) num=c.long_name;
+      if (t.indexOf('route')!==-1) route=c.long_name;
+      if (t.indexOf('locality')!==-1) city=c.long_name;
+      if (t.indexOf('sublocality_level_1')!==-1&&!city) city=c.long_name;
+      if (t.indexOf('administrative_area_level_1')!==-1) state=c.short_name;
+      if (t.indexOf('postal_code')!==-1) zip=c.long_name;
+    }
+    var fullStreet=(num+' '+route).trim();
+    currentForm.address=fullStreet; currentForm.city=city; currentForm.state=state; currentForm.zip=zip;
+    var a=document.querySelector('[data-field="address"]');
+    var ci=document.querySelector('[data-field="city"]');
+    var st=document.querySelector('[data-field="state"]');
+    var zi=document.querySelector('[data-field="zip"]');
+    if(a) a.value=fullStreet; if(ci) ci.value=city; if(st) st.value=state; if(zi) zi.value=zip;
+    toast('Address filled ✓');
+  }).catch(function(e){ console.error('Details error:',e); });
+}
+  // ── Init ──────────────────────────────────────────────────────────────────────
 document.querySelectorAll('.overlay').forEach(function(el){
   el.addEventListener('click', function(e){ if(e.target===el) el.classList.remove('open'); });
 });
