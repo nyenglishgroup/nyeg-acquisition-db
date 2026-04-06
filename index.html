@@ -457,6 +457,8 @@ function renderStats(){
     totMo+=d.carryMoBase||0;
     totCarry+=d.carryTotal||0;
     totEq+=d.equity||0;
+    }
+for(var m=0;m<acquired.length;m++){totARV+=nv(acquired[m].arv);}
     for(var m=0;m<properties.length;m++){if(properties[m].stage!=='Passed')totARV+=nv(properties[m].arv);}
   }
   var acqEq=0,acqMo=0,acqCarry=0;
