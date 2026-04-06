@@ -465,7 +465,7 @@ function renderStats(){
   document.getElementById('stats-row').innerHTML=st.map(function(s){return'<div class="stat-card '+s[2]+'"><div class="lbl">'+s[0]+'</div><div class="val">'+s[1]+'</div></div>';}).join('');
   document.getElementById('hdr-sub').textContent='NY English Group · '+properties.length+' properties';
   var ban=document.getElementById('carry-banner');
-  var showBan=active.length||acquired.length;
+  if(active.length){ban.style.display='flex';document.getElementById('eq-val').textContent=f$(totEq);document.getElementById('mo-val').textContent=f$(totMo)+'/mo';document.getElementById('six-val').textContent=f$(totCarry);}   else ban.style.display='none';
   if(showBan){ban.style.display='flex';document.getElementById('eq-val').textContent=f$(totEq||acqEq);document.getElementById('mo-val').textContent=f$(totMo||acqMo)+'/mo';document.getElementById('six-val').textContent=f$(totCarry||acqCarry);}
   else ban.style.display='none';
 }
