@@ -181,14 +181,20 @@ button{cursor:pointer;border:none;border-radius:10px;font-weight:600;transition:
 <div class="carry-banner" id="carry-banner" style="display:none;">
   <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:center;width:100%;">
     <div>
+      <div class="cb-label">💰 Available Pipeline Equity</div>
+      <div class="cb-sub">ARV − loan balance − rehab (active properties)</div>
+      <div class="cb-val" id="pipeline-equity-val" style="color:#15803d;">—</div>
+    </div>
+    <div style="width:1px;background:#fed7aa;align-self:stretch;"></div>
+    <div>
       <div class="cb-label">📅 Monthly Carry — Entire Pipeline</div>
-      <div class="cb-sub">All active properties combined per month</div>
+      <div class="cb-sub">Mortgage + taxes + insurance + utilities</div>
       <div class="cb-val" id="carry-monthly-val">—</div>
     </div>
     <div style="width:1px;background:#fed7aa;align-self:stretch;"></div>
     <div>
       <div class="cb-label">📅 6-Month Carry — Entire Pipeline</div>
-      <div class="cb-sub">All active properties × 6 months</div>
+      <div class="cb-sub">Monthly carry × 6 months</div>
       <div class="cb-val" id="carry-val">—</div>
     </div>
   </div>
@@ -222,7 +228,7 @@ button{cursor:pointer;border:none;border-radius:10px;font-weight:600;transition:
       <th>Address</th><th>Type</th><th>Stage</th><th>Asking</th><th>Offered</th>
       <th>ARV</th><th>Rehab</th><th>Down/Cash</th><th>Closing</th>
       <th>Total Cash</th><th>PITI/mo</th><th>Op Ex/mo</th><th>Cash Flow</th>
-      <th>Cap Rate</th><th>CoC</th><th>6-Mo Carry</th><th>Equity</th><th></th>
+      <th>Cap Rate</th><th>CoC</th><th>6-Mo Carry</th><th>Equity</th><th>Avail. Equity</th><th>Eq %</th><th></th>
     </tr></thead>
     <tbody id="tbl-body"></tbody>
   </table>
@@ -302,7 +308,7 @@ var MAPS_KEY = 'AIzaSyARQWBlAzzijttWAQtUHzIdlo7tFES0waI';
 var acTimer = null;
 var acActive = -1;
 
-var EMPTY_CLOSING = {originationFee:'',discountPoints:'',appraisalFee:'500',creditReport:'50',floodDetermination:'20',taxServiceFee:'85',underwritingFee:'995',titleSearch:'200',titleInsuranceLender:'0',titleInsuranceOwner:'0',escrowFee:'500',settlementFee:'350',recordingFee:'125',wireTransferFee:'30',transferTax:'',mansionTax:'',prepaidInterest:'',prepaidInsurance:'',prepaidTaxes:'',escrowReserves:'',homeInspection:'400',pestInspection:'150',radonTest:'150',sewerscopeInspection:'250',surveyFee:'0',attorneyFee:'0',HOATransferFee:'0',otherClosingCost:'0'};
+var EMPTY_CLOSING = {originationFee:'',discountPoints:'',appraisalFee:'',creditReport:'',floodDetermination:'',taxServiceFee:'',underwritingFee:'',titleSearch:'',titleInsuranceLender:'',titleInsuranceOwner:'',escrowFee:'',settlementFee:'',recordingFee:'',wireTransferFee:'',buyerTransferTax:'',sellerTransferTax:'',mansionTax:'',brokerFee:'',prepaidInterest:'',prepaidInsurance:'',prepaidTaxes:'',escrowReserves:'',homeInspection:'',pestInspection:'',radonTest:'',sewerscopeInspection:'',surveyFee:'',attorneyFee:'',HOATransferFee:'',otherClosingCost:''};
 
 var EMPTY_FORM = {
   address:'',city:'',state:'',zip:'',
@@ -347,16 +353,46 @@ function closingItems(c,dealType){
   if(mort){it.push({g:'Lender Fees',l:'Origination Fee',v:nv(c.originationFee)});it.push({g:'Lender Fees',l:'Discount Points',v:nv(c.discountPoints)});it.push({g:'Lender Fees',l:'Appraisal Fee',v:nv(c.appraisalFee)});it.push({g:'Lender Fees',l:'Credit Report',v:nv(c.creditReport)});it.push({g:'Lender Fees',l:'Flood Determination',v:nv(c.floodDetermination)});it.push({g:'Lender Fees',l:'Tax Service Fee',v:nv(c.taxServiceFee)});it.push({g:'Lender Fees',l:'Underwriting Fee',v:nv(c.underwritingFee)});}
   it.push({g:'Title & Escrow',l:'Title Search',v:nv(c.titleSearch)});
   if(mort)it.push({g:'Title & Escrow',l:'Lender Title Insurance',v:nv(c.titleInsuranceLender)});
-  it.push({g:'Title & Escrow',l:"Owner's Title Insurance",v:nv(c.titleInsuranceOwner)});it.push({g:'Title & Escrow',l:'Escrow / Closing Fee',v:nv(c.escrowFee)});it.push({g:'Title & Escrow',l:'Settlement Fee',v:nv(c.settlementFee)});it.push({g:'Title & Escrow',l:'Recording Fee',v:nv(c.recordingFee)});it.push({g:'Title & Escrow',l:'Wire Transfer Fee',v:nv(c.wireTransferFee)});
+  it.push({g:'Title & Escrow',l:"Owner's Title Insurance",v:nv(c.titleInsuranceOwner)});
+  it.push({g:'Title & Escrow',l:'Escrow / Closing Fee',v:nv(c.escrowFee)});
+  it.push({g:'Title & Escrow',l:'Settlement Fee',v:nv(c.settlementFee)});
+  it.push({g:'Title & Escrow',l:'Recording Fee',v:nv(c.recordingFee)});
+  it.push({g:'Title & Escrow',l:'Wire Transfer Fee',v:nv(c.wireTransferFee)});
   if(mort){it.push({g:'Prepaids',l:'Prepaid Interest',v:nv(c.prepaidInterest)});it.push({g:'Prepaids',l:'Prepaid Insurance',v:nv(c.prepaidInsurance)});it.push({g:'Prepaids',l:'Prepaid Property Taxes',v:nv(c.prepaidTaxes)});it.push({g:'Prepaids',l:'Escrow Reserves',v:nv(c.escrowReserves)});}
-  it.push({g:'Government',l:'Transfer / Deed Tax',v:nv(c.transferTax)});it.push({g:'Government',l:'Mansion / Excise Tax',v:nv(c.mansionTax)});
-  it.push({g:'Inspections',l:'Home Inspection',v:nv(c.homeInspection)});it.push({g:'Inspections',l:'Pest Inspection',v:nv(c.pestInspection)});it.push({g:'Inspections',l:'Radon Test',v:nv(c.radonTest)});it.push({g:'Inspections',l:'Sewer Scope',v:nv(c.sewerscopeInspection)});
-  it.push({g:'Other',l:'Survey Fee',v:nv(c.surveyFee)});it.push({g:'Other',l:'Attorney Fee',v:nv(c.attorneyFee)});it.push({g:'Other',l:'HOA Transfer Fee',v:nv(c.HOATransferFee)});it.push({g:'Other',l:'Other',v:nv(c.otherClosingCost)});
+  it.push({g:'Government & Taxes',l:'Buyer Transfer Tax',v:nv(c.buyerTransferTax)});
+  it.push({g:'Government & Taxes',l:'Seller Transfer Tax',v:nv(c.sellerTransferTax)});
+  it.push({g:'Government & Taxes',l:'Mansion / Excise Tax',v:nv(c.mansionTax)});
+  it.push({g:'Broker Fee',l:'Broker / Agent Commission',v:nv(c.brokerFee)});
+  it.push({g:'Inspections',l:'Home Inspection',v:nv(c.homeInspection)});
+  it.push({g:'Inspections',l:'Pest Inspection',v:nv(c.pestInspection)});
+  it.push({g:'Inspections',l:'Radon Test',v:nv(c.radonTest)});
+  it.push({g:'Inspections',l:'Sewer Scope',v:nv(c.sewerscopeInspection)});
+  it.push({g:'Other',l:'Survey Fee',v:nv(c.surveyFee)});
+  it.push({g:'Other',l:'Attorney Fee',v:nv(c.attorneyFee)});
+  it.push({g:'Other',l:'HOA Transfer Fee',v:nv(c.HOATransferFee)});
+  it.push({g:'Other',l:'Other',v:nv(c.otherClosingCost)});
   return it;
 }
 function closingTotal(c,dealType){return closingItems(c,dealType).reduce(function(s,i){return s+i.v;},0);}
 
-// ── 6-Month Carry (mortgage + taxes + insurance + utilities only) ─────────────
+// ── Available Equity (ARV - loan balance - rehab) ─────────────────────────────
+function calcAvailableEquity(p, d) {
+  var arv = nv(p.arv);
+  if (!arv) return 0;
+  // Loan balance depends on deal type
+  var loanBal = 0;
+  if (p.dealType === 'mortgage') loanBal = d.loan || 0;
+  else if (p.dealType === 'brrrr' && d.bData) loanBal = d.bData.refiLoan || 0;
+  else if (p.dealType === 'fixflip' && d.ffData) loanBal = d.ffData.loanAmt || 0;
+  else if (p.dealType === 'cash') loanBal = 0;
+  // Available equity = ARV - outstanding loan - remaining rehab needed
+  var rehab = d.rehab || 0;
+  var purchase = d.purchase || 0;
+  var availableEquity = arv - loanBal - rehab;
+  // Equity as % of ARV
+  var equityPct = arv ? (availableEquity / arv) * 100 : 0;
+  return { amount: availableEquity, pct: equityPct, arv: arv, loanBal: loanBal, rehab: rehab };
+}
 function calcSixMoCarry(p, d) {
   var taxesMo = nv(p.taxes) / 12;
   var insuranceMo = nv(p.insurance);
@@ -485,11 +521,14 @@ function renderStats(){
   var active=properties.filter(function(p){return['Acquired','Passed'].indexOf(p.stage)===-1;});
   var totalMonthlyCarry=active.reduce(function(s,p){return s+derive(p).carryMo;},0);
   var totalSixMoCarry=totalMonthlyCarry*6;
+  var totalAvailEquity=active.reduce(function(s,p){var d=derive(p);return s+calcAvailableEquity(p,d).amount;},0);
+  var totalARV=active.reduce(function(s,p){return s+nv(p.arv);},0);
   var stats=[
     ['Total',properties.length,''],
     ['Active',active.length,''],
     ['Acquired',properties.filter(function(p){return p.stage==='Acquired';}).length,''],
-    ['Cash/BRRRR/F&F',properties.filter(function(p){return p.dealType==='cash'||p.dealType==='brrrr'||p.dealType==='fixflip';}).length,''],
+    ['Total ARV',f$(totalARV),''],
+    ['Pipeline Equity',f$(totalAvailEquity),'highlight'],
     ['Monthly Carry',f$(totalMonthlyCarry),'highlight'],
     ['6-Mo Carry',f$(totalSixMoCarry),'highlight'],
   ];
@@ -501,6 +540,7 @@ function renderStats(){
     banner.style.display='flex';
     document.getElementById('carry-monthly-val').textContent=f$(totalMonthlyCarry)+'/mo';
     document.getElementById('carry-val').textContent=f$(totalSixMoCarry);
+    document.getElementById('pipeline-equity-val').textContent=f$(totalAvailEquity);
   } else{banner.style.display='none';}
 }
 
@@ -546,6 +586,8 @@ function renderAll(){
       var cocCls=d.coc>=8?'green':d.coc>0?'yellow':'red';
       var eqCls=d.equity>0?'green':'red';
       var cocDisp=d.isFixFlip?fPct(d.coc)+' ROI':(d.isBrrrr&&d.coc>=9999?'∞ %':fPct(d.coc));
+      var ae=calcAvailableEquity(p,d);
+      var aeCls=ae.amount>0?'green':'red';
       rows+='<tr onclick="openDetail('+p.id+')">'
         +'<td><div class="addr-main">'+esc(p.address)+'</div><div class="addr-sub">'+esc([p.city,p.state].filter(Boolean).join(', '))+'</div>'+(p.beds?'<div class="addr-sub">'+p.beds+'bd/'+p.baths+'ba · '+nv(p.sqft).toLocaleString()+'sf</div>':'')+'</td>'
         +'<td>'+typeBadge(p)+'</td>'
@@ -564,6 +606,8 @@ function renderAll(){
         +'<td class="'+cocCls+'">'+cocDisp+'</td>'
         +'<td class="orange"><strong>'+f$(d.sixMoCarry)+'</strong></td>'
         +'<td class="'+eqCls+'">'+f$(d.equity)+'</td>'
+        +'<td class="'+aeCls+'">'+f$(ae.amount)+'</td>'
+        +'<td class="'+aeCls+'">'+fPct(ae.pct)+'</td>'
         +'<td><div class="row-actions" onclick="event.stopPropagation()">'
         +'<button class="icon-btn pdf" onclick="printPDF('+p.id+')" title="PDF">🖨️</button>'
         +'<button class="icon-btn email" onclick="openEmail('+p.id+')" title="Email">📧</button>'
@@ -675,7 +719,7 @@ function onFieldChange(el){
   if(k.indexOf('c_')===0)currentForm.closing[k.slice(2)]=el.value;
   else currentForm[k]=el.value;
   if(currentTab==='financials')updateCalcBoxes();
-  if(currentTab==='closing')updateClosingSummary();
+  if(currentTab==='closing'){updateClosingSummary();if(currentForm.dealType==='fixflip')renderTab();}
   if(currentTab==='details'){
     if(currentForm.dealType==='brrrr')updateBrrrrPanel();
     if(currentForm.dealType==='fixflip')updateFixFlipPanel();
@@ -749,15 +793,63 @@ function updateFixFlipPanel(){var el=document.getElementById('fixflip-panel');if
 
 function renderClosingTab(){
   var isCash=currentForm.dealType==='cash';
+  var isFF=currentForm.dealType==='fixflip';
   var items=closingItems(currentForm.closing,currentForm.dealType);
   var groups=[];items.forEach(function(i){if(groups.indexOf(i.g)===-1)groups.push(i.g);});
   var tot=items.reduce(function(s,i){return s+i.v;},0);
   var summaryHTML='';
   groups.forEach(function(g){var gi=items.filter(function(i){return i.g===g&&i.v>0;});if(gi.length){summaryHTML+='<div class="closing-group"><div class="closing-group-title">'+g+'</div>';gi.forEach(function(i){summaryHTML+='<div class="closing-row"><span>'+i.l+'</span><span>'+f$(i.v)+'</span></div>';});summaryHTML+='</div>';}});
+
+  // Fix & Flip sale analysis
+  var ffSaleHTML='';
+  if(isFF){
+    var ff=fixFlipCalc(currentForm);
+    var arv=nv(currentForm.arv);
+    var saleTransferPct=nv(currentForm.ffSaleTransferTaxPct);
+    var saleBrokerPct=nv(currentForm.ffSaleBrokerPct);
+    var saleOther=nv(currentForm.ffSaleOtherCosts);
+    var saleTransferAmt=arv*(saleTransferPct/100);
+    var saleBrokerAmt=arv*(saleBrokerPct/100);
+    var totalSaleCosts=saleTransferAmt+saleBrokerAmt+saleOther;
+    var totalInvested=ff.totalInvestedIO;
+    var totalAllIn=totalInvested+totalSaleCosts+tot;
+    var netProfitIO=arv-ff.purchase-ff.rehab-ff.originationCost-ff.totalHoldCostIO-tot-totalSaleCosts;
+    var netProfitFixed=arv-ff.purchase-ff.rehab-ff.originationCost-ff.totalHoldCostFixed-tot-totalSaleCosts;
+    var roiIO=totalAllIn?(netProfitIO/totalAllIn)*100:0;
+    var roiFixed=totalAllIn?(netProfitFixed/totalAllIn)*100:0;
+    ffSaleHTML='<div class="form-section" style="margin-top:16px;">'
+      +'<div class="section-title" style="color:#92400e;border-color:#fcd34d;">🔨 Fix &amp; Flip — Sale Costs</div>'
+      +'<div class="field-row">'+fld('ffSaleTransferTaxPct','Seller Transfer Tax (%)','number','e.g. 2.5')+fld('ffSaleBrokerPct','Broker Commission (%)','number','e.g. 5')+'</div>'
+      +fld('ffSaleOtherCosts','Other Sale Costs ($)','number')
+      +'<div class="fixflip-box" style="margin-top:10px;">'
+      +'<div class="section-title">📊 Sale Analysis</div>'
+      +'<div class="fixflip-result"><span>ARV (Sale Price)</span><strong>'+f$(arv)+'</strong></div>'
+      +'<div class="fixflip-result"><span>Seller Transfer Tax ('+saleTransferPct+'%)</span><strong>'+f$(saleTransferAmt)+'</strong></div>'
+      +'<div class="fixflip-result"><span>Broker Commission ('+saleBrokerPct+'%)</span><strong>'+f$(saleBrokerAmt)+'</strong></div>'
+      +(saleOther?'<div class="fixflip-result"><span>Other Sale Costs</span><strong>'+f$(saleOther)+'</strong></div>':'')
+      +'<div class="fixflip-result"><span>Total Sale Costs</span><strong>'+f$(totalSaleCosts)+'</strong></div>'
+      +'<div class="fixflip-result"><span>Purchase Closing Costs</span><strong>'+f$(tot)+'</strong></div>'
+      +'<div style="background:#fff;border-radius:8px;padding:10px;margin:8px 0;">'
+      +'<div style="font-size:10px;font-weight:700;color:#92400e;text-transform:uppercase;margin-bottom:6px;">Interest-Only Scenario</div>'
+      +'<div class="fixflip-result"><span>Total All-In Cost</span><strong>'+f$(ff.totalInvestedIO+tot+totalSaleCosts)+'</strong></div>'
+      +'<div class="fixflip-total"><span>Net Profit</span><span class="'+(netProfitIO>0?'good':'red')+'">'+f$(netProfitIO)+'</span></div>'
+      +'<div class="fixflip-total"><span>ROI on All-In Cost</span><span class="'+(roiIO>0?'good':'red')+'">'+fPct(roiIO)+'</span></div>'
+      +'</div>'
+      +'<div style="background:#fff;border-radius:8px;padding:10px;margin:8px 0;">'
+      +'<div style="font-size:10px;font-weight:700;color:#1d4ed8;text-transform:uppercase;margin-bottom:6px;">Fixed Rate Scenario</div>'
+      +'<div class="fixflip-result"><span>Total All-In Cost</span><strong>'+f$(ff.totalInvestedFixed+tot+totalSaleCosts)+'</strong></div>'
+      +'<div class="fixflip-total"><span>Net Profit</span><span class="'+(netProfitFixed>0?'good':'red')+'">'+f$(netProfitFixed)+'</span></div>'
+      +'<div class="fixflip-total"><span>ROI on All-In Cost</span><span class="'+(roiFixed>0?'good':'red')+'">'+fPct(roiFixed)+'</span></div>'
+      +'</div>'
+      +'</div></div>';
+  }
+
   return'<div class="form-grid"><div>'
     +(!isCash?'<div class="form-section"><div class="section-title">Lender Fees</div><div class="field-row">'+cfld('originationFee','Origination Fee')+cfld('discountPoints','Discount Points')+'</div><div class="field-row">'+cfld('appraisalFee','Appraisal Fee')+cfld('creditReport','Credit Report')+'</div><div class="field-row">'+cfld('floodDetermination','Flood Determination')+cfld('taxServiceFee','Tax Service Fee')+'</div>'+cfld('underwritingFee','Underwriting Fee')+'</div>':'')
     +'<div class="form-section"><div class="section-title">Title &amp; Escrow</div><div class="field-row">'+cfld('titleSearch','Title Search')+(!isCash?cfld('titleInsuranceLender','Lender Title Ins.'):'')+'</div><div class="field-row">'+cfld('titleInsuranceOwner',"Owner's Title Ins.")+cfld('escrowFee','Escrow / Closing Fee')+'</div><div class="field-row">'+cfld('settlementFee','Settlement Fee')+cfld('recordingFee','Recording Fee')+'</div>'+cfld('wireTransferFee','Wire Transfer Fee')+'</div>'
-    +'<div class="form-section"><div class="section-title">Government Taxes</div><div class="field-row">'+cfld('transferTax','Transfer / Deed Tax')+cfld('mansionTax','Mansion / Excise Tax')+'</div></div>'
+    +'<div class="form-section"><div class="section-title">Government &amp; Taxes</div><div class="field-row">'+cfld('buyerTransferTax','Buyer Transfer Tax')+cfld('sellerTransferTax','Seller Transfer Tax')+'</div>'+cfld('mansionTax','Mansion / Excise Tax')+'</div>'
+    +'<div class="form-section"><div class="section-title">Broker Fee</div>'+cfld('brokerFee','Broker / Agent Commission ($)')+'</div>'
+    +ffSaleHTML
     +'</div><div>'
     +(!isCash?'<div class="form-section"><div class="section-title">Prepaids &amp; Reserves</div><div class="field-row">'+cfld('prepaidInterest','Prepaid Interest')+cfld('prepaidInsurance','Prepaid Insurance')+'</div><div class="field-row">'+cfld('prepaidTaxes','Prepaid Property Taxes')+cfld('escrowReserves','Escrow Reserves')+'</div></div>':'')
     +'<div class="form-section"><div class="section-title">Inspections</div><div class="field-row">'+cfld('homeInspection','Home Inspection')+cfld('pestInspection','Pest Inspection')+'</div><div class="field-row">'+cfld('radonTest','Radon Test')+cfld('sewerscopeInspection','Sewer Scope')+'</div></div>'
