@@ -303,7 +303,7 @@ var acTimer=null;
 
 var EC={originationFee:'',discountPoints:'',appraisalFee:'',creditReport:'',floodDetermination:'',taxServiceFee:'',underwritingFee:'',titleSearch:'',titleInsuranceLender:'',titleInsuranceOwner:'',escrowFee:'',settlementFee:'',recordingFee:'',wireTransferFee:'',buyerTransferTax:'',sellerTransferTax:'',mansionTax:'',brokerFee:'',prepaidInterest:'',prepaidInsurance:'',prepaidTaxes:'',escrowReserves:'',homeInspection:'',pestInspection:'',radonTest:'',sewerscopeInspection:'',surveyFee:'',attorneyFee:'',HOATransferFee:'',otherClosingCost:''};
 
-var EF={address:'',city:'',state:'',zip:'',stage:'Prospect',leadSource:'MLS',sqft:'',beds:'',baths:'',yearBuilt:'',dateAdded:'',askingPrice:'',amountOffered:'',purchasePrice:'',arv:'',dealType:'mortgage',downPct:'20',mortgageRate:'',mortgageTerm:'30',ffLoanAmt:'',ffRate:'',ffTerm:'12',ffOriginationPts:'',ffHoldMonths:'',ffHoldCostPerMonth:'',ffSaleTransferTaxPct:'',ffSaleBrokerPct:'',ffSaleOtherCosts:'',brrrrRefiLTV:'',brrrrHoldMonths:'',brrrrHoldCostPerMonth:'',rehabCostPerSqft:'',rehabTotal:'',taxes:'',insurance:'',propMgmtPct:'',vacancyPct:'',capexPct:'',repairsPct:'',brokerageFees:'',rentalPermits:'',waterUsage:'',sanitation:'',otherElectric:'',heating:'',sewerTax:'',waterHeating:'',cooking:'',hoaFees:'',otherMonthly:'',grossRent:'',noi:'',roi:'',notes:'',closing:{}};
+var EF={address:'',city:'',state:'',zip:'',stage:'Prospect',leadSource:'MLS',sqft:'',beds:'',baths:'',yearBuilt:'',dateAdded:'',askingPrice:'',amountOffered:'',purchasePrice:'',arv:'',dealType:'mortgage',downPct:'20',mortgageRate:'',mortgageTerm:'30',ffLoanAmt:'',ffRate:'',ffTerm:'12',ffOriginationPts:'',ffHoldMonths:'',ffHoldCostPerMonth:'',ffSaleTransferTaxPct:'',ffSaleBrokerPct:'',ffSaleOtherCosts:'',ffSaleClosingCosts:'',brrrrRefiLTV:'',brrrrHoldMonths:'',brrrrHoldCostPerMonth:'',rehabCostPerSqft:'',rehabTotal:'',taxes:'',insurance:'',propMgmtPct:'',vacancyPct:'',capexPct:'',repairsPct:'',brokerageFees:'',rentalPermits:'',waterUsage:'',sanitation:'',otherElectric:'',heating:'',sewerTax:'',waterHeating:'',cooking:'',hoaFees:'',otherMonthly:'',grossRent:'',noi:'',roi:'',notes:'',closing:{}};
 
 var SAMPLE=[
   {id:1,address:'412 Elm Street',city:'Memphis',state:'TN',zip:'38103',stage:'Due Diligence',leadSource:'Wholesaler',sqft:1450,beds:3,baths:2,yearBuilt:1987,askingPrice:145000,amountOffered:128000,purchasePrice:132000,arv:210000,dealType:'mortgage',downPct:'20',mortgageRate:'7.5',mortgageTerm:'30',ffLoanAmt:'',ffRate:'',ffTerm:'12',ffOriginationPts:'',ffHoldMonths:'',ffHoldCostPerMonth:'',ffSaleTransferTaxPct:'',ffSaleBrokerPct:'',ffSaleOtherCosts:'',brrrrRefiLTV:'',brrrrHoldMonths:'',brrrrHoldCostPerMonth:'',rehabCostPerSqft:22,rehabTotal:'',taxes:2400,insurance:180,propMgmtPct:10,vacancyPct:5,capexPct:5,repairsPct:5,brokerageFees:'',rentalPermits:'',waterUsage:'',sanitation:'',otherElectric:'',heating:'',sewerTax:'',waterHeating:'',cooking:'',hoaFees:0,otherMonthly:50,grossRent:1650,noi:'',roi:11.2,notes:'Needs full kitchen and bath update.',dateAdded:'2026-02-20',closing:{titleSearch:200,titleInsuranceOwner:850,escrowFee:500,settlementFee:350,recordingFee:125,wireTransferFee:30,buyerTransferTax:660,sellerTransferTax:0,brokerFee:0,homeInspection:400,pestInspection:150,originationFee:1320,appraisalFee:500,underwritingFee:995,titleInsuranceLender:600}},
@@ -374,6 +374,7 @@ function bCalc(p){
   var rent=nv(p.grossRent);
   var cf=rent-carry;
   var noi=nv(p.noi)||(rent*12-ox.total);
+  // Cap rate uses purchase price (pre-financing)
   var cap=pur?(noi/pur)*100:0;
   var coc=leftIn>0?(cf*12/leftIn)*100:(leftIn<=0?9999:0);
   var eq=arv-refiLoan-rehab-ct;
@@ -397,11 +398,12 @@ function ffCalc(p){
   var holdCostMo=nv(p.ffHoldCostPerMonth);
   var holdTot=(ioPmt+holdCostMo)*holdMo;
   var totIn=down+rehab+orig+holdTot;
-  var sellCost=arv*0.06;
-  var profit=arv-pur-rehab-orig-holdTot-sellCost;
+  var sellClosing=nv(p.ffSaleClosingCosts);
+  var totSaleCosts=sellClosing;
+  var profit=arv-pur-rehab-orig-holdTot-totSaleCosts;
   var roi=totIn?(profit/totIn)*100:0;
   var sixCarry=(ioPmt+holdCostMo)*6;
-  return{pur:pur,rehab:rehab,ct:ct,loan:loan,down:down,rate:nv(p.ffRate),ioPmt:ioPmt,holdMo:holdMo,orig:orig,holdTot:holdTot,totIn:totIn,sellCost:sellCost,profit:profit,roi:roi,arv:arv,eq:arv-pur-rehab-ct,sixCarry:sixCarry};
+  return{pur:pur,rehab:rehab,ct:ct,loan:loan,down:down,rate:nv(p.ffRate),ioPmt:ioPmt,holdMo:holdMo,orig:orig,holdTot:holdTot,totIn:totIn,sellCost:totSaleCosts,profit:profit,roi:roi,arv:arv,eq:arv-pur-rehab-ct,sixCarry:sixCarry};
 }
 
 // ── 6-Mo Carry ────────────────────────────────────────────────────────────────
@@ -456,12 +458,15 @@ function derive(p){
   var carryMo=isCash?ox.mo:(piMo+ox.mo);
   var eq=arv-pur-rehab-ct;
   var rent=nv(p.grossRent);
-  // Cap Rate = NOI / Purchase Price (NOI already nets out all operating expenses)
+  // NOI = gross rent - operating expenses ONLY (no mortgage - cap rate is pre-financing)
+  var rent=nv(p.grossRent);
   var noi=nv(p.noi)||(rent*12-ox.total);
+  // Cap Rate = NOI / Purchase Price (pre-financing, no mortgage)
   var cap=pur?(noi/pur)*100:0;
-  // Cash flow = rent minus ALL costs including mortgage
+  // Cash Flow = Rent - ALL costs including mortgage
   var carryMo=isCash?ox.mo:(piMo+ox.mo);
   var cf=rent-carryMo;
+  var coc=totalIn?(cf*12/totalIn)*100:0;
   var coc=totalIn?(cf*12/totalIn)*100:0;
   var d2={piMo:piMo,bdata:null,fdata:null,rehab:rehab,ct:ct,loan:loan};
   var sm3=sixMoCarry(p,d2);
@@ -611,7 +616,7 @@ function ffPanel(f){
     +'<div class="ff-row"><span>I/O Payment ('+ff.rate+'%/yr)</span><strong>'+f$(ff.ioPmt,2)+'/mo</strong></div>'
     +'<div class="ff-row"><span>Total Hold Cost ('+ff.holdMo+' mo)</span><strong>'+f$(ff.holdTot)+'</strong></div>'
     +'<div class="ff-row"><span>Rehab Cost</span><strong>'+f$(ff.rehab)+'</strong></div>'
-    +'<div class="ff-row"><span>Est. Selling Costs (~6%)</span><strong>'+f$(ff.sellCost)+'</strong></div>'
+    +'<div class="ff-row"><span>Sale Closing Costs</span><strong>'+f$(ff.sellCost)+'</strong></div>'
     +'<div class="ff-total"><span>Total All-In Cost</span><span>'+f$(ff.totIn+ff.sellCost)+'</span></div>'
     +'<div class="profit-box '+pcls+'"><div class="pb-lbl">Net Profit</div><div class="pb-val">'+(ff.profit>=0?'':'-')+f$(Math.abs(ff.profit))+'</div><div class="pb-roi">'+fPct(ff.roi)+' ROI on All-In Cost</div></div></div>';
 }
@@ -696,7 +701,16 @@ function renderDetails(){
     +fld('brrrrHoldCostPerMonth','Monthly Hold Cost ($)','number')
     +'<div style="font-size:10px;color:#64748b;margin-top:4px;">Refi loan = ARV × LTV%. Enter LTV to calculate.</div>'
     :'';
-  var ffF=isFF?'<div style="font-size:10px;color:#64748b;margin:-4px 0 6px;">Hard money loan — purchase, rehab &amp; flip</div>'+fld('ffLoanAmt','Hard Money Loan ($)','number')+fld('ffRate','Interest Rate (%)','number','e.g. 12')+fld('ffTerm','Loan Term (months)','number','e.g. 12')+fld('ffOriginationPts','Origination Points (%)','number','e.g. 2')+fld('ffHoldMonths','Hold Period (months)','number')+fld('ffHoldCostPerMonth','Other Monthly Hold Cost ($)','number'):'';
+  var ffF=isFF?'<div style="font-size:10px;color:#64748b;margin:-4px 0 6px;">Hard money loan — purchase, rehab &amp; flip</div>'
+    +fld('ffLoanAmt','Hard Money Loan ($)','number')
+    +fld('ffRate','Interest Rate (%)','number','e.g. 12')
+    +fld('ffTerm','Loan Term (months)','number','e.g. 12')
+    +fld('ffOriginationPts','Origination Points (%)','number','e.g. 2')
+    +fld('ffHoldMonths','Hold Period (months)','number')
+    +fld('ffHoldCostPerMonth','Other Monthly Hold Cost ($)','number')
+    +'<div style="font-size:10px;font-weight:700;color:#92400e;margin:8px 0 4px;text-transform:uppercase;letter-spacing:.5px;">Sale Costs</div>'
+    +fld('ffSaleClosingCosts','Total Sale Closing Costs ($)','number','title fees, transfer tax, commission, etc.')
+    :'';
   var panel=isB?'<div id="bpanel">'+bPanel(CF)+'</div>'
     :isFF?'<div id="ffpanel">'+ffPanel(CF)+'</div>'
     :'';
