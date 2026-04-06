@@ -443,6 +443,43 @@ function derive(p){
     var b=bCalc(p);
     if(!b)return Object.assign({},zero,{isBrrrr:true});
     var d0={piMo:0,bdata:b,fdata:null,rehab:b.rehab,ct:b.ct,loan:b.refiLoan};
+    var cc0=carryCalc(p,d0);
+    return{rehab:b.rehab,down:b.pur,loan:b.refiLoan,ct:b.ct,totalIn:b.totIn,pitiMo:b.refiPmt,piMo:b.refiPmt,opExMo:opEx(p).mo,carryMo:b.carry,equity:b.eq,noi:b.noi,cap:b.cap,cf:b.cf,coc:b.coc,pur:b.pur,isCash:false,isBrrrr:true,isFF:false,bdata:b,fdata:null,sixMo:cc0.total,carryMo2:cc0.mo,carryMonths:cc0.months,taxMo:nv(p.taxes)/12,insMo:nv(p.insurance)};
+  }
+  if(p.dealType==='fixflip'){
+    var ff=ffCalc(p);
+    if(!ff)return Object.assign({},zero,{isFF:true});
+    var d1={piMo:0,bdata:null,fdata:ff,rehab:ff.rehab,ct:ff.ct,loan:ff.loan};
+    var cc1=carryCalc(p,d1);
+    return{rehab:ff.rehab,down:ff.down,loan:ff.loan,ct:ff.ct,totalIn:ff.totIn,pitiMo:ff.ioPmt,piMo:ff.ioPmt,opExMo:0,carryMo:ff.ioPmt+nv(p.ffHoldCostPerMonth),equity:ff.eq,noi:0,cap:0,cf:ff.profit/(nv(p.ffHoldMonths)||6),coc:ff.roi,pur:ff.pur,isCash:false,isBrrrr:false,isFF:true,bdata:null,fdata:ff,sixMo:cc1.total,carryMo2:cc1.mo,carryMonths:cc1.months,taxMo:nv(p.taxes)/12,insMo:nv(p.insurance)};
+  }
+  var sqft=nv(p.sqft),arv=nv(p.arv);
+  var pur=nv(p.purchasePrice)||nv(p.amountOffered);
+  var rehab=p.rehabTotal?nv(p.rehabTotal):sqft*nv(p.rehabCostPerSqft);
+  var isCash=p.dealType==='cash';
+  var down=isCash?pur:pur*(nv(p.downPct)/100);
+  var loan=isCash?0:pur-down;
+  var ct=cTotal(p.closing,p.dealType,loan);
+  var totalIn=down+ct+rehab;
+  var r=nv(p.mortgageRate)/100/12,np=nv(p.mortgageTerm)*12;
+  var piMo=(!isCash&&loan&&r&&np)?loan*(r*Math.pow(1+r,np))/(Math.pow(1+r,np)-1):0;
+  var ox=opEx(p);
+  var pitiMo=piMo+ox.taxMo+ox.insMo;
+  var carryMo=isCash?ox.mo:(piMo+ox.mo);
+  var eq=arv-pur-rehab-ct;
+  var rent=nv(p.grossRent);
+  var noi=nv(p.noi)||(rent*12-ox.total);
+  var cap=pur?(noi/pur)*100:0;
+  var cf=rent-carryMo;
+  var coc=totalIn?(cf*12/totalIn)*100:0;
+  var d2={piMo:piMo,bdata:null,fdata:null,rehab:rehab,ct:ct,loan:loan};
+  var cc2=carryCalc(p,d2);
+  return{rehab:rehab,down:down,loan:loan,ct:ct,totalIn:totalIn,pitiMo:pitiMo,piMo:piMo,opExMo:ox.mo,carryMo:carryMo,equity:eq,noi:noi,cap:cap,cf:cf,coc:coc,pur:pur,isCash:isCash,isBrrrr:false,isFF:false,bdata:null,fdata:null,sixMo:cc2.total,carryMo2:cc2.mo,carryMonths:cc2.months,taxMo:ox.taxMo,insMo:ox.insMo};
+}
+  if(p.dealType==='brrrr'){
+    var b=bCalc(p);
+    if(!b)return Object.assign({},zero,{isBrrrr:true});
+    var d0={piMo:0,bdata:b,fdata:null,rehab:b.rehab,ct:b.ct,loan:b.refiLoan};
     var sm=carryCalc(p,d0);
     return{rehab:b.rehab,down:b.pur,loan:b.refiLoan,ct:b.ct,totalIn:b.totIn,pitiMo:b.refiPmt,piMo:b.refiPmt,opExMo:opEx(p).mo,carryMo:b.carry,equity:b.eq,noi:b.noi,cap:b.cap,cf:b.cf,coc:b.coc,pur:b.pur,isCash:false,isBrrrr:true,isFF:false,bdata:b,fdata:null,sixMo:sm,taxMo:nv(p.taxes)/12,insMo:nv(p.insurance)};
   }
@@ -671,6 +708,7 @@ function openAdd(){
   CF=JSON.parse(JSON.stringify(EF));
   CF.closing=Object.assign({},EC);
   CF.dateAdded=new Date().toISOString().split('T')[0];
+  CF.carryMonths='6';
   document.getElementById('modal-title').textContent='Add New Property';
   switchTab('details');
   document.getElementById('modal-edit').classList.add('open');
@@ -691,7 +729,7 @@ function switchTab(tab){
   curTab=tab;
   document.querySelectorAll('.tab-btn').forEach(function(b,i){b.classList.toggle('active',['details','closing','financials'][i]===tab);});
   collectForm();
-  renderTab();
+  try{renderTab();}catch(e){console.error('Tab render error:',e);document.getElementById('modal-body').innerHTML='<div style="padding:20px;color:red;">Error rendering tab: '+e.message+'</div>';}
   var sel=document.getElementById('primary-deal-type');
   if(sel)sel.value=CF.dealType;
 }
