@@ -198,7 +198,7 @@ button{cursor:pointer;border:none;border-radius:10px;font-weight:600;transition:
 </div>
 <div class="stats" id="stats-row"></div>
 <div class="carry-banner" id="carry-banner" style="display:none;">
-  <div><div class="cb-label">💰 Pipeline Equity</div><div class="cb-sub">ARV − loan − rehab − closing</div><div class="cb-val green" id="eq-val">—</div></div>
+  <div><div class="cb-label">💰 Pipeline Equity</div><div class="cb-sub">ARV − purchase − loan − rehab − closing</div><div class="cb-val green" id="eq-val">—</div></div>
   <div class="divider"></div>
   <div><div class="cb-label">📅 Monthly Carry</div><div class="cb-sub">Mortgage + taxes + ins + utils + addl</div><div class="cb-val" id="mo-val">—</div></div>
   <div class="divider"></div>
@@ -213,7 +213,7 @@ button{cursor:pointer;border:none;border-radius:10px;font-weight:600;transition:
 <div class="results-count" id="results-count"></div>
 <div class="table-wrap">
   <table class="tbl"><thead><tr>
-    <th>Address</th><th>Type</th><th>Stage</th><th>Asking</th><th>Offered</th><th>ARV</th><th>Rehab</th><th>Down/Cash</th><th>Closing</th><th>Total Cash</th><th>PITI/mo</th><th>OpEx/mo</th><th>Cash Flow</th><th>Cap Rate</th><th>CoC/ROI</th><th>Carry Total</th><th>Equity</th><th>Avail Eq</th><th>Eq%</th><th></th>
+    <th>Address</th><th>Type</th><th>Stage</th><th>Asking</th><th>Offered</th><th>ARV</th><th>Rehab</th><th>Down/Cash</th><th>Closing</th><th>Total Cash</th><th>PITI/mo</th><th>OpEx/mo</th><th>Cash Flow</th><th>Cap Rate</th><th>CoC/ROI</th><th>Carry Total</th><th>Equity</th><th></th>
   </tr></thead><tbody id="tbl-body"></tbody></table>
 </div>
 <div class="card-list" id="card-list"></div>
@@ -447,7 +447,7 @@ function derive(p){
   return{rehab:rehab,down:down,loan:loan,ct:ct,totalIn:totalIn,pitiMo:pitiMo,piMo:piMo,opExMo:ox.mo,carryMo:carryMo,equity:eq,noi:noi,cap:cap,cf:cf,coc:coc,pur:pur,isCash:isCash,isBrrrr:false,isFF:false,bdata:null,fdata:null,carryTotal:cc.total,carryMoBase:cc.mo,carryMonths:cc.months,taxMo:ox.taxMo,insMo:ox.insMo};
 }
 
-function availEq(p,d){var arv=nv(p.arv);var pur=d.pur||(nv(p.purchasePrice)||nv(p.amountOffered));var loan=d.loan||0;var ae=arv-pur-loan-(d.rehab||0)-(d.ct||0);return{amt:ae,pct:arv?(ae/arv)*100:0};}
+
 
 // ── Stats ─────────────────────────────────────────────────────────────────────
 function renderStats(){
@@ -457,7 +457,7 @@ function renderStats(){
     var d=derive(active[i]);
     totMo+=d.carryMoBase||0;
     totCarry+=d.carryTotal||0;
-    totEq+=availEq(active[i],d).amt||0;
+    totEq+=d.equity||0;
     totARV+=nv(active[i].arv);
   }
   var st=[['Total',properties.length,''],['Active',active.length,''],['Acquired',properties.filter(function(p){return p.stage==='Acquired';}).length,''],['Total ARV',f$(totARV),''],['Pipeline Equity',f$(totEq),'hl'],['Monthly Carry',f$(totMo),'hl'],['Carry Total',f$(totCarry),'hl']];
@@ -502,7 +502,7 @@ function renderAll(){
   document.getElementById('results-count').textContent=list.length+' result'+(list.length!==1?'s':'');
   var rows='';
   for(var i=0;i<list.length;i++){
-    var p=list[i];var d=derive(p);var ae=availEq(p,d);
+    var p=list[i];var d=derive(p);
     var cfCls=d.cf>=0?'green':'red';
     var cocCls=d.coc>=8?'green':d.coc>0?'yellow':'red';
     var cocDisp=d.isFF?fPct(d.coc)+' ROI':(d.isBrrrr&&d.coc>=9999?'∞ %':fPct(d.coc));
@@ -519,17 +519,15 @@ function renderAll(){
       +'<td class="'+cocCls+'">'+cocDisp+'</td>'
       +'<td class="orange"><strong>'+f$(d.carryTotal)+'</strong><div style="font-size:9px;color:#94a3b8;">'+d.carryMonths+' mo</div></td>'
       +'<td class="'+(d.equity>0?'green':'red')+'">'+f$(d.equity)+'</td>'
-      +'<td class="'+(ae.amt>0?'green':'red')+'">'+f$(ae.amt)+'</td>'
-      +'<td class="'+(ae.pct>0?'green':'red')+'">'+fPct(ae.pct)+'</td>'
-      +'<td><div class="row-actions" onclick="event.stopPropagation()">'
+            +'<td><div class="row-actions" onclick="event.stopPropagation()">'
       +'<button class="icon-btn pdf" onclick="printPDF('+p.id+')">🖨️</button>'
       +'<button class="icon-btn email" onclick="openEmail('+p.id+')">📧</button>'
       +'</div></td></tr>';
   }
-  document.getElementById('tbl-body').innerHTML=rows||'<tr><td colspan="20" class="empty">No properties found.</td></tr>';
+  document.getElementById('tbl-body').innerHTML=rows||'<tr><td colspan="18" class="empty">No properties found.</td></tr>';
   var cards='';
   for(var j=0;j<list.length;j++){
-    var pc=list[j];var dc=derive(pc);var ae2=availEq(pc,dc);
+    var pc=list[j];var dc=derive(pc);
     cards+='<div class="prop-card">'
       +'<div class="prop-card-left"><div class="prop-card-title">'+esc(pc.address)+'</div><div class="prop-card-sub">'+esc([pc.city,pc.state].filter(Boolean).join(', '))+'</div>'
       +(pc.beds?'<div class="prop-card-sub">'+pc.beds+'bd/'+pc.baths+'ba</div>':'')
@@ -541,8 +539,8 @@ function renderAll(){
       +'<div class="pcm"><div class="sl">PITI/mo</div><div class="sv">'+f$(dc.pitiMo,0)+'</div></div>'
       +'<div class="pcm"><div class="sl">Cash Flow</div><div class="sv '+(dc.cf>=0?'green':'red')+'">'+f$(dc.cf,0)+'/mo</div></div>'
       +'<div class="pcm"><div class="sl">Carry ('+dc.carryMonths+'mo)</div><div class="sv orange">'+f$(dc.carryTotal)+'</div></div>'
-      +'<div class="pcm"><div class="sl">Avail Equity</div><div class="sv '+(ae2.amt>0?'green':'red')+'">'+f$(ae2.amt)+'</div></div>'
-      +'<div class="pcm"><div class="sl">Eq%</div><div class="sv '+(ae2.pct>0?'green':'red')+'">'+fPct(ae2.pct)+'</div></div>'
+      
+     
       +'<div class="pcm"><div class="sl">Cap Rate</div><div class="sv">'+fPct(dc.cap)+'</div></div>'
       +'</div>'
       +'<div class="prop-card-actions"><button class="btn-view" onclick="openDetail('+pc.id+')">View</button><button class="btn-pdf2" onclick="printPDF('+pc.id+')">🖨️</button><button class="btn-email2" onclick="openEmail('+pc.id+')">📧</button></div>'
@@ -934,15 +932,14 @@ function openDetail(id){
   if(d.isFF&&d.fdata){var ff=d.fdata;retSec=ds('Fix &amp; Flip Returns',dc('Loan',f$(ff.loan))+dc('I/O Pmt',f$(ff.ioPmt,2)+'/mo')+dc('Hold Cost',f$(ff.holdTot))+dc('Sale Costs',f$(ff.sellCost))+dc('Net Profit',f$(ff.profit))+dc('ROI',fPct(ff.roi))+dc('Carry ('+d.carryMonths+'mo)',f$(d.carryTotal)));}
   else if(d.isBrrrr&&d.bdata){var b=d.bdata;retSec=ds('BRRRR Returns',dc('Refi Loan',f$(b.refiLoan))+dc('Cash-Out',f$(b.cashOut))+dc('Cash Left In',b.leftIn<=0?'$0 ✅':f$(b.leftIn))+dc('Refi P&I',f$(b.refiPmt,2)+'/mo')+dc('Cash Flow',f$(b.cf,2)+'/mo')+dc('Cap Rate',fPct(b.cap))+dc('CoC',b.coc>=9999?'∞ %':fPct(b.coc))+dc('Carry ('+d.carryMonths+'mo)',f$(d.carryTotal)));}
   else{retSec=ds('Monthly Costs &amp; Returns',(!d.isCash?dc('P&I',f$(d.piMo,2)+'/mo'):'')+(d.isCash?'':dc('PITI',f$(d.pitiMo,2)+'/mo'))+dc('Taxes/mo',f$(d.taxMo,2))+dc('Insurance/mo',f$(d.insMo,2))+dc('Op Ex/mo',f$(d.opExMo,2))+dc('Gross Rent',f$(p.grossRent)+'/mo')+dc('Cash Flow',f$(d.cf,2)+'/mo')+dc('NOI/yr',f$(d.noi))+dc('Cap Rate',fPct(d.cap))+dc('CoC',fPct(d.coc))+dc('Carry ('+d.carryMonths+'mo)',f$(d.carryTotal)));}
-  var ae=availEq(p,d);
-  document.getElementById('detail-title').textContent=p.address;
+    document.getElementById('detail-title').textContent=p.address;
   document.getElementById('detail-body').innerHTML=''
     +'<div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:7px;"><span class="badge '+stageCls(p.stage)+'">'+esc(p.stage)+'</span>'+typeBadge(p)+'</div>'
     +'<div style="color:#64748b;font-size:12px;margin-bottom:3px;">'+esc([p.city,p.state,p.zip].filter(Boolean).join(', '))+'</div>'
     +'<div style="color:#94a3b8;font-size:11px;margin-bottom:10px;">'+(p.beds?p.beds+'bd/':'')+' '+(p.baths?p.baths+'ba':'')+' '+(p.sqft?'· '+nv(p.sqft).toLocaleString()+' sqft':'')+' · Lead: '+esc(p.leadSource||'—')+' · '+esc(p.dateAdded||'')+'</div>'
     +'<div class="detail-actions"><button class="btn-pdf3" onclick="printPDF('+p.id+')">🖨️ PDF</button><button class="btn-email3" onclick="openEmail('+p.id+')">📧 Email</button></div>'
     +ds('Pricing',dc('Asking',f$(p.askingPrice))+dc('Offered',f$(p.amountOffered))+dc('Purchase',f$(d.pur))+dc('ARV',f$(p.arv)))
-    +ds('Rehab &amp; Cash',dc('Rehab $/sqft',f$(p.rehabCostPerSqft,2))+dc('Rehab Total',f$(d.rehab))+dc('Down/Cash',f$(d.down))+dc('Closing',f$(d.ct))+dc('Total Cash',f$(d.totalIn))+dc('Equity',f$(d.equity))+dc('Avail Equity',f$(ae.amt))+dc('Equity %',fPct(ae.pct)))
+    +ds('Rehab &amp; Cash',dc('Rehab $/sqft',f$(p.rehabCostPerSqft,2))+dc('Rehab Total',f$(d.rehab))+dc('Down/Cash',f$(d.down))+dc('Closing',f$(d.ct))+dc('Total Cash',f$(d.totalIn))+dc('Equity',f$(d.equity)))
     +retSec
     +'<div style="margin-bottom:14px;"><div class="section-title">Itemized Closing Costs</div><div style="background:#f8fafc;border-radius:9px;padding:11px;">'+(cHTML||'<div style="font-size:11px;color:#94a3b8;">No closing costs entered.</div>')+'<div class="closing-total-row"><span>Total</span><span>'+f$(d.ct)+'</span></div></div></div>'
     +(p.notes?'<div style="margin-bottom:14px;"><div class="section-title">Notes</div><div class="notes-box">'+esc(p.notes)+'</div></div>':'');
