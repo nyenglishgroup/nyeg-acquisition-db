@@ -303,7 +303,7 @@ var acTimer=null;
 
 var EC={originationFee:'',discountPoints:'',appraisalFee:'',creditReport:'',floodDetermination:'',taxServiceFee:'',underwritingFee:'',titleSearch:'',titleInsuranceLender:'',titleInsuranceOwner:'',escrowFee:'',settlementFee:'',recordingFee:'',wireTransferFee:'',buyerTransferTax:'',sellerTransferTax:'',mansionTax:'',brokerFee:'',prepaidInterest:'',prepaidInsurance:'',prepaidTaxes:'',escrowReserves:'',homeInspection:'',pestInspection:'',radonTest:'',sewerscopeInspection:'',surveyFee:'',attorneyFee:'',HOATransferFee:'',otherClosingCost:''};
 
-var EF={address:'',city:'',state:'',zip:'',stage:'Prospect',leadSource:'MLS',sqft:'',beds:'',baths:'',yearBuilt:'',dateAdded:'',askingPrice:'',amountOffered:'',purchasePrice:'',arv:'',dealType:'mortgage',downPct:'20',mortgageRate:'',mortgageTerm:'30',ffLoanAmt:'',ffRate:'',ffTerm:'12',ffOriginationPts:'',ffHoldMonths:'',ffHoldCostPerMonth:'',ffSaleTransferTaxPct:'',ffSaleBrokerPct:'',ffSaleOtherCosts:'',ffSaleClosingCosts:'',brrrrRefiLTV:'',brrrrHoldMonths:'',brrrrHoldCostPerMonth:'',rehabCostPerSqft:'',rehabTotal:'',taxes:'',insurance:'',propMgmtPct:'',vacancyPct:'',capexPct:'',repairsPct:'',brokerageFees:'',rentalPermits:'',waterUsage:'',sanitation:'',otherElectric:'',heating:'',sewerTax:'',waterHeating:'',cooking:'',hoaFees:'',otherMonthly:'',grossRent:'',noi:'',roi:'',notes:'',closing:{}};
+var EF={address:'',city:'',state:'',zip:'',stage:'Prospect',leadSource:'MLS',sqft:'',beds:'',baths:'',yearBuilt:'',dateAdded:'',askingPrice:'',amountOffered:'',purchasePrice:'',arv:'',dealType:'mortgage',downPct:'20',mortgageRate:'',mortgageTerm:'30',ffLoanAmt:'',ffRate:'',ffTerm:'12',ffOriginationPts:'',ffHoldMonths:'',ffHoldCostPerMonth:'',ffSaleTransferTaxPct:'',ffSaleBrokerPct:'',ffSaleOtherCosts:'',ffSaleClosingCosts:'',brrrrRefiLTV:'',brrrrHoldMonths:'',brrrrHoldCostPerMonth:'',rehabCostPerSqft:'',rehabTotal:'',carryMonths:'6',addlCarryMo:'',taxes:'',insurance:'',propMgmtPct:'',vacancyPct:'',capexPct:'',repairsPct:'',brokerageFees:'',rentalPermits:'',waterUsage:'',sanitation:'',otherElectric:'',heating:'',sewerTax:'',waterHeating:'',cooking:'',hoaFees:'',otherMonthly:'',grossRent:'',noi:'',roi:'',notes:'',closing:{}};
 
 var SAMPLE=[
   {id:1,address:'412 Elm Street',city:'Memphis',state:'TN',zip:'38103',stage:'Due Diligence',leadSource:'Wholesaler',sqft:1450,beds:3,baths:2,yearBuilt:1987,askingPrice:145000,amountOffered:128000,purchasePrice:132000,arv:210000,dealType:'mortgage',downPct:'20',mortgageRate:'7.5',mortgageTerm:'30',ffLoanAmt:'',ffRate:'',ffTerm:'12',ffOriginationPts:'',ffHoldMonths:'',ffHoldCostPerMonth:'',ffSaleTransferTaxPct:'',ffSaleBrokerPct:'',ffSaleOtherCosts:'',brrrrRefiLTV:'',brrrrHoldMonths:'',brrrrHoldCostPerMonth:'',rehabCostPerSqft:22,rehabTotal:'',taxes:2400,insurance:180,propMgmtPct:10,vacancyPct:5,capexPct:5,repairsPct:5,brokerageFees:'',rentalPermits:'',waterUsage:'',sanitation:'',otherElectric:'',heating:'',sewerTax:'',waterHeating:'',cooking:'',hoaFees:0,otherMonthly:50,grossRent:1650,noi:'',roi:11.2,notes:'Needs full kitchen and bath update.',dateAdded:'2026-02-20',closing:{titleSearch:200,titleInsuranceOwner:850,escrowFee:500,settlementFee:350,recordingFee:125,wireTransferFee:30,buyerTransferTax:660,sellerTransferTax:0,brokerFee:0,homeInspection:400,pestInspection:150,originationFee:1320,appraisalFee:500,underwritingFee:995,titleInsuranceLender:600}},
@@ -319,9 +319,17 @@ function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').
 function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2200);}
 
 // ── Closing ───────────────────────────────────────────────────────────────────
-function ciList(c,dt){
+function ciList(c,dt,loanAmt){
   c=c||{};var m=dt!=='cash';var it=[];
-  if(m){it.push({g:'Lender Fees',l:'Origination Fee',v:nv(c.originationFee)});it.push({g:'Lender Fees',l:'Discount Points',v:nv(c.discountPoints)});it.push({g:'Lender Fees',l:'Appraisal Fee',v:nv(c.appraisalFee)});it.push({g:'Lender Fees',l:'Credit Report',v:nv(c.creditReport)});it.push({g:'Lender Fees',l:'Flood Determination',v:nv(c.floodDetermination)});it.push({g:'Lender Fees',l:'Tax Service Fee',v:nv(c.taxServiceFee)});it.push({g:'Lender Fees',l:'Underwriting Fee',v:nv(c.underwritingFee)});}
+  var loan=loanAmt||0;
+  // Origination fee and discount points are % of loan
+  var origFee=loan*(nv(c.originationFee)/100);
+  var discPts=loan*(nv(c.discountPoints)/100);
+  if(m){
+    it.push({g:'Lender Fees',l:'Origination Fee ('+nv(c.originationFee)+'% of loan)',v:origFee});
+    it.push({g:'Lender Fees',l:'Discount Points ('+nv(c.discountPoints)+'% of loan)',v:discPts});
+    it.push({g:'Lender Fees',l:'Appraisal Fee',v:nv(c.appraisalFee)});it.push({g:'Lender Fees',l:'Credit Report',v:nv(c.creditReport)});it.push({g:'Lender Fees',l:'Flood Determination',v:nv(c.floodDetermination)});it.push({g:'Lender Fees',l:'Tax Service Fee',v:nv(c.taxServiceFee)});it.push({g:'Lender Fees',l:'Underwriting Fee',v:nv(c.underwritingFee)});
+  }
   it.push({g:'Title & Escrow',l:'Title Search',v:nv(c.titleSearch)});
   if(m)it.push({g:'Title & Escrow',l:'Lender Title Insurance',v:nv(c.titleInsuranceLender)});
   it.push({g:'Title & Escrow',l:"Owner's Title Insurance",v:nv(c.titleInsuranceOwner)});it.push({g:'Title & Escrow',l:'Escrow / Closing Fee',v:nv(c.escrowFee)});it.push({g:'Title & Escrow',l:'Settlement Fee',v:nv(c.settlementFee)});it.push({g:'Title & Escrow',l:'Recording Fee',v:nv(c.recordingFee)});it.push({g:'Title & Escrow',l:'Wire Transfer Fee',v:nv(c.wireTransferFee)});
@@ -332,7 +340,7 @@ function ciList(c,dt){
   it.push({g:'Other',l:'Survey Fee',v:nv(c.surveyFee)});it.push({g:'Other',l:'Attorney Fee',v:nv(c.attorneyFee)});it.push({g:'Other',l:'HOA Transfer Fee',v:nv(c.HOATransferFee)});it.push({g:'Other',l:'Other',v:nv(c.otherClosingCost)});
   return it;
 }
-function cTotal(c,dt){return ciList(c,dt).reduce(function(s,i){return s+i.v;},0);}
+function cTotal(c,dt,loanAmt){return ciList(c,dt,loanAmt).reduce(function(s,i){return s+i.v;},0);}
 
 // ── OpEx ──────────────────────────────────────────────────────────────────────
 function opEx(p){
@@ -359,8 +367,7 @@ function bCalc(p){
   var sqft=nv(p.sqft);
   var rehab=p.rehabTotal?nv(p.rehabTotal):sqft*nv(p.rehabCostPerSqft);
   var arv=nv(p.arv);
-  var ct=cTotal(p.closing,p.dealType);
-  var hold=nv(p.brrrrHoldMonths)*nv(p.brrrrHoldCostPerMonth);
+  var ct=cTotal(p.closing,p.dealType,refiLoan);
   var totIn=pur+rehab+ct+hold;
   var ltv=nv(p.brrrrRefiLTV);
   var refiLoan=arv*(ltv/100);
@@ -406,8 +413,10 @@ function ffCalc(p){
   return{pur:pur,rehab:rehab,ct:ct,loan:loan,down:down,rate:nv(p.ffRate),ioPmt:ioPmt,holdMo:holdMo,orig:orig,holdTot:holdTot,totIn:totIn,sellCost:totSaleCosts,profit:profit,roi:roi,arv:arv,eq:arv-pur-rehab-ct,sixCarry:sixCarry};
 }
 
-// ── 6-Mo Carry ────────────────────────────────────────────────────────────────
-function sixMoCarry(p,d){
+// ── Carry Cost (uses carryMonths selector + addlCarryMo) ──────────────────────
+function carryCalc(p,d){
+  var months=nv(p.carryMonths)||6;
+  var addl=nv(p.addlCarryMo);
   var taxMo=nv(p.taxes)/12;
   var insMo=nv(p.insurance);
   var utils=nv(p.waterUsage)+nv(p.sanitation)+nv(p.otherElectric)+nv(p.heating)+nv(p.sewerTax)+nv(p.waterHeating)+nv(p.cooking);
@@ -415,7 +424,8 @@ function sixMoCarry(p,d){
   if(p.dealType==='mortgage')mortMo=d.piMo||0;
   else if(p.dealType==='brrrr'&&d.bdata)mortMo=d.bdata.refiPmt||0;
   else if(p.dealType==='fixflip'&&d.fdata)mortMo=d.fdata.ioPmt||0;
-  return(mortMo+taxMo+insMo+utils)*6;
+  var baseMo=mortMo+taxMo+insMo+utils+addl;
+  return{mo:baseMo,total:baseMo*months,months:months,addl:addl};
 }
 
 // ── Available Equity ──────────────────────────────────────────────────────────
@@ -428,7 +438,7 @@ function availEq(p,d){
 
 // ── Main Derive ───────────────────────────────────────────────────────────────
 function derive(p){
-  var zero={rehab:0,down:0,loan:0,ct:0,totalIn:0,pitiMo:0,piMo:0,opExMo:0,carryMo:0,equity:0,noi:0,cap:0,cf:0,coc:0,pur:0,isCash:false,isBrrrr:false,isFF:false,bdata:null,fdata:null,sixMo:0,taxMo:0,insMo:0};
+  var zero={rehab:0,down:0,loan:0,ct:0,totalIn:0,pitiMo:0,piMo:0,opExMo:0,carryMo:0,carryMo2:0,carryMonths:6,equity:0,noi:0,cap:0,cf:0,coc:0,pur:0,isCash:false,isBrrrr:false,isFF:false,bdata:null,fdata:null,sixMo:0,taxMo:0,insMo:0};
   if(p.dealType==='brrrr'){
     var b=bCalc(p);
     if(!b)return Object.assign({},zero,{isBrrrr:true});
@@ -476,16 +486,37 @@ function derive(p){
 // ── Stats ─────────────────────────────────────────────────────────────────────
 function renderStats(){
   var active=properties.filter(function(p){return['Acquired','Passed'].indexOf(p.stage)===-1;});
-  var totMoCarry=active.reduce(function(s,p){return s+derive(p).carryMo;},0);
-  var totSixMo=totMoCarry*6;
-  var totEq=active.reduce(function(s,p){var d=derive(p);return s+availEq(p,d).amt;},0);
-  var totARV=active.reduce(function(s,p){return s+nv(p.arv);},0);
-  var st=[['Total',properties.length,''],['Active',active.length,''],['Acquired',properties.filter(function(p){return p.stage==='Acquired';}).length,''],['Total ARV',f$(totARV),''],['Pipeline Equity',f$(totEq),'hl'],['Monthly Carry',f$(totMoCarry),'hl'],['6-Mo Carry',f$(totSixMo),'hl']];
+  var totMoCarry=0;
+  var totSixMo=0;
+  var totEq=0;
+  var totARV=0;
+  for(var i=0;i<active.length;i++){
+    var d=derive(active[i]);
+    totMoCarry+=(d.carryMo2||d.carryMo||0);
+    totSixMo+=d.sixMo||0;
+    totEq+=availEq(active[i],d).amt||0;
+    totARV+=nv(active[i].arv);
+  }
+  var st=[
+    ['Total',properties.length,''],
+    ['Active',active.length,''],
+    ['Acquired',properties.filter(function(p){return p.stage==='Acquired';}).length,''],
+    ['Total ARV',f$(totARV),''],
+    ['Pipeline Equity',f$(totEq),'hl'],
+    ['Monthly Carry',f$(totMoCarry),'hl'],
+    ['Carry Total',f$(totSixMo),'hl']
+  ];
   document.getElementById('stats-row').innerHTML=st.map(function(s){return'<div class="stat-card '+s[2]+'"><div class="lbl">'+s[0]+'</div><div class="val">'+s[1]+'</div></div>';}).join('');
   document.getElementById('hdr-sub').textContent='NY English Group · '+properties.length+' properties';
   var ban=document.getElementById('carry-banner');
-  if(active.length){ban.style.display='flex';document.getElementById('eq-val').textContent=f$(totEq);document.getElementById('mo-val').textContent=f$(totMoCarry)+'/mo';document.getElementById('six-val').textContent=f$(totSixMo);}
-  else{ban.style.display='none';}
+  if(active.length){
+    ban.style.display='flex';
+    document.getElementById('eq-val').textContent=f$(totEq);
+    document.getElementById('mo-val').textContent=f$(totMoCarry)+'/mo';
+    document.getElementById('six-val').textContent=f$(totSixMo);
+  } else {
+    ban.style.display='none';
+  }
 }
 
 function getFiltered(){
@@ -541,7 +572,7 @@ function renderAll(){
       +'<td class="'+cfCls+'">'+f$(d.cf,0)+'/mo</td>'
       +'<td>'+fPct(d.cap)+'</td>'
       +'<td class="'+cocCls+'">'+cocDisp+'</td>'
-      +'<td class="orange"><strong>'+f$(d.sixMo)+'</strong></td>'
+      +'<td class="orange"><strong>'+f$(d.sixMo||0)+'</strong><div style="font-size:9px;color:#94a3b8;">'+(d.carryMonths||6)+' mo</div></td>'
       +'<td class="'+eqCls+'">'+f$(d.equity)+'</td>'
       +'<td class="'+aeCls+'">'+f$(ae.amt)+'</td>'
       +'<td class="'+aeCls+'">'+fPct(ae.pct)+'</td>'
@@ -686,7 +717,20 @@ function renderTab(){
 function renderDetails(){
   var isCash=CF.dealType==='cash';
   var isB=CF.dealType==='brrrr';
-  var isFF=CF.dealType==='fixflip';
+  var loanForPct=nv(CF.purchasePrice)||nv(CF.amountOffered);
+  if(CF.dealType==='mortgage') loanForPct=loanForPct*(1-nv(CF.downPct)/100);
+  else if(CF.dealType==='fixflip') loanForPct=nv(CF.ffLoanAmt);
+  else if(CF.dealType==='brrrr') loanForPct=nv(CF.arv)*(nv(CF.brrrrRefiLTV)/100);
+  var origPct=nv(CF.closing&&CF.closing.originationFee);
+  var discPct=nv(CF.closing&&CF.closing.discountPoints);
+  var origAmt=loanForPct*origPct/100;
+  var discAmt=loanForPct*discPct/100;
+  function pctFld(k,lbl,amt){
+    var v=(CF.closing&&CF.closing[k])?CF.closing[k]:'';
+    return'<div class="field"><label>'+lbl+' <span style="color:#6366f1;font-weight:700;">'+(amt>0?'= '+f$(amt):'')+'</span></label>'
+      +'<div style="position:relative"><span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#94a3b8;font-size:12px;">%</span>'
+      +'<input type="number" data-field="c_'+k+'" value="'+esc(v)+'" style="padding-right:28px;" oninput="onFC(this)" placeholder="e.g. 1"></div></div>';
+  }
   var isMort=!isCash&&!isB&&!isFF;
   var bMort='<button type="button" onclick="setDT(\'mortgage\')" class="deal-toggle"'+(isMort?' style="border-color:#6366f1;background:#6366f1;color:#fff;"':'')+'>🏦 Mortgage</button>';
   var bCash='<button type="button" onclick="setDT(\'cash\')" class="deal-toggle"'+(isCash?' style="border-color:#6366f1;background:#6366f1;color:#fff;"':'')+'>💵 Cash</button>';
@@ -733,8 +777,10 @@ function renderDetails(){
     +'<div class="field-row">'+fld('askingPrice','Asking Price ($)','number')+fld('amountOffered','Amount Offered ($)','number')+'</div>'
     +'<div class="field-row">'+fld('purchasePrice','Purchase Price ($)','number')+fld('arv','ARV ($)','number')+'</div>'
     +'</div>'
-    +'<div class="form-section"><div class="section-title">Rehab</div>'
+    +'<div class="form-section"><div class="section-title">Rehab &amp; Carrying Cost</div>'
     +'<div class="field-row">'+fld('rehabCostPerSqft','Rehab $/Sq Ft','number')+fld('rehabTotal','Rehab Total (override)','number')+'</div>'
+    +'<div class="field-row">'+sfld('carryMonths','Carry Period (months)',[{v:'6',l:'6 months'},{v:'9',l:'9 months'},{v:'12',l:'12 months'},{v:'15',l:'15 months'},{v:'18',l:'18 months'}])+fld('addlCarryMo','Additional Monthly Carry ($)','number','e.g. utilities, misc')+'</div>'
+    +'<div style="font-size:10px;color:#64748b;margin-top:-4px;">Carry = mortgage + taxes + insurance + utilities + additional × carry period</div>'
     +'</div>'+panel+'</div></div>';
 }
 
@@ -801,7 +847,7 @@ function renderClosing(){
     }
   }
   return'<div class="form-grid"><div>'
-    +(!isCash?'<div class="form-section"><div class="section-title">Lender Fees</div><div class="field-row">'+cfld('originationFee','Origination Fee')+cfld('discountPoints','Discount Points')+'</div><div class="field-row">'+cfld('appraisalFee','Appraisal Fee')+cfld('creditReport','Credit Report')+'</div><div class="field-row">'+cfld('floodDetermination','Flood Determination')+cfld('taxServiceFee','Tax Service Fee')+'</div>'+cfld('underwritingFee','Underwriting Fee')+'</div>':'')
+    +(!isCash?'<div class="form-section"><div class="section-title">Lender Fees</div><div class="field-row">'+pctFld('originationFee','Origination Fee',origAmt)+pctFld('discountPoints','Discount Points',discAmt)+'</div><div class="field-row">'+cfld('appraisalFee','Appraisal Fee')+cfld('creditReport','Credit Report')+'</div><div class="field-row">'+cfld('floodDetermination','Flood Determination')+cfld('taxServiceFee','Tax Service Fee')+'</div>'+cfld('underwritingFee','Underwriting Fee')+'</div>':'')
     +'<div class="form-section"><div class="section-title">Title &amp; Escrow</div><div class="field-row">'+cfld('titleSearch','Title Search')+(!isCash?cfld('titleInsuranceLender','Lender Title Ins.'):'')+'</div><div class="field-row">'+cfld('titleInsuranceOwner',"Owner's Title Ins.")+cfld('escrowFee','Escrow / Closing Fee')+'</div><div class="field-row">'+cfld('settlementFee','Settlement Fee')+cfld('recordingFee','Recording Fee')+'</div>'+cfld('wireTransferFee','Wire Transfer Fee')+'</div>'
     +'<div class="form-section"><div class="section-title">Gov &amp; Taxes</div><div class="field-row">'+cfld('buyerTransferTax','Buyer Transfer Tax')+cfld('sellerTransferTax','Seller Transfer Tax')+'</div>'+cfld('mansionTax','Mansion / Excise Tax')+'</div>'
     +'<div class="form-section"><div class="section-title">Broker Fee</div>'+cfld('brokerFee','Broker / Agent Commission ($)')+'</div>'
@@ -954,7 +1000,7 @@ function buildComparison(){
     ['Cash Flow',function(p,d){return f$(d.cf,2)+'/mo';}],
     ['Cap Rate',function(p,d){return d.isFF?'N/A':fPct(d.cap);}],
     ['CoC / ROI',function(p,d){return d.coc>=9999?'∞ %':fPct(d.coc);}],
-    ['6-Mo Carry',function(p,d){return f$(d.sixMo);}],
+    ['Carry Total',function(p,d){return f$(d.sixMo||0)+'('+((d.carryMonths||6)+'mo)');}],
     ['Equity',function(p,d){return f$(d.equity);}],
     ['NOI / yr',function(p,d){return d.isFF?'N/A':f$(d.noi);}]
   ];
