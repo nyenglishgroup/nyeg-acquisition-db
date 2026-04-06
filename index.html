@@ -251,6 +251,15 @@ button{cursor:pointer;border:none;border-radius:10px;font-weight:600;transition:
     </div>
     <div class="modal-body" id="modal-body"></div>
     <div class="modal-footer">
+      <div style="width:100%;margin-bottom:10px;background:#f8fafc;border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span style="font-size:12px;font-weight:700;color:#475569;white-space:nowrap;">📊 Show on dashboard as:</span>
+        <select id="primary-deal-type" style="flex:1;min-width:160px;border:1.5px solid #6366f1;border-radius:8px;padding:7px 12px;font-size:13px;font-weight:600;color:#4338ca;background:#eef2ff;">
+          <option value="mortgage">🏦 Mortgage</option>
+          <option value="cash">💵 Cash</option>
+          <option value="brrrr">♻️ BRRRR</option>
+          <option value="fixflip">🔨 Fix &amp; Flip</option>
+        </select>
+      </div>
       <button class="btn-cancel" onclick="closeModal('modal-edit')">Cancel</button>
       <button class="btn-save" onclick="saveProperty()">Save Property</button>
     </div>
@@ -467,7 +476,7 @@ function brrrrCalc(p){
   var noi=nv(p.noi)||(rent*12-opex.total);
   var capRate=purchase?(noi/purchase)*100:0;
   var coc=cashLeftIn>0?(cashFlow*12/cashLeftIn)*100:(cashLeftIn<=0?9999:0);
-  var equity=arv-refiLoan;
+  var equity=arv-refiLoan-b.rehab-b.cTotal;
   return{purchase:purchase,rehab:rehab,cTotal:cTotal,holdCost:holdCost,totalInvested:totalInvested,refiLoan:refiLoan,cashOut:cashOut,cashLeftIn:cashLeftIn,refiPmt:refiPmt,carry:carry,cashFlow:cashFlow,noi:noi,capRate:capRate,coc:coc,equity:equity,arv:arv,refiLTV:refiLTV};
 }
 
@@ -498,7 +507,7 @@ function fixFlipCalc(p){
   var roiFixed=totalInvestedFixed?(profitFixed/totalInvestedFixed)*100:0;
   var sixMoCarryIO=(ioPmt+holdCostPerMo)*6;
   var sixMoCarryFixed=(fixedPmt+holdCostPerMo)*6;
-  return{purchase:purchase,rehab:rehab,cTotal:cTotal,loanAmt:loanAmt,downPayment:downPayment,rate:nv(p.ffRate),ioPmt:ioPmt,fixedPmt:fixedPmt,holdMonths:holdMonths,originationCost:originationCost,totalHoldCostIO:totalHoldCostIO,totalHoldCostFixed:totalHoldCostFixed,totalInvestedIO:totalInvestedIO,totalInvestedFixed:totalInvestedFixed,saleCosts:saleCosts,profitIO:profitIO,profitFixed:profitFixed,roiIO:roiIO,roiFixed:roiFixed,arv:arv,equity:arv-purchase-rehab,sixMoCarryIO:sixMoCarryIO,sixMoCarryFixed:sixMoCarryFixed};
+  return{purchase:purchase,rehab:rehab,cTotal:cTotal,loanAmt:loanAmt,downPayment:downPayment,rate:nv(p.ffRate),ioPmt:ioPmt,fixedPmt:fixedPmt,holdMonths:holdMonths,originationCost:originationCost,totalHoldCostIO:totalHoldCostIO,totalHoldCostFixed:totalHoldCostFixed,totalInvestedIO:totalInvestedIO,totalInvestedFixed:totalInvestedFixed,saleCosts:saleCosts,profitIO:profitIO,profitFixed:profitFixed,roiIO:roiIO,roiFixed:roiFixed,arv:arv,equity:arv-purchase-rehab-cTotal,sixMoCarryIO:sixMoCarryIO,sixMoCarryFixed:sixMoCarryFixed};
 }
 
 // ── Main Derive ───────────────────────────────────────────────────────────────
@@ -530,7 +539,8 @@ function derive(p){
   var pitiMo=piMo+opex.taxesMo+opex.insuranceMo;
   var carryMo=isCash?opex.monthly:pitiMo+opex.monthly-opex.taxesMo-opex.insuranceMo;
   var totalCarryMo=isCash?opex.monthly:(piMo+opex.monthly);
-  var equity=arv-purchase-rehab;
+  // Equity = ARV - purchase - rehab - closing costs - all fees
+  var equity=arv-purchase-rehab-cTotal;
   var rent=nv(p.grossRent);
   var noi=nv(p.noi)||(rent*12-opex.total);
   var capRate=purchase?(noi/purchase)*100:0;
@@ -769,6 +779,9 @@ function renderTab(){
   if(currentTab==='details'){b.innerHTML=renderDetailsTab();setTimeout(initAutocomplete,200);}
   else if(currentTab==='closing')b.innerHTML=renderClosingTab();
   else b.innerHTML=renderFinancialsTab();
+  // Keep primary selector in sync with active deal type
+  var sel=document.getElementById('primary-deal-type');
+  if(sel) sel.value=currentForm.dealType;
 }
 
 function renderDetailsTab(){
@@ -1052,7 +1065,11 @@ function saveProperty(){
   collectForm();
   var p=currentForm;
   if(!p.address||!p.address.trim()){toast('Please enter an address.');return;}
-  if(editingId){for(var i=0;i<properties.length;i++){if(properties[i].id===editingId){properties[i]=Object.assign({},p,{id:editingId});break;}}}
+  // Before saving, set dealType to the primary selected method
+  var primarySelect = document.getElementById('primary-deal-type');
+  if (primarySelect && primarySelect.value) {
+    p.dealType = primarySelect.value;
+  }
   else{properties.push(Object.assign({},p,{id:Date.now()}));}
   saveData();renderAll();closeModal('modal-edit');
   toast(editingId?'Property updated ✓':'Property added ✓');
