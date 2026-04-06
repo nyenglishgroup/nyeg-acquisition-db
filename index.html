@@ -16,17 +16,20 @@ button{cursor:pointer;border:none;border-radius:10px;font-weight:600;transition:
 .header h1{font-size:17px;font-weight:700;line-height:1.2;}
 .header p{font-size:11px;opacity:.7;margin-top:2px;}
 .btn-add{background:#6366f1;color:#fff;padding:9px 16px;border-radius:10px;font-size:13px;white-space:nowrap;}
-.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:16px;}
-@media(max-width:700px){.stats{grid-template-columns:repeat(3,1fr);}}
-@media(max-width:400px){.stats{grid-template-columns:repeat(2,1fr);}}
+.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:16px;}
+@media(max-width:900px){.stats{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:500px){.stats{grid-template-columns:repeat(2,1fr);}}
 .stat-card{background:#fff;border-radius:12px;padding:12px;box-shadow:0 1px 4px rgba(0,0,0,.07);}
 .stat-card .lbl{font-size:11px;color:#64748b;}
-.stat-card .val{font-size:20px;font-weight:700;margin-top:2px;}
+.stat-card .val{font-size:18px;font-weight:700;margin-top:2px;}
+.stat-card.highlight{background:#1e1b4b;color:#fff;}
+.stat-card.highlight .lbl{color:#a5b4fc;}
+.stat-card.highlight .val{color:#fff;}
 .filters{display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 12px;}
 .filters input,.filters select{width:auto;flex:1;min-width:130px;font-size:13px;padding:8px 12px;}
 .results-count{font-size:12px;color:#94a3b8;padding:0 16px 8px;}
 .table-wrap{padding:0 16px 80px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
-.tbl{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.07);min-width:900px;}
+.tbl{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.07);min-width:1000px;}
 .tbl thead{background:#f8fafc;}
 .tbl th{text-align:left;font-size:11px;font-weight:700;color:#64748b;padding:10px 12px;white-space:nowrap;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid #e2e8f0;}
 .tbl td{padding:10px 12px;border-bottom:1px solid #f1f5f9;vertical-align:top;font-size:13px;}
@@ -46,6 +49,7 @@ button{cursor:pointer;border:none;border-radius:10px;font-weight:600;transition:
 .type-cash{background:#dcfce7;color:#15803d;}
 .type-mortgage{background:#dbeafe;color:#1d4ed8;}
 .type-brrrr{background:#d1fae5;color:#065f46;}
+.type-fixflip{background:#fef3c7;color:#92400e;}
 .green{color:#15803d;font-weight:600;}
 .red{color:#b91c1c;font-weight:600;}
 .yellow{color:#b45309;font-weight:600;}
@@ -63,7 +67,6 @@ button{cursor:pointer;border:none;border-radius:10px;font-weight:600;transition:
 .prop-card-left{flex:0 0 auto;min-width:180px;max-width:220px;}
 .prop-card-title{font-weight:700;font-size:14px;color:#1e293b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .prop-card-sub{font-size:11px;color:#94a3b8;margin-top:1px;}
-.prop-card-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px;}
 .prop-card-metrics{flex:1;display:grid;grid-template-columns:repeat(6,1fr);gap:6px;}
 @media(max-width:700px){.prop-card-metrics{grid-template-columns:repeat(3,1fr);}}
 @media(max-width:480px){.prop-card-metrics{grid-template-columns:repeat(2,1fr);}}
@@ -98,18 +101,26 @@ button{cursor:pointer;border:none;border-radius:10px;font-weight:600;transition:
 .field label{display:block;font-size:12px;color:#64748b;margin-bottom:4px;font-weight:500;}
 .field textarea{height:80px;resize:vertical;}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.deal-type-toggle{display:flex;gap:8px;flex-wrap:wrap;}
-.deal-type-toggle button{flex:1;padding:10px;font-size:13px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;color:#475569;min-width:80px;}
+.deal-type-toggle{display:flex;gap:6px;flex-wrap:wrap;}
+.deal-type-toggle button{flex:1;padding:9px 8px;font-size:12px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;color:#475569;min-width:70px;}
 .deal-type-toggle button.active{border-color:#6366f1;background:#6366f1;color:#fff;}
 .deal-type-toggle button.active-brrrr{border-color:#15803d;background:#15803d;color:#fff;}
+.deal-type-toggle button.active-fixflip{border-color:#92400e;background:#d97706;color:#fff;}
 .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;}
 .calc-box{background:#f8fafc;border-radius:10px;padding:10px 12px;}
 .calc-box.hi{background:#eef2ff;border:1px solid #c7d2fe;}
 .calc-box.warn{background:#fff7ed;border:1px solid #fed7aa;}
+.calc-box.good{background:#f0fdf4;border:1px solid #86efac;}
 .calc-box .cl{font-size:11px;color:#64748b;}
 .calc-box .cv{font-size:14px;font-weight:700;color:#1e293b;margin-top:2px;}
 .calc-box.hi .cv{color:#4338ca;}
 .calc-box.warn .cv{color:#c2410c;}
+.calc-box.good .cv{color:#15803d;}
+.piti-box{background:#1e1b4b;border-radius:12px;padding:14px;margin-bottom:10px;grid-column:1/-1;}
+.piti-box .piti-label{font-size:11px;color:#a5b4fc;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+.piti-box .piti-val{font-size:24px;font-weight:700;color:#fff;margin:4px 0;}
+.piti-box .piti-breakdown{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;}
+.piti-box .piti-item{font-size:11px;color:#c7d2fe;}
 .closing-summary{background:#eef2ff;border:1px solid #c7d2fe;border-radius:12px;padding:14px;margin-top:10px;}
 .closing-group{margin-bottom:10px;}
 .closing-group-title{font-size:11px;font-weight:700;color:#6366f1;margin-bottom:4px;}
@@ -125,16 +136,15 @@ button{cursor:pointer;border:none;border-radius:10px;font-weight:600;transition:
 .btn-pdf3{background:#1e1b4b;color:#fff;}
 .btn-email3{background:#6366f1;color:#fff;}
 .notes-box{background:#fefce8;border:1px solid #fde68a;border-radius:10px;padding:12px;font-size:13px;color:#374151;}
+.carry-banner{background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:12px 16px;margin:0 16px 12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.carry-banner .cb-label{font-size:12px;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:.5px;}
+.carry-banner .cb-val{font-size:20px;font-weight:700;color:#c2410c;}
+.carry-banner .cb-sub{font-size:11px;color:#b45309;}
 .email-preview{background:#f8fafc;border-radius:10px;padding:12px;max-height:180px;overflow-y:auto;font-size:11px;font-family:monospace;color:#374151;white-space:pre-wrap;line-height:1.5;}
 .email-status{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:10px;}
 .email-status.ok{background:#dcfce7;color:#15803d;}
 .email-status.copied{background:#dbeafe;color:#1d4ed8;}
-.autocomplete-dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid #6366f1;border-top:none;border-radius:0 0 10px 10px;z-index:9999;max-height:220px;overflow-y:auto;box-shadow:0 4px 16px rgba(0,0,0,.12);}
-.autocomplete-item{padding:10px 14px;font-size:13px;cursor:pointer;border-bottom:1px solid #f1f5f9;color:#1e293b;}
-.autocomplete-item:last-child{border-bottom:none;}
-.autocomplete-item:hover,.autocomplete-item.active{background:#eef2ff;color:#4338ca;}
-.autocomplete-item strong{color:#1e293b;}
-.addr-wrap{position:relative;};transform:translateX(-50%);background:#1e1b4b;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e1b4b;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;}
 .brrrr-box{background:#f0fdf4;border:1.5px solid #86efac;border-radius:12px;padding:14px;margin-top:4px;}
 .brrrr-box .section-title{color:#15803d;border-color:#86efac;}
@@ -145,6 +155,16 @@ button{cursor:pointer;border:none;border-radius:10px;font-weight:600;transition:
 .brrrr-verdict.good{background:#dcfce7;color:#15803d;}
 .brrrr-verdict.warn{background:#fef9c3;color:#854d0e;}
 .brrrr-verdict.bad{background:#fee2e2;color:#b91c1c;}
+.fixflip-box{background:#fffbeb;border:1.5px solid #fcd34d;border-radius:12px;padding:14px;margin-top:4px;}
+.fixflip-box .section-title{color:#92400e;border-color:#fcd34d;}
+.fixflip-result{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;color:#78350f;}
+.fixflip-result strong{font-weight:700;}
+.fixflip-total{display:flex;justify-content:space-between;font-weight:700;font-size:14px;border-top:1.5px solid #fcd34d;padding-top:8px;margin-top:6px;color:#451a03;}
+.autocomplete-dropdown{position:absolute;top:100%;left:0;right:0;background:#fff;border:1.5px solid #6366f1;border-top:none;border-radius:0 0 10px 10px;z-index:9999;max-height:220px;overflow-y:auto;box-shadow:0 4px 16px rgba(0,0,0,.12);}
+.autocomplete-item{padding:10px 14px;font-size:13px;cursor:pointer;border-bottom:1px solid #f1f5f9;color:#1e293b;}
+.autocomplete-item:last-child{border-bottom:none;}
+.autocomplete-item:hover,.autocomplete-item.active{background:#eef2ff;color:#4338ca;}
+.addr-wrap{position:relative;}
 </style>
 </head>
 <body>
@@ -158,6 +178,21 @@ button{cursor:pointer;border:none;border-radius:10px;font-weight:600;transition:
 </div>
 
 <div class="stats" id="stats-row"></div>
+<div class="carry-banner" id="carry-banner" style="display:none;">
+  <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:center;width:100%;">
+    <div>
+      <div class="cb-label">📅 Monthly Carry — Entire Pipeline</div>
+      <div class="cb-sub">All active properties combined per month</div>
+      <div class="cb-val" id="carry-monthly-val">—</div>
+    </div>
+    <div style="width:1px;background:#fed7aa;align-self:stretch;"></div>
+    <div>
+      <div class="cb-label">📅 6-Month Carry — Entire Pipeline</div>
+      <div class="cb-sub">All active properties × 6 months</div>
+      <div class="cb-val" id="carry-val">—</div>
+    </div>
+  </div>
+</div>
 <div class="filters">
   <input type="text" id="search" placeholder="Search address / city…" oninput="renderAll()">
   <select id="fStage" onchange="renderAll()">
@@ -170,6 +205,7 @@ button{cursor:pointer;border:none;border-radius:10px;font-weight:600;transition:
     <option value="mortgage">Mortgage</option>
     <option value="cash">Cash</option>
     <option value="brrrr">BRRRR</option>
+    <option value="fixflip">Fix &amp; Flip</option>
   </select>
   <select id="fSort" onchange="renderAll()">
     <option value="date">Sort: Date Added</option>
@@ -185,8 +221,8 @@ button{cursor:pointer;border:none;border-radius:10px;font-weight:600;transition:
     <thead><tr>
       <th>Address</th><th>Type</th><th>Stage</th><th>Asking</th><th>Offered</th>
       <th>ARV</th><th>Rehab</th><th>Down/Cash</th><th>Closing</th>
-      <th>Total Cash</th><th>Carry/mo</th><th>Cash Flow</th>
-      <th>Cap Rate</th><th>CoC</th><th>Equity</th><th></th>
+      <th>Total Cash</th><th>PITI/mo</th><th>Op Ex/mo</th><th>Cash Flow</th>
+      <th>Cap Rate</th><th>CoC</th><th>6-Mo Carry</th><th>Equity</th><th></th>
     </tr></thead>
     <tbody id="tbl-body"></tbody>
   </table>
@@ -253,7 +289,7 @@ button{cursor:pointer;border:none;border-radius:10px;font-weight:600;transition:
 <div class="toast" id="toast"></div>
 
 <script>
-var STORAGE_KEY = 'nyeg_props_v2';
+var STORAGE_KEY = 'nyeg_props_v3';
 var properties = [];
 var currentForm = {};
 var currentTab = 'details';
@@ -262,704 +298,652 @@ var detailId = null;
 var emailPropId = null;
 var emailBody = '';
 var emailSubject = '';
+var MAPS_KEY = 'AIzaSyARQWBlAzzijttWAQtUHzIdlo7tFES0waI';
+var acTimer = null;
+var acActive = -1;
+
+var EMPTY_CLOSING = {originationFee:'',discountPoints:'',appraisalFee:'500',creditReport:'50',floodDetermination:'20',taxServiceFee:'85',underwritingFee:'995',titleSearch:'200',titleInsuranceLender:'0',titleInsuranceOwner:'0',escrowFee:'500',settlementFee:'350',recordingFee:'125',wireTransferFee:'30',transferTax:'',mansionTax:'',prepaidInterest:'',prepaidInsurance:'',prepaidTaxes:'',escrowReserves:'',homeInspection:'400',pestInspection:'150',radonTest:'150',sewerscopeInspection:'250',surveyFee:'0',attorneyFee:'0',HOATransferFee:'0',otherClosingCost:'0'};
+
+var EMPTY_FORM = {
+  address:'',city:'',state:'',zip:'',
+  stage:'Prospect',leadSource:'MLS',
+  sqft:'',beds:'',baths:'',yearBuilt:'',
+  dateAdded:new Date().toISOString().split('T')[0],
+  askingPrice:'',amountOffered:'',purchasePrice:'',arv:'',
+  dealType:'mortgage',downPct:'20',
+  mortgageRate:'7.5',mortgageTerm:'30',
+  // Fix & Flip
+  ffLoanAmt:'',ffRate:'12',ffTerm:'12',ffOriginationPts:'2',
+  ffHoldMonths:'6',ffHoldCostPerMonth:'',
+  // BRRRR
+  brrrrRefiLTV:'75',brrrrHoldMonths:'5',brrrrHoldCostPerMonth:'',
+  rehabCostPerSqft:'',rehabTotal:'',
+  // Operating
+  taxes:'',insurance:'180',propMgmtPct:'10',vacancyPct:'5',capexPct:'5',repairsPct:'5',
+  brokerageFees:'',rentalPermits:'',
+  waterUsage:'',sanitation:'',otherElectric:'',heating:'',sewerTax:'',waterHeating:'',cooking:'',
+  hoaFees:'',otherMonthly:'',
+  grossRent:'',noi:'',roi:'',notes:'',
+  closing:Object.assign({},EMPTY_CLOSING)
+};
 
 var SAMPLE = [
-  {id:1,address:"412 Elm Street",city:"Memphis",state:"TN",zip:"38103",stage:"Due Diligence",leadSource:"Wholesaler",sqft:1450,beds:3,baths:2,yearBuilt:1987,askingPrice:145000,amountOffered:128000,purchasePrice:132000,arv:210000,dealType:"mortgage",downPct:"20",mortgageRate:"7.5",mortgageTerm:"30",interestOnlyRate:"7.5",rehabCostPerSqft:22,rehabTotal:"",taxes:2400,insurance:1800,hoaFees:0,otherMonthly:50,grossRent:1650,noi:"",roi:11.2,brrrrRefiLTV:"",brrrrHoldMonths:"",brrrrHoldCostPerMonth:"",notes:"Needs full kitchen and bath update.",dateAdded:"2026-02-20",closing:{originationFee:1320,discountPoints:0,appraisalFee:500,creditReport:50,floodDetermination:20,taxServiceFee:85,underwritingFee:995,titleSearch:200,titleInsuranceLender:600,titleInsuranceOwner:850,escrowFee:500,settlementFee:350,recordingFee:125,wireTransferFee:30,transferTax:660,mansionTax:0,prepaidInterest:0,prepaidInsurance:0,prepaidTaxes:0,escrowReserves:0,homeInspection:400,pestInspection:150,radonTest:0,sewerscopeInspection:0,surveyFee:0,attorneyFee:0,HOATransferFee:0,otherClosingCost:0}},
-  {id:2,address:"87 Rosewood Dr",city:"Little Rock",state:"AR",zip:"72201",stage:"Offer Made",leadSource:"Direct Mail",sqft:1800,beds:4,baths:2,yearBuilt:1995,askingPrice:175000,amountOffered:155000,purchasePrice:155000,arv:240000,dealType:"cash",downPct:"20",mortgageRate:"7.25",mortgageTerm:"30",interestOnlyRate:"7.25",rehabCostPerSqft:18,rehabTotal:"",taxes:2800,insurance:1600,hoaFees:0,otherMonthly:0,grossRent:1850,noi:"",roi:"",brrrrRefiLTV:"",brrrrHoldMonths:"",brrrrHoldCostPerMonth:"",notes:"Cosmetic only.",dateAdded:"2026-03-01",closing:{originationFee:0,discountPoints:0,appraisalFee:0,creditReport:0,floodDetermination:0,taxServiceFee:0,underwritingFee:0,titleSearch:200,titleInsuranceLender:0,titleInsuranceOwner:900,escrowFee:500,settlementFee:350,recordingFee:125,wireTransferFee:30,transferTax:775,mansionTax:0,prepaidInterest:0,prepaidInsurance:0,prepaidTaxes:0,escrowReserves:0,homeInspection:400,pestInspection:150,radonTest:0,sewerscopeInspection:250,surveyFee:0,attorneyFee:0,HOATransferFee:0,otherClosingCost:0}},
-  {id:3,address:"309 Birchwood Ave",city:"Pittsburgh",state:"PA",zip:"15212",stage:"Under Review",leadSource:"Wholesaler",sqft:1600,beds:3,baths:1,yearBuilt:1952,askingPrice:95000,amountOffered:82000,purchasePrice:82000,arv:185000,dealType:"brrrr",downPct:"20",mortgageRate:"7.25",mortgageTerm:"30",interestOnlyRate:"7.25",rehabCostPerSqft:35,rehabTotal:"",taxes:3200,insurance:1400,hoaFees:0,otherMonthly:0,grossRent:1600,noi:"",roi:"",brrrrRefiLTV:"75",brrrrHoldMonths:"5",brrrrHoldCostPerMonth:"900",notes:"Heavy rehab, strong ARV in Manchester area.",dateAdded:"2026-03-15",closing:{originationFee:0,discountPoints:0,appraisalFee:500,creditReport:50,floodDetermination:20,taxServiceFee:0,underwritingFee:0,titleSearch:200,titleInsuranceLender:0,titleInsuranceOwner:750,escrowFee:500,settlementFee:350,recordingFee:125,wireTransferFee:30,transferTax:410,mansionTax:0,prepaidInterest:0,prepaidInsurance:0,prepaidTaxes:0,escrowReserves:0,homeInspection:400,pestInspection:150,radonTest:150,sewerscopeInspection:250,surveyFee:0,attorneyFee:0,HOATransferFee:0,otherClosingCost:0}}
+  {id:1,address:'412 Elm Street',city:'Memphis',state:'TN',zip:'38103',stage:'Due Diligence',leadSource:'Wholesaler',sqft:1450,beds:3,baths:2,yearBuilt:1987,askingPrice:145000,amountOffered:128000,purchasePrice:132000,arv:210000,dealType:'mortgage',downPct:'20',mortgageRate:'7.5',mortgageTerm:'30',ffLoanAmt:'',ffRate:'12',ffTerm:'12',ffOriginationPts:'2',ffHoldMonths:'6',ffHoldCostPerMonth:'',brrrrRefiLTV:'75',brrrrHoldMonths:'5',brrrrHoldCostPerMonth:'',rehabCostPerSqft:22,rehabTotal:'',taxes:2400,insurance:180,propMgmtPct:10,vacancyPct:5,capexPct:5,repairsPct:5,brokerageFees:'',rentalPermits:'',waterUsage:'',sanitation:'',otherElectric:'',heating:'',sewerTax:'',waterHeating:'',cooking:'',hoaFees:0,otherMonthly:50,grossRent:1650,noi:'',roi:11.2,notes:'Needs full kitchen and bath update.',dateAdded:'2026-02-20',closing:{originationFee:1320,discountPoints:0,appraisalFee:500,creditReport:50,floodDetermination:20,taxServiceFee:85,underwritingFee:995,titleSearch:200,titleInsuranceLender:600,titleInsuranceOwner:850,escrowFee:500,settlementFee:350,recordingFee:125,wireTransferFee:30,transferTax:660,mansionTax:0,prepaidInterest:0,prepaidInsurance:0,prepaidTaxes:0,escrowReserves:0,homeInspection:400,pestInspection:150,radonTest:0,sewerscopeInspection:0,surveyFee:0,attorneyFee:0,HOATransferFee:0,otherClosingCost:0}},
+  {id:2,address:'87 Rosewood Dr',city:'Little Rock',state:'AR',zip:'72201',stage:'Offer Made',leadSource:'Direct Mail',sqft:1800,beds:4,baths:2,yearBuilt:1995,askingPrice:175000,amountOffered:155000,purchasePrice:155000,arv:240000,dealType:'cash',downPct:'20',mortgageRate:'7.25',mortgageTerm:'30',ffLoanAmt:'',ffRate:'12',ffTerm:'12',ffOriginationPts:'2',ffHoldMonths:'6',ffHoldCostPerMonth:'',brrrrRefiLTV:'75',brrrrHoldMonths:'5',brrrrHoldCostPerMonth:'',rehabCostPerSqft:18,rehabTotal:'',taxes:2800,insurance:180,propMgmtPct:10,vacancyPct:5,capexPct:5,repairsPct:5,brokerageFees:'',rentalPermits:'',waterUsage:'',sanitation:'',otherElectric:'',heating:'',sewerTax:'',waterHeating:'',cooking:'',hoaFees:0,otherMonthly:0,grossRent:1850,noi:'',roi:'',notes:'Cosmetic only.',dateAdded:'2026-03-01',closing:{originationFee:0,discountPoints:0,appraisalFee:0,creditReport:0,floodDetermination:0,taxServiceFee:0,underwritingFee:0,titleSearch:200,titleInsuranceLender:0,titleInsuranceOwner:900,escrowFee:500,settlementFee:350,recordingFee:125,wireTransferFee:30,transferTax:775,mansionTax:0,prepaidInterest:0,prepaidInsurance:0,prepaidTaxes:0,escrowReserves:0,homeInspection:400,pestInspection:150,radonTest:0,sewerscopeInspection:250,surveyFee:0,attorneyFee:0,HOATransferFee:0,otherClosingCost:0}},
+  {id:3,address:'309 Birchwood Ave',city:'Pittsburgh',state:'PA',zip:'15212',stage:'Under Review',leadSource:'Wholesaler',sqft:1600,beds:3,baths:1,yearBuilt:1952,askingPrice:95000,amountOffered:82000,purchasePrice:82000,arv:185000,dealType:'fixflip',downPct:'20',mortgageRate:'7.25',mortgageTerm:'30',ffLoanAmt:73800,ffRate:'12',ffTerm:'12',ffOriginationPts:'2',ffHoldMonths:'6',ffHoldCostPerMonth:'',brrrrRefiLTV:'75',brrrrHoldMonths:'5',brrrrHoldCostPerMonth:'900',rehabCostPerSqft:35,rehabTotal:'',taxes:3200,insurance:180,propMgmtPct:10,vacancyPct:5,capexPct:5,repairsPct:5,brokerageFees:'',rentalPermits:'',waterUsage:'',sanitation:'',otherElectric:'',heating:'',sewerTax:'',waterHeating:'',cooking:'',hoaFees:0,otherMonthly:0,grossRent:0,noi:'',roi:'',notes:'Fix & Flip — Manchester area.',dateAdded:'2026-03-15',closing:{originationFee:0,discountPoints:0,appraisalFee:500,creditReport:50,floodDetermination:20,taxServiceFee:0,underwritingFee:0,titleSearch:200,titleInsuranceLender:0,titleInsuranceOwner:750,escrowFee:500,settlementFee:350,recordingFee:125,wireTransferFee:30,transferTax:410,mansionTax:0,prepaidInterest:0,prepaidInsurance:0,prepaidTaxes:0,escrowReserves:0,homeInspection:400,pestInspection:150,radonTest:150,sewerscopeInspection:250,surveyFee:0,attorneyFee:0,HOATransferFee:0,otherClosingCost:0}}
 ];
 
-function loadData() {
-  try { var d = localStorage.getItem(STORAGE_KEY); properties = d ? JSON.parse(d) : SAMPLE; }
-  catch(e) { properties = SAMPLE; }
-}
-function saveData() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(properties)); } catch(e) {}
-}
-function nv(v) { return Number(v) || 0; }
-function f$(v, dec) {
-  dec = dec || 0;
-  if (v === '' || v === null || v === undefined || isNaN(Number(v))) return '—';
-  return '$' + Number(v).toLocaleString('en-US', {minimumFractionDigits:dec, maximumFractionDigits:dec});
-}
-function fPct(v) { return v ? Number(v).toFixed(2) + '%' : '—'; }
-function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function toast(msg) { var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(function(){ t.classList.remove('show'); }, 2200); }
+function loadData(){try{var d=localStorage.getItem(STORAGE_KEY);properties=d?JSON.parse(d):SAMPLE;}catch(e){properties=SAMPLE;}}
+function saveData(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(properties));}catch(e){}}
+function nv(v){return Number(v)||0;}
+function f$(v,dec){dec=dec||0;if(v===''||v===null||v===undefined||isNaN(Number(v)))return'—';return'$'+Number(v).toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec});}
+function fPct(v){return v?Number(v).toFixed(2)+'%':'—';}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2200);}
 
 // ── Closing Items ─────────────────────────────────────────────────────────────
-function closingItems(c, dealType) {
-  c = c || {};
-  var mort = dealType !== 'cash';
-  var it = [];
-  if (mort) {
-    it.push({g:'Lender Fees',l:'Origination Fee',v:nv(c.originationFee)});
-    it.push({g:'Lender Fees',l:'Discount Points',v:nv(c.discountPoints)});
-    it.push({g:'Lender Fees',l:'Appraisal Fee',v:nv(c.appraisalFee)});
-    it.push({g:'Lender Fees',l:'Credit Report',v:nv(c.creditReport)});
-    it.push({g:'Lender Fees',l:'Flood Determination',v:nv(c.floodDetermination)});
-    it.push({g:'Lender Fees',l:'Tax Service Fee',v:nv(c.taxServiceFee)});
-    it.push({g:'Lender Fees',l:'Underwriting Fee',v:nv(c.underwritingFee)});
-  }
+function closingItems(c,dealType){
+  c=c||{};var mort=dealType!=='cash';var it=[];
+  if(mort){it.push({g:'Lender Fees',l:'Origination Fee',v:nv(c.originationFee)});it.push({g:'Lender Fees',l:'Discount Points',v:nv(c.discountPoints)});it.push({g:'Lender Fees',l:'Appraisal Fee',v:nv(c.appraisalFee)});it.push({g:'Lender Fees',l:'Credit Report',v:nv(c.creditReport)});it.push({g:'Lender Fees',l:'Flood Determination',v:nv(c.floodDetermination)});it.push({g:'Lender Fees',l:'Tax Service Fee',v:nv(c.taxServiceFee)});it.push({g:'Lender Fees',l:'Underwriting Fee',v:nv(c.underwritingFee)});}
   it.push({g:'Title & Escrow',l:'Title Search',v:nv(c.titleSearch)});
-  if (mort) it.push({g:'Title & Escrow',l:'Lender Title Insurance',v:nv(c.titleInsuranceLender)});
-  it.push({g:'Title & Escrow',l:"Owner's Title Insurance",v:nv(c.titleInsuranceOwner)});
-  it.push({g:'Title & Escrow',l:'Escrow / Closing Fee',v:nv(c.escrowFee)});
-  it.push({g:'Title & Escrow',l:'Settlement Fee',v:nv(c.settlementFee)});
-  it.push({g:'Title & Escrow',l:'Recording Fee',v:nv(c.recordingFee)});
-  it.push({g:'Title & Escrow',l:'Wire Transfer Fee',v:nv(c.wireTransferFee)});
-  if (mort) {
-    it.push({g:'Prepaids',l:'Prepaid Interest',v:nv(c.prepaidInterest)});
-    it.push({g:'Prepaids',l:'Prepaid Insurance',v:nv(c.prepaidInsurance)});
-    it.push({g:'Prepaids',l:'Prepaid Property Taxes',v:nv(c.prepaidTaxes)});
-    it.push({g:'Prepaids',l:'Escrow Reserves',v:nv(c.escrowReserves)});
-  }
-  it.push({g:'Government',l:'Transfer / Deed Tax',v:nv(c.transferTax)});
-  it.push({g:'Government',l:'Mansion / Excise Tax',v:nv(c.mansionTax)});
-  it.push({g:'Inspections',l:'Home Inspection',v:nv(c.homeInspection)});
-  it.push({g:'Inspections',l:'Pest Inspection',v:nv(c.pestInspection)});
-  it.push({g:'Inspections',l:'Radon Test',v:nv(c.radonTest)});
-  it.push({g:'Inspections',l:'Sewer Scope',v:nv(c.sewerscopeInspection)});
-  it.push({g:'Other',l:'Survey Fee',v:nv(c.surveyFee)});
-  it.push({g:'Other',l:'Attorney Fee',v:nv(c.attorneyFee)});
-  it.push({g:'Other',l:'HOA Transfer Fee',v:nv(c.HOATransferFee)});
-  it.push({g:'Other',l:'Other',v:nv(c.otherClosingCost)});
+  if(mort)it.push({g:'Title & Escrow',l:'Lender Title Insurance',v:nv(c.titleInsuranceLender)});
+  it.push({g:'Title & Escrow',l:"Owner's Title Insurance",v:nv(c.titleInsuranceOwner)});it.push({g:'Title & Escrow',l:'Escrow / Closing Fee',v:nv(c.escrowFee)});it.push({g:'Title & Escrow',l:'Settlement Fee',v:nv(c.settlementFee)});it.push({g:'Title & Escrow',l:'Recording Fee',v:nv(c.recordingFee)});it.push({g:'Title & Escrow',l:'Wire Transfer Fee',v:nv(c.wireTransferFee)});
+  if(mort){it.push({g:'Prepaids',l:'Prepaid Interest',v:nv(c.prepaidInterest)});it.push({g:'Prepaids',l:'Prepaid Insurance',v:nv(c.prepaidInsurance)});it.push({g:'Prepaids',l:'Prepaid Property Taxes',v:nv(c.prepaidTaxes)});it.push({g:'Prepaids',l:'Escrow Reserves',v:nv(c.escrowReserves)});}
+  it.push({g:'Government',l:'Transfer / Deed Tax',v:nv(c.transferTax)});it.push({g:'Government',l:'Mansion / Excise Tax',v:nv(c.mansionTax)});
+  it.push({g:'Inspections',l:'Home Inspection',v:nv(c.homeInspection)});it.push({g:'Inspections',l:'Pest Inspection',v:nv(c.pestInspection)});it.push({g:'Inspections',l:'Radon Test',v:nv(c.radonTest)});it.push({g:'Inspections',l:'Sewer Scope',v:nv(c.sewerscopeInspection)});
+  it.push({g:'Other',l:'Survey Fee',v:nv(c.surveyFee)});it.push({g:'Other',l:'Attorney Fee',v:nv(c.attorneyFee)});it.push({g:'Other',l:'HOA Transfer Fee',v:nv(c.HOATransferFee)});it.push({g:'Other',l:'Other',v:nv(c.otherClosingCost)});
   return it;
 }
-function closingTotal(c, dealType) {
-  return closingItems(c, dealType).reduce(function(s,i){ return s+i.v; }, 0);
+function closingTotal(c,dealType){return closingItems(c,dealType).reduce(function(s,i){return s+i.v;},0);}
+
+// ── Operating Expenses ────────────────────────────────────────────────────────
+function calcOpEx(p){
+  var rent=nv(p.grossRent);
+  var propMgmt=rent*(nv(p.propMgmtPct)/100)*12;
+  var vacancy=rent*(nv(p.vacancyPct)/100)*12;
+  var capex=rent*(nv(p.capexPct)/100)*12;
+  var repairs=rent*(nv(p.repairsPct)/100)*12;
+  var taxesAnn=nv(p.taxes);
+  var insuranceAnn=nv(p.insurance)*12;
+  var brokerageFees=nv(p.brokerageFees);
+  var rentalPermits=nv(p.rentalPermits);
+  var utilsMo=nv(p.waterUsage)+nv(p.sanitation)+nv(p.otherElectric)+nv(p.heating)+nv(p.sewerTax)+nv(p.waterHeating)+nv(p.cooking);
+  var hoa=nv(p.hoaFees)*12;
+  var other=nv(p.otherMonthly)*12;
+  var total=taxesAnn+insuranceAnn+propMgmt+vacancy+capex+repairs+brokerageFees+rentalPermits+utilsMo*12+hoa+other;
+  return{total:total,monthly:total/12,taxesMo:taxesAnn/12,insuranceMo:nv(p.insurance),utilsMo:utilsMo};
 }
 
-// ── BRRRR Calculation ─────────────────────────────────────────────────────────
-function brrrrCalc(p) {
-  var purchase = nv(p.purchasePrice) || nv(p.amountOffered);
-  var sqft = nv(p.sqft);
-  var rehab = p.rehabTotal ? nv(p.rehabTotal) : sqft * nv(p.rehabCostPerSqft);
-  var arv = nv(p.arv);
-  var cTotal = closingTotal(p.closing, p.dealType);
-  var holdMonths = nv(p.brrrrHoldMonths);
-  var holdCostMo = nv(p.brrrrHoldCostPerMonth);
-  var holdCost = holdMonths * holdCostMo;
-  var totalInvested = purchase + rehab + cTotal + holdCost;
-  var refiLTV = nv(p.brrrrRefiLTV) || 75;
-  var refiLoan = arv * (refiLTV / 100);
-  var cashOut = refiLoan - purchase - rehab - cTotal;
-  var cashLeftIn = totalInvested - refiLoan;
-  var r = nv(p.mortgageRate) / 100 / 12;
-  var np = nv(p.mortgageTerm) * 12;
-  var refiPmt = (refiLoan && r && np) ? refiLoan * (r * Math.pow(1+r,np)) / (Math.pow(1+r,np)-1) : 0;
-  var taxMo = nv(p.taxes)/12;
-  var insMo = nv(p.insurance)/12;
-  var hoa = nv(p.hoaFees);
-  var other = nv(p.otherMonthly);
-  var carry = refiPmt + taxMo + insMo + hoa + other;
-  var rent = nv(p.grossRent);
-  var cashFlow = rent - carry;
-  var noi = nv(p.noi) || (rent*12 - nv(p.taxes) - nv(p.insurance) - hoa*12 - other*12);
-  var capRate = purchase ? (noi / purchase) * 100 : 0;
-  var coc = cashLeftIn > 0 ? (cashFlow * 12 / cashLeftIn) * 100 : (cashLeftIn <= 0 ? 9999 : 0);
-  var equity = arv - refiLoan;
-  return {purchase:purchase, rehab:rehab, cTotal:cTotal, holdCost:holdCost, totalInvested:totalInvested, refiLoan:refiLoan, cashOut:cashOut, cashLeftIn:cashLeftIn, refiPmt:refiPmt, carry:carry, cashFlow:cashFlow, noi:noi, capRate:capRate, coc:coc, equity:equity, arv:arv, refiLTV:refiLTV};
+// ── BRRRR Calc ────────────────────────────────────────────────────────────────
+function brrrrCalc(p){
+  var purchase=nv(p.purchasePrice)||nv(p.amountOffered);
+  var sqft=nv(p.sqft);
+  var rehab=p.rehabTotal?nv(p.rehabTotal):sqft*nv(p.rehabCostPerSqft);
+  var arv=nv(p.arv);
+  var cTotal=closingTotal(p.closing,p.dealType);
+  var holdCost=nv(p.brrrrHoldMonths)*nv(p.brrrrHoldCostPerMonth);
+  var totalInvested=purchase+rehab+cTotal+holdCost;
+  var refiLTV=nv(p.brrrrRefiLTV)||75;
+  var refiLoan=arv*(refiLTV/100);
+  var cashOut=refiLoan-purchase-rehab-cTotal;
+  var cashLeftIn=totalInvested-refiLoan;
+  var r=nv(p.mortgageRate)/100/12,np=nv(p.mortgageTerm)*12;
+  var refiPmt=(refiLoan&&r&&np)?refiLoan*(r*Math.pow(1+r,np))/(Math.pow(1+r,np)-1):0;
+  var opex=calcOpEx(p);
+  var carry=refiPmt+opex.monthly;
+  var rent=nv(p.grossRent);
+  var cashFlow=rent-carry;
+  var noi=nv(p.noi)||(rent*12-opex.total);
+  var capRate=purchase?(noi/purchase)*100:0;
+  var coc=cashLeftIn>0?(cashFlow*12/cashLeftIn)*100:(cashLeftIn<=0?9999:0);
+  var equity=arv-refiLoan;
+  return{purchase:purchase,rehab:rehab,cTotal:cTotal,holdCost:holdCost,totalInvested:totalInvested,refiLoan:refiLoan,cashOut:cashOut,cashLeftIn:cashLeftIn,refiPmt:refiPmt,carry:carry,cashFlow:cashFlow,noi:noi,capRate:capRate,coc:coc,equity:equity,arv:arv,refiLTV:refiLTV};
 }
 
-function brrrrPanelHTML(f) {
-  var arv = nv(f.arv);
-  if (!arv) {
-    return '<div class="brrrr-box"><div class="section-title">♻️ BRRRR Analysis</div><div style="font-size:12px;color:#64748b;padding:6px 0;">Enter ARV and purchase details to see BRRRR projections.</div></div>';
+// ── Fix & Flip Calc ───────────────────────────────────────────────────────────
+function fixFlipCalc(p){
+  var purchase=nv(p.purchasePrice)||nv(p.amountOffered);
+  var sqft=nv(p.sqft);
+  var rehab=p.rehabTotal?nv(p.rehabTotal):sqft*nv(p.rehabCostPerSqft);
+  var arv=nv(p.arv);
+  var cTotal=closingTotal(p.closing,p.dealType);
+  var loanAmt=nv(p.ffLoanAmt)||purchase*0.9;
+  var downPayment=purchase-loanAmt+cTotal;
+  var rate=nv(p.ffRate)/100/12;
+  var ioPmt=loanAmt*rate;
+  var np=nv(p.ffTerm);
+  var fixedPmt=(loanAmt&&rate&&np)?loanAmt*(rate*Math.pow(1+rate,np))/(Math.pow(1+rate,np)-1):0;
+  var holdMonths=nv(p.ffHoldMonths)||6;
+  var originationCost=loanAmt*(nv(p.ffOriginationPts)/100);
+  var holdCostPerMo=nv(p.ffHoldCostPerMonth);
+  var totalHoldCostIO=(ioPmt+holdCostPerMo)*holdMonths;
+  var totalHoldCostFixed=(fixedPmt+holdCostPerMo)*holdMonths;
+  var totalInvestedIO=downPayment+rehab+originationCost+totalHoldCostIO;
+  var totalInvestedFixed=downPayment+rehab+originationCost+totalHoldCostFixed;
+  var saleCosts=arv*0.06;
+  var profitIO=arv-purchase-rehab-originationCost-totalHoldCostIO-saleCosts;
+  var profitFixed=arv-purchase-rehab-originationCost-totalHoldCostFixed-saleCosts;
+  var roiIO=totalInvestedIO?(profitIO/totalInvestedIO)*100:0;
+  var roiFixed=totalInvestedFixed?(profitFixed/totalInvestedFixed)*100:0;
+  var sixMoCarryIO=(ioPmt+holdCostPerMo)*6;
+  var sixMoCarryFixed=(fixedPmt+holdCostPerMo)*6;
+  return{purchase:purchase,rehab:rehab,cTotal:cTotal,loanAmt:loanAmt,downPayment:downPayment,rate:nv(p.ffRate),ioPmt:ioPmt,fixedPmt:fixedPmt,holdMonths:holdMonths,originationCost:originationCost,totalHoldCostIO:totalHoldCostIO,totalHoldCostFixed:totalHoldCostFixed,totalInvestedIO:totalInvestedIO,totalInvestedFixed:totalInvestedFixed,saleCosts:saleCosts,profitIO:profitIO,profitFixed:profitFixed,roiIO:roiIO,roiFixed:roiFixed,arv:arv,equity:arv-purchase-rehab,sixMoCarryIO:sixMoCarryIO,sixMoCarryFixed:sixMoCarryFixed};
+}
+
+// ── Main Derive ───────────────────────────────────────────────────────────────
+function derive(p){
+  if(p.dealType==='brrrr'){
+    var b=brrrrCalc(p);
+    return{rehab:b.rehab,down:b.purchase,loan:b.refiLoan,cTotal:b.cTotal,totalIn:b.totalInvested,pitiMo:b.refiPmt,opExMo:calcOpEx(p).monthly,carryMo:b.carry,equity:b.equity,noi:b.noi,capRate:b.capRate,cashFlow:b.cashFlow,coc:b.coc,purchase:b.purchase,isCash:false,isBrrrr:true,isFixFlip:false,bData:b,ffData:null,sixMoCarry:b.carry*6};
   }
-  var b = brrrrCalc(f);
-  var infinite = b.cashLeftIn <= 0;
-  var verdictCls = infinite || b.cashLeftIn < b.totalInvested * 0.1 ? 'good' : b.cashLeftIn < b.totalInvested * 0.25 ? 'warn' : 'bad';
-  var verdictMsg = infinite
-    ? '🚀 Full capital recovery — infinite returns!'
-    : b.cashLeftIn < b.totalInvested * 0.1
-      ? '✅ Near full pull — only ' + f$(b.cashLeftIn) + ' left in deal'
-      : b.cashLeftIn < b.totalInvested * 0.25
-        ? '⚠️ Partial pull — ' + f$(b.cashLeftIn) + ' left in deal'
-        : '❌ ' + f$(b.cashLeftIn) + ' left in — consider higher ARV or LTV';
-  return '<div class="brrrr-box">'
-    + '<div class="section-title">♻️ BRRRR Analysis</div>'
-    + '<div class="brrrr-result"><span>Total Invested (all-in)</span><strong>' + f$(b.totalInvested) + '</strong></div>'
-    + '<div class="brrrr-result"><span>Refi Loan (' + b.refiLTV + '% LTV × ARV)</span><strong>' + f$(b.refiLoan) + '</strong></div>'
-    + '<div class="brrrr-result"><span>Cash-Out from Refi</span><strong>' + f$(b.cashOut) + '</strong></div>'
-    + '<div class="brrrr-result"><span>Hold Cost (' + nv(f.brrrrHoldMonths) + ' mo × ' + f$(nv(f.brrrrHoldCostPerMonth)) + ')</span><strong>' + f$(b.holdCost) + '</strong></div>'
-    + '<div class="brrrr-result"><span>Refi P&amp;I (' + f.mortgageRate + '%/' + f.mortgageTerm + 'yr)</span><strong>' + f$(b.refiPmt,2) + '/mo</strong></div>'
-    + '<div class="brrrr-result"><span>Monthly Carry (post-refi)</span><strong>' + f$(b.carry,2) + '/mo</strong></div>'
-    + '<div class="brrrr-result"><span>Cash Flow (post-refi)</span><strong>' + f$(b.cashFlow,2) + '/mo</strong></div>'
-    + '<div class="brrrr-result"><span>Equity Retained</span><strong>' + f$(b.equity) + '</strong></div>'
-    + '<div class="brrrr-result"><span>Cap Rate</span><strong>' + fPct(b.capRate) + '</strong></div>'
-    + '<div class="brrrr-result"><span>CoC (on cash left in)</span><strong>' + (infinite ? '∞ %' : fPct(b.coc)) + '</strong></div>'
-    + '<div class="brrrr-total"><span>Cash Left In Deal</span><span>' + (infinite ? '$0 or less ✅' : f$(b.cashLeftIn)) + '</span></div>'
-    + '<div class="brrrr-verdict ' + verdictCls + '">' + verdictMsg + '</div>'
-    + '</div>';
-}
-
-// ── Derive ────────────────────────────────────────────────────────────────────
-function derive(p) {
-  if (p.dealType === 'brrrr') {
-    var b = brrrrCalc(p);
-    return {rehab:b.rehab, down:b.purchase, loan:b.refiLoan, cTotal:b.cTotal, totalIn:b.totalInvested, fixedPmt:b.refiPmt, ioPmt:0, carryFixed:b.carry, carryIO:b.carry, carryCash:b.carry, equity:b.equity, noi:b.noi, capRate:b.capRate, cashFlow:b.cashFlow, coc:b.coc, purchase:b.purchase, isCash:false, isBrrrr:true, bData:b};
+  if(p.dealType==='fixflip'){
+    var ff=fixFlipCalc(p);
+    return{rehab:ff.rehab,down:ff.downPayment,loan:ff.loanAmt,cTotal:ff.cTotal,totalIn:ff.totalInvestedIO,pitiMo:ff.ioPmt,opExMo:0,carryMo:ff.ioPmt+nv(p.ffHoldCostPerMonth),equity:ff.equity,noi:0,capRate:0,cashFlow:ff.profitIO/nv(p.ffHoldMonths||6),coc:ff.roiIO,purchase:ff.purchase,isCash:false,isBrrrr:false,isFixFlip:true,bData:null,ffData:ff,sixMoCarry:ff.sixMoCarryIO};
   }
-  var sqft = nv(p.sqft), arv = nv(p.arv);
-  var purchase = nv(p.purchasePrice) || nv(p.amountOffered);
-  var rehab = p.rehabTotal ? nv(p.rehabTotal) : sqft * nv(p.rehabCostPerSqft);
-  var isCash = p.dealType === 'cash';
-  var downFrac = isCash ? 1 : nv(p.downPct)/100;
-  var down = purchase * downFrac;
-  var loan = isCash ? 0 : purchase - down;
-  var cTotal = closingTotal(p.closing, p.dealType);
-  var totalIn = down + cTotal + rehab;
-  var r = nv(p.mortgageRate)/100/12;
-  var np = nv(p.mortgageTerm)*12;
-  var fixedPmt = (!isCash && loan && r && np) ? loan*(r*Math.pow(1+r,np))/(Math.pow(1+r,np)-1) : 0;
-  var ioPmt = (!isCash && loan) ? loan*(nv(p.interestOnlyRate)/100/12) : 0;
-  var taxMo = nv(p.taxes)/12, insMo = nv(p.insurance)/12;
-  var hoa = nv(p.hoaFees), other = nv(p.otherMonthly);
-  var carryFixed = fixedPmt + taxMo + insMo + hoa + other;
-  var carryIO = ioPmt + taxMo + insMo + hoa + other;
-  var carryCash = taxMo + insMo + hoa + other;
-  var equity = arv - purchase - rehab;
-  var rent = nv(p.grossRent);
-  var noi = nv(p.noi) || (rent*12 - nv(p.taxes) - nv(p.insurance) - hoa*12 - other*12);
-  var capRate = purchase ? (noi/purchase)*100 : 0;
-  var effectCarry = isCash ? carryCash : carryFixed;
-  var cashFlow = rent - effectCarry;
-  var coc = totalIn ? (cashFlow*12/totalIn)*100 : 0;
-  return {rehab:rehab, down:down, loan:loan, cTotal:cTotal, totalIn:totalIn, fixedPmt:fixedPmt, ioPmt:ioPmt, carryFixed:carryFixed, carryIO:carryIO, carryCash:carryCash, equity:equity, noi:noi, capRate:capRate, cashFlow:cashFlow, coc:coc, purchase:purchase, isCash:isCash, isBrrrr:false, bData:null};
+  var sqft=nv(p.sqft),arv=nv(p.arv);
+  var purchase=nv(p.purchasePrice)||nv(p.amountOffered);
+  var rehab=p.rehabTotal?nv(p.rehabTotal):sqft*nv(p.rehabCostPerSqft);
+  var isCash=p.dealType==='cash';
+  var downFrac=isCash?1:nv(p.downPct)/100;
+  var down=purchase*downFrac;
+  var loan=isCash?0:purchase-down;
+  var cTotal=closingTotal(p.closing,p.dealType);
+  var totalIn=down+cTotal+rehab;
+  var r=nv(p.mortgageRate)/100/12,np=nv(p.mortgageTerm)*12;
+  var piMo=(!isCash&&loan&&r&&np)?loan*(r*Math.pow(1+r,np))/(Math.pow(1+r,np)-1):0;
+  var opex=calcOpEx(p);
+  var pitiMo=piMo+opex.taxesMo+opex.insuranceMo;
+  var carryMo=isCash?opex.monthly:pitiMo+opex.monthly-opex.taxesMo-opex.insuranceMo;
+  var totalCarryMo=isCash?opex.monthly:(piMo+opex.monthly);
+  var equity=arv-purchase-rehab;
+  var rent=nv(p.grossRent);
+  var noi=nv(p.noi)||(rent*12-opex.total);
+  var capRate=purchase?(noi/purchase)*100:0;
+  var cashFlow=rent-totalCarryMo;
+  var coc=totalIn?(cashFlow*12/totalIn)*100:0;
+  var sixMoCarry=totalCarryMo*6;
+  return{rehab:rehab,down:down,loan:loan,cTotal:cTotal,totalIn:totalIn,pitiMo:pitiMo,piMo:piMo,opExMo:opex.monthly,carryMo:totalCarryMo,equity:equity,noi:noi,capRate:capRate,cashFlow:cashFlow,coc:coc,purchase:purchase,isCash:isCash,isBrrrr:false,isFixFlip:false,bData:null,ffData:null,sixMoCarry:sixMoCarry,taxesMo:opex.taxesMo,insuranceMo:opex.insuranceMo};
 }
 
-// ── Render Stats ──────────────────────────────────────────────────────────────
-function renderStats() {
-  var active = properties.filter(function(p){ return ['Acquired','Passed'].indexOf(p.stage) === -1; });
-  var stats = [
-    ['Total', properties.length],
-    ['Active', active.length],
-    ['Acquired', properties.filter(function(p){ return p.stage==='Acquired'; }).length],
-    ['Cash / BRRRR', properties.filter(function(p){ return p.dealType==='cash'||p.dealType==='brrrr'; }).length],
-    ['Total Offered', f$(active.reduce(function(s,p){ return s+nv(p.amountOffered); }, 0))]
+// ── Render Stats & Carry Banner ───────────────────────────────────────────────
+function renderStats(){
+  var active=properties.filter(function(p){return['Acquired','Passed'].indexOf(p.stage)===-1;});
+  var totalMonthlyCarry=active.reduce(function(s,p){return s+derive(p).carryMo;},0);
+  var totalSixMoCarry=totalMonthlyCarry*6;
+  var stats=[
+    ['Total',properties.length,''],
+    ['Active',active.length,''],
+    ['Acquired',properties.filter(function(p){return p.stage==='Acquired';}).length,''],
+    ['Cash/BRRRR/F&F',properties.filter(function(p){return p.dealType==='cash'||p.dealType==='brrrr'||p.dealType==='fixflip';}).length,''],
+    ['Monthly Carry',f$(totalMonthlyCarry),'highlight'],
+    ['6-Mo Carry',f$(totalSixMoCarry),'highlight'],
   ];
-  document.getElementById('stats-row').innerHTML = stats.map(function(s){
-    return '<div class="stat-card"><div class="lbl">'+s[0]+'</div><div class="val">'+s[1]+'</div></div>';
-  }).join('');
-  document.getElementById('hdr-sub').textContent = 'NY English Group · ' + properties.length + ' properties';
+  document.getElementById('stats-row').innerHTML=stats.map(function(s){return'<div class="stat-card '+s[2]+'"><div class="lbl">'+s[0]+'</div><div class="val">'+s[1]+'</div></div>';}).join('');
+  document.getElementById('hdr-sub').textContent='NY English Group · '+properties.length+' properties';
+  // Carry banner
+  var banner=document.getElementById('carry-banner');
+  if(active.length>0){
+    banner.style.display='flex';
+    document.getElementById('carry-monthly-val').textContent=f$(totalMonthlyCarry)+'/mo';
+    document.getElementById('carry-val').textContent=f$(totalSixMoCarry);
+  } else{banner.style.display='none';}
 }
 
-function getFiltered() {
-  var s = document.getElementById('search').value.toLowerCase();
-  var fs = document.getElementById('fStage').value;
-  var fd = document.getElementById('fDeal').value;
-  var so = document.getElementById('fSort').value;
-  var list = properties.filter(function(p) {
-    if (fs && p.stage !== fs) return false;
-    if (fd && p.dealType !== fd) return false;
-    if (s && [p.address,p.city,p.state].join(' ').toLowerCase().indexOf(s) === -1) return false;
+function getFiltered(){
+  var s=document.getElementById('search').value.toLowerCase();
+  var fs=document.getElementById('fStage').value;
+  var fd=document.getElementById('fDeal').value;
+  var so=document.getElementById('fSort').value;
+  var list=properties.filter(function(p){
+    if(fs&&p.stage!==fs)return false;
+    if(fd&&p.dealType!==fd)return false;
+    if(s&&[p.address,p.city,p.state].join(' ').toLowerCase().indexOf(s)===-1)return false;
     return true;
   });
-  list.sort(function(a,b) {
-    if (so === 'asking') return nv(b.askingPrice) - nv(a.askingPrice);
-    if (so === 'arv') return nv(b.arv) - nv(a.arv);
-    if (so === 'equity') return derive(b).equity - derive(a).equity;
-    return (b.dateAdded||'').localeCompare(a.dateAdded||'');
+  list.sort(function(a,b){
+    if(so==='asking')return nv(b.askingPrice)-nv(a.askingPrice);
+    if(so==='arv')return nv(b.arv)-nv(a.arv);
+    if(so==='equity')return derive(b).equity-derive(a).equity;
+    return(b.dateAdded||'').localeCompare(a.dateAdded||'');
   });
   return list;
 }
 
-function stageCls(s) { return 'stage-' + s.replace(/ /g,'-'); }
-
-function typeBadge(p) {
-  if (p.dealType === 'cash') return '<span class="badge type-cash">💵 Cash</span>';
-  if (p.dealType === 'brrrr') return '<span class="badge type-brrrr">♻️ BRRRR</span>';
-  return '<span class="badge type-mortgage">🏦 Loan</span>';
+function stageCls(s){return'stage-'+s.replace(/ /g,'-');}
+function typeBadge(p){
+  if(p.dealType==='cash')return'<span class="badge type-cash">💵 Cash</span>';
+  if(p.dealType==='brrrr')return'<span class="badge type-brrrr">♻️ BRRRR</span>';
+  if(p.dealType==='fixflip')return'<span class="badge type-fixflip">🔨 Fix&Flip</span>';
+  return'<span class="badge type-mortgage">🏦 Loan</span>';
 }
 
-function renderAll() {
+function renderAll(){
   renderStats();
-  var list = getFiltered();
-  document.getElementById('results-count').textContent = list.length + ' result' + (list.length !== 1 ? 's' : '');
-
+  var list=getFiltered();
+  document.getElementById('results-count').textContent=list.length+' result'+(list.length!==1?'s':'');
   // Table
-  if (!list.length) {
-    document.getElementById('tbl-body').innerHTML = '<tr><td colspan="16" class="empty">No properties found. Tap + Add Property to get started.</td></tr>';
-  } else {
-    var rows = '';
-    for (var i = 0; i < list.length; i++) {
-      var p = list[i];
-      var d = derive(p);
-      var carry = d.isCash ? d.carryCash : d.carryFixed;
-      var cfCls = d.cashFlow >= 0 ? 'green' : 'red';
-      var cocCls = d.coc >= 8 ? 'green' : d.coc > 0 ? 'yellow' : 'red';
-      var eqCls = d.equity > 0 ? 'green' : 'red';
-      rows += '<tr onclick="openDetail(' + p.id + ')">'
-        + '<td><div class="addr-main">' + esc(p.address) + '</div>'
-        + '<div class="addr-sub">' + esc([p.city,p.state].filter(Boolean).join(', ')) + '</div>'
-        + (p.beds ? '<div class="addr-sub">' + p.beds + 'bd/' + p.baths + 'ba · ' + nv(p.sqft).toLocaleString() + 'sf</div>' : '')
-        + '</td>'
-        + '<td>' + typeBadge(p) + '</td>'
-        + '<td><span class="badge ' + stageCls(p.stage) + '">' + esc(p.stage) + '</span></td>'
-        + '<td>' + f$(p.askingPrice) + '</td>'
-        + '<td>' + f$(p.amountOffered) + '</td>'
-        + '<td><strong>' + f$(p.arv) + '</strong></td>'
-        + '<td>' + f$(d.rehab) + '</td>'
-        + '<td>' + f$(d.down) + '</td>'
-        + '<td>' + f$(d.cTotal) + '</td>'
-        + '<td class="indigo">' + f$(d.totalIn) + '</td>'
-        + '<td class="orange">' + f$(carry,0) + '/mo</td>'
-        + '<td class="' + cfCls + '">' + f$(d.cashFlow,0) + '/mo</td>'
-        + '<td>' + fPct(d.capRate) + '</td>'
-        + '<td class="' + cocCls + '">' + (d.isBrrrr && d.coc >= 9999 ? '∞ %' : fPct(d.coc)) + '</td>'
-        + '<td class="' + eqCls + '">' + f$(d.equity) + '</td>'
-        + '<td><div class="row-actions" onclick="event.stopPropagation()">'
-        + '<button class="icon-btn pdf" onclick="printPDF(' + p.id + ')" title="PDF">🖨️</button>'
-        + '<button class="icon-btn email" onclick="openEmail(' + p.id + ')" title="Email">📧</button>'
-        + '</div></td>'
-        + '</tr>';
+  if(!list.length){document.getElementById('tbl-body').innerHTML='<tr><td colspan="18" class="empty">No properties found.</td></tr>';}
+  else{
+    var rows='';
+    for(var i=0;i<list.length;i++){
+      var p=list[i];var d=derive(p);
+      var cfCls=d.cashFlow>=0?'green':'red';
+      var cocCls=d.coc>=8?'green':d.coc>0?'yellow':'red';
+      var eqCls=d.equity>0?'green':'red';
+      var cocDisp=d.isFixFlip?fPct(d.coc)+' ROI':(d.isBrrrr&&d.coc>=9999?'∞ %':fPct(d.coc));
+      rows+='<tr onclick="openDetail('+p.id+')">'
+        +'<td><div class="addr-main">'+esc(p.address)+'</div><div class="addr-sub">'+esc([p.city,p.state].filter(Boolean).join(', '))+'</div>'+(p.beds?'<div class="addr-sub">'+p.beds+'bd/'+p.baths+'ba · '+nv(p.sqft).toLocaleString()+'sf</div>':'')+'</td>'
+        +'<td>'+typeBadge(p)+'</td>'
+        +'<td><span class="badge '+stageCls(p.stage)+'">'+esc(p.stage)+'</span></td>'
+        +'<td>'+f$(p.askingPrice)+'</td>'
+        +'<td>'+f$(p.amountOffered)+'</td>'
+        +'<td><strong>'+f$(p.arv)+'</strong></td>'
+        +'<td>'+f$(d.rehab)+'</td>'
+        +'<td>'+f$(d.down)+'</td>'
+        +'<td>'+f$(d.cTotal)+'</td>'
+        +'<td class="indigo">'+f$(d.totalIn)+'</td>'
+        +'<td>'+(d.isFixFlip?'I/O: '+f$(d.pitiMo,0):f$(d.pitiMo,0))+'/mo</td>'
+        +'<td class="orange">'+f$(d.opExMo,0)+'/mo</td>'
+        +'<td class="'+cfCls+'">'+f$(d.cashFlow,0)+'/mo</td>'
+        +'<td>'+fPct(d.capRate)+'</td>'
+        +'<td class="'+cocCls+'">'+cocDisp+'</td>'
+        +'<td class="orange"><strong>'+f$(d.sixMoCarry)+'</strong></td>'
+        +'<td class="'+eqCls+'">'+f$(d.equity)+'</td>'
+        +'<td><div class="row-actions" onclick="event.stopPropagation()">'
+        +'<button class="icon-btn pdf" onclick="printPDF('+p.id+')" title="PDF">🖨️</button>'
+        +'<button class="icon-btn email" onclick="openEmail('+p.id+')" title="Email">📧</button>'
+        +'</div></td>'
+        +'</tr>';
     }
-    document.getElementById('tbl-body').innerHTML = rows;
+    document.getElementById('tbl-body').innerHTML=rows;
   }
-
   // Cards
-  if (!list.length) {
-    document.getElementById('card-list').innerHTML = '<div class="empty">No properties found.</div>';
-  } else {
-    var cards = '';
-    for (var j = 0; j < list.length; j++) {
-      var pc = list[j];
-      var dc = derive(pc);
-      var cfc = dc.cashFlow >= 0 ? 'green' : 'red';
-      var cocVal = dc.isBrrrr && dc.coc >= 9999 ? '∞ %' : fPct(dc.coc);
-      var cocCls = dc.coc >= 8 ? 'green' : dc.coc > 0 ? 'yellow' : 'red';
-      var carry = dc.isCash ? dc.carryCash : dc.carryFixed;
-      cards += '<div class="prop-card">'
-        + '<div class="prop-card-left">'
-        + '<div class="prop-card-title">' + esc(pc.address) + '</div>'
-        + '<div class="prop-card-sub">' + esc([pc.city,pc.state].filter(Boolean).join(', ')) + '</div>'
-        + (pc.beds ? '<div class="prop-card-sub">' + pc.beds + 'bd/' + pc.baths + 'ba · ' + nv(pc.sqft).toLocaleString() + 'sf</div>' : '')
-        + '<div class="prop-card-badges" style="margin-top:5px;">'
-        + '<span class="badge ' + stageCls(pc.stage) + '">' + esc(pc.stage) + '</span>'
-        + typeBadge(pc)
-        + '</div></div>'
-        + '<div class="prop-card-metrics">'
-        + '<div class="prop-card-stat"><div class="sl">Asking</div><div class="sv">' + f$(pc.askingPrice) + '</div></div>'
-        + '<div class="prop-card-stat"><div class="sl">ARV</div><div class="sv">' + f$(pc.arv) + '</div></div>'
-        + '<div class="prop-card-stat"><div class="sl">Total Cash</div><div class="sv indigo">' + f$(dc.totalIn) + '</div></div>'
-        + '<div class="prop-card-stat"><div class="sl">Carry/mo</div><div class="sv orange">' + f$(carry, 0) + '</div></div>'
-        + '<div class="prop-card-stat"><div class="sl">Cash Flow</div><div class="sv ' + cfc + '">' + f$(dc.cashFlow, 0) + '/mo</div></div>'
-        + '<div class="prop-card-stat"><div class="sl">Cap Rate</div><div class="sv">' + fPct(dc.capRate) + '</div></div>'
-        + '<div class="prop-card-stat"><div class="sl">CoC</div><div class="sv ' + cocCls + '">' + cocVal + '</div></div>'
-        + '<div class="prop-card-stat"><div class="sl">Equity</div><div class="sv ' + (dc.equity>0?'green':'red') + '">' + f$(dc.equity) + '</div></div>'
-        + '<div class="prop-card-stat"><div class="sl">Rehab</div><div class="sv">' + f$(dc.rehab) + '</div></div>'
-        + '</div>'
-        + '<div class="prop-card-actions">'
-        + '<button class="btn-view" onclick="openDetail(' + pc.id + ')">View</button>'
-        + '<button class="btn-pdf2" onclick="printPDF(' + pc.id + ')">🖨️</button>'
-        + '<button class="btn-email2" onclick="openEmail(' + pc.id + ')">📧</button>'
-        + '</div></div>';
+  if(!list.length){document.getElementById('card-list').innerHTML='<div class="empty">No properties found.</div>';}
+  else{
+    var cards='';
+    for(var j=0;j<list.length;j++){
+      var pc=list[j];var dc=derive(pc);
+      var cfc=dc.cashFlow>=0?'green':'red';
+      cards+='<div class="prop-card">'
+        +'<div class="prop-card-left">'
+        +'<div class="prop-card-title">'+esc(pc.address)+'</div>'
+        +'<div class="prop-card-sub">'+esc([pc.city,pc.state].filter(Boolean).join(', '))+'</div>'
+        +(pc.beds?'<div class="prop-card-sub">'+pc.beds+'bd/'+pc.baths+'ba · '+nv(pc.sqft).toLocaleString()+'sf</div>':'')
+        +'<div style="margin-top:5px;display:flex;gap:4px;flex-wrap:wrap;">'
+        +'<span class="badge '+stageCls(pc.stage)+'">'+esc(pc.stage)+'</span>'+typeBadge(pc)+'</div></div>'
+        +'<div class="prop-card-metrics">'
+        +'<div class="prop-card-stat"><div class="sl">Asking</div><div class="sv">'+f$(pc.askingPrice)+'</div></div>'
+        +'<div class="prop-card-stat"><div class="sl">ARV</div><div class="sv">'+f$(pc.arv)+'</div></div>'
+        +'<div class="prop-card-stat"><div class="sl">Total Cash</div><div class="sv indigo">'+f$(dc.totalIn)+'</div></div>'
+        +'<div class="prop-card-stat"><div class="sl">PITI/mo</div><div class="sv">'+f$(dc.pitiMo,0)+'</div></div>'
+        +'<div class="prop-card-stat"><div class="sl">Cash Flow</div><div class="sv '+cfc+'">'+f$(dc.cashFlow,0)+'/mo</div></div>'
+        +'<div class="prop-card-stat"><div class="sl">6-Mo Carry</div><div class="sv orange">'+f$(dc.sixMoCarry)+'</div></div>'
+        +'<div class="prop-card-stat"><div class="sl">Cap Rate</div><div class="sv">'+fPct(dc.capRate)+'</div></div>'
+        +'<div class="prop-card-stat"><div class="sl">Equity</div><div class="sv '+(dc.equity>0?'green':'red')+'">'+f$(dc.equity)+'</div></div>'
+        +'<div class="prop-card-stat"><div class="sl">Rehab</div><div class="sv">'+f$(dc.rehab)+'</div></div>'
+        +'</div>'
+        +'<div class="prop-card-actions">'
+        +'<button class="btn-view" onclick="openDetail('+pc.id+')">View</button>'
+        +'<button class="btn-pdf2" onclick="printPDF('+pc.id+')">🖨️</button>'
+        +'<button class="btn-email2" onclick="openEmail('+pc.id+')">📧</button>'
+        +'</div></div>';
     }
-    document.getElementById('card-list').innerHTML = cards;
+    document.getElementById('card-list').innerHTML=cards;
   }
+}
+
+// ── BRRRR Panel HTML ──────────────────────────────────────────────────────────
+function brrrrPanelHTML(f){
+  var arv=nv(f.arv);
+  if(!arv)return'<div class="brrrr-box"><div class="section-title">♻️ BRRRR Analysis</div><div style="font-size:12px;color:#64748b;padding:6px 0;">Enter ARV and purchase details to see BRRRR projections.</div></div>';
+  var b=brrrrCalc(f);
+  var infinite=b.cashLeftIn<=0;
+  var verdictCls=infinite||b.cashLeftIn<b.totalInvested*0.1?'good':b.cashLeftIn<b.totalInvested*0.25?'warn':'bad';
+  var verdictMsg=infinite?'🚀 Full capital recovery — infinite returns!':b.cashLeftIn<b.totalInvested*0.1?'✅ Near full pull — only '+f$(b.cashLeftIn)+' left in deal':b.cashLeftIn<b.totalInvested*0.25?'⚠️ Partial pull — '+f$(b.cashLeftIn)+' left in deal':'❌ '+f$(b.cashLeftIn)+' left in — consider higher ARV or LTV';
+  return'<div class="brrrr-box"><div class="section-title">♻️ BRRRR Analysis</div>'
+    +'<div class="brrrr-result"><span>Total Invested</span><strong>'+f$(b.totalInvested)+'</strong></div>'
+    +'<div class="brrrr-result"><span>Refi Loan ('+b.refiLTV+'% LTV)</span><strong>'+f$(b.refiLoan)+'</strong></div>'
+    +'<div class="brrrr-result"><span>Cash-Out from Refi</span><strong>'+f$(b.cashOut)+'</strong></div>'
+    +'<div class="brrrr-result"><span>Hold Cost</span><strong>'+f$(b.holdCost)+'</strong></div>'
+    +'<div class="brrrr-result"><span>Refi P&amp;I / mo</span><strong>'+f$(b.refiPmt,2)+'/mo</strong></div>'
+    +'<div class="brrrr-result"><span>Monthly Carry (post-refi)</span><strong>'+f$(b.carry,2)+'/mo</strong></div>'
+    +'<div class="brrrr-result"><span>Cash Flow</span><strong>'+f$(b.cashFlow,2)+'/mo</strong></div>'
+    +'<div class="brrrr-result"><span>Equity Retained</span><strong>'+f$(b.equity)+'</strong></div>'
+    +'<div class="brrrr-result"><span>Cap Rate</span><strong>'+fPct(b.capRate)+'</strong></div>'
+    +'<div class="brrrr-result"><span>CoC Return</span><strong>'+(infinite?'∞ %':fPct(b.coc))+'</strong></div>'
+    +'<div class="brrrr-total"><span>Cash Left In Deal</span><span>'+(infinite?'$0 or less ✅':f$(b.cashLeftIn))+'</span></div>'
+    +'<div class="brrrr-verdict '+verdictCls+'">'+verdictMsg+'</div></div>';
+}
+
+// ── Fix & Flip Panel HTML ─────────────────────────────────────────────────────
+function fixFlipPanelHTML(f){
+  var arv=nv(f.arv);
+  if(!arv)return'<div class="fixflip-box"><div class="section-title">🔨 Fix &amp; Flip Analysis</div><div style="font-size:12px;color:#64748b;padding:6px 0;">Enter ARV and purchase details to see projections.</div></div>';
+  var ff=fixFlipCalc(f);
+  var ioProfCls=ff.profitIO>0?'good':'bad';
+  var fxProfCls=ff.profitFixed>0?'good':'bad';
+  return'<div class="fixflip-box"><div class="section-title">🔨 Fix &amp; Flip Analysis</div>'
+    +'<div class="fixflip-result"><span>Hard Money Loan</span><strong>'+f$(ff.loanAmt)+'</strong></div>'
+    +'<div class="fixflip-result"><span>Down Payment + Closing</span><strong>'+f$(ff.downPayment)+'</strong></div>'
+    +'<div class="fixflip-result"><span>Origination ('+f.ffOriginationPts+'pts)</span><strong>'+f$(ff.originationCost)+'</strong></div>'
+    +'<div class="fixflip-result"><span>Hold Period</span><strong>'+ff.holdMonths+' months</strong></div>'
+    +'<div style="background:#fff;border-radius:8px;padding:10px;margin:8px 0;">'
+    +'<div style="font-size:10px;font-weight:700;color:#92400e;text-transform:uppercase;margin-bottom:6px;">Interest-Only Scenario</div>'
+    +'<div class="fixflip-result"><span>I/O Payment ('+ff.rate+'%/yr)</span><strong>'+f$(ff.ioPmt,2)+'/mo</strong></div>'
+    +'<div class="fixflip-result"><span>Total Hold Cost ('+ff.holdMonths+'mo)</span><strong>'+f$(ff.totalHoldCostIO)+'</strong></div>'
+    +'<div class="fixflip-result"><span>Total Cash Invested</span><strong>'+f$(ff.totalInvestedIO)+'</strong></div>'
+    +'<div class="fixflip-result"><span>Projected Profit</span><strong class="'+ioProfCls+'">'+f$(ff.profitIO)+'</strong></div>'
+    +'<div class="fixflip-result"><span>ROI on Capital</span><strong class="'+ioProfCls+'">'+fPct(ff.roiIO)+'</strong></div>'
+    +'<div class="fixflip-result"><span>6-Month Carry</span><strong>'+f$(ff.sixMoCarryIO)+'</strong></div>'
+    +'</div>'
+    +'<div style="background:#fff;border-radius:8px;padding:10px;margin:8px 0;">'
+    +'<div style="font-size:10px;font-weight:700;color:#1d4ed8;text-transform:uppercase;margin-bottom:6px;">Fixed Rate Scenario</div>'
+    +'<div class="fixflip-result"><span>Fixed Payment ('+ff.rate+'%/'+f.ffTerm+'mo)</span><strong>'+f$(ff.fixedPmt,2)+'/mo</strong></div>'
+    +'<div class="fixflip-result"><span>Total Hold Cost ('+ff.holdMonths+'mo)</span><strong>'+f$(ff.totalHoldCostFixed)+'</strong></div>'
+    +'<div class="fixflip-result"><span>Total Cash Invested</span><strong>'+f$(ff.totalInvestedFixed)+'</strong></div>'
+    +'<div class="fixflip-result"><span>Projected Profit</span><strong class="'+fxProfCls+'">'+f$(ff.profitFixed)+'</strong></div>'
+    +'<div class="fixflip-result"><span>ROI on Capital</span><strong class="'+fxProfCls+'">'+fPct(ff.roiFixed)+'</strong></div>'
+    +'<div class="fixflip-result"><span>6-Month Carry</span><strong>'+f$(ff.sixMoCarryFixed)+'</strong></div>'
+    +'</div>'
+    +'<div class="fixflip-total"><span>ARV</span><span>'+f$(ff.arv)+'</span></div>'
+    +'<div class="fixflip-total"><span>Est. Selling Costs (~6%)</span><span>'+f$(ff.saleCosts)+'</span></div>'
+    +'</div>';
 }
 
 // ── Form Helpers ──────────────────────────────────────────────────────────────
-var EMPTY_CLOSING = {originationFee:'',discountPoints:'',appraisalFee:'500',creditReport:'50',floodDetermination:'20',taxServiceFee:'85',underwritingFee:'995',titleSearch:'200',titleInsuranceLender:'0',titleInsuranceOwner:'0',escrowFee:'500',settlementFee:'350',recordingFee:'125',wireTransferFee:'30',transferTax:'',mansionTax:'',prepaidInterest:'',prepaidInsurance:'',prepaidTaxes:'',escrowReserves:'',homeInspection:'400',pestInspection:'150',radonTest:'150',sewerscopeInspection:'250',surveyFee:'0',attorneyFee:'0',HOATransferFee:'0',otherClosingCost:'0'};
+function fld(k,label,type,placeholder){type=type||'text';placeholder=placeholder||'';var v=currentForm[k]||'';return'<div class="field"><label>'+label+'</label><input type="'+type+'" data-field="'+k+'" value="'+esc(v)+'" placeholder="'+placeholder+'" oninput="onFieldChange(this)"></div>';}
+function cfld(k,label){var v=(currentForm.closing&&currentForm.closing[k])?currentForm.closing[k]:'';return'<div class="field"><label>'+label+'</label><div style="position:relative"><span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#94a3b8;">$</span><input type="number" data-field="c_'+k+'" value="'+esc(v)+'" style="padding-left:24px;" oninput="onFieldChange(this)"></div></div>';}
+function selFld(k,label,opts){var v=currentForm[k]||'';var optsHtml=opts.map(function(o){if(typeof o==='string')return'<option'+(v===o?' selected':'')+'>'+o+'</option>';return'<option value="'+o.v+'"'+(v===o.v?' selected':'')+'>'+o.l+'</option>';}).join('');return'<div class="field"><label>'+label+'</label><select data-field="'+k+'" onchange="onFieldChange(this)">'+optsHtml+'</select></div>';}
 
-function fld(k, label, type, placeholder) {
-  type = type || 'text'; placeholder = placeholder || '';
-  var v = currentForm[k] || '';
-  return '<div class="field"><label>' + label + '</label><input type="' + type + '" data-field="' + k + '" value="' + esc(v) + '" placeholder="' + placeholder + '" oninput="onFieldChange(this)"></div>';
-}
-function cfld(k, label) {
-  var v = (currentForm.closing && currentForm.closing[k]) ? currentForm.closing[k] : '';
-  return '<div class="field"><label>' + label + '</label><div style="position:relative"><span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#94a3b8;">$</span><input type="number" data-field="c_' + k + '" value="' + esc(v) + '" style="padding-left:24px;" oninput="onFieldChange(this)"></div></div>';
-}
-function selFld(k, label, opts) {
-  var v = currentForm[k] || '';
-  var optsHtml = opts.map(function(o) {
-    if (typeof o === 'string') return '<option' + (v===o?' selected':'') + '>' + o + '</option>';
-    return '<option value="' + o.v + '"' + (v===o.v?' selected':'') + '>' + o.l + '</option>';
-  }).join('');
-  return '<div class="field"><label>' + label + '</label><select data-field="' + k + '" onchange="onFieldChange(this)">' + optsHtml + '</select></div>';
-}
-
-function onFieldChange(el) {
-  var k = el.dataset.field;
-  if (k.indexOf('c_') === 0) {
-    currentForm.closing[k.slice(2)] = el.value;
-  } else {
-    currentForm[k] = el.value;
+function onFieldChange(el){
+  var k=el.dataset.field;
+  if(k.indexOf('c_')===0)currentForm.closing[k.slice(2)]=el.value;
+  else currentForm[k]=el.value;
+  if(currentTab==='financials')updateCalcBoxes();
+  if(currentTab==='closing')updateClosingSummary();
+  if(currentTab==='details'){
+    if(currentForm.dealType==='brrrr')updateBrrrrPanel();
+    if(currentForm.dealType==='fixflip')updateFixFlipPanel();
   }
-  if (currentTab === 'financials') updateCalcBoxes();
-  if (currentTab === 'closing') updateClosingSummary();
-  if (currentTab === 'details' && currentForm.dealType === 'brrrr') updateBrrrrPanel();
 }
 
-function openAdd() {
-  editingId = null;
-  currentForm = {address:'',city:'',state:'',zip:'',stage:'Prospect',leadSource:'MLS',sqft:'',beds:'',baths:'',yearBuilt:'',dateAdded:new Date().toISOString().split('T')[0],askingPrice:'',amountOffered:'',purchasePrice:'',arv:'',dealType:'mortgage',downPct:'20',mortgageRate:'7.5',mortgageTerm:'30',interestOnlyRate:'7.5',rehabCostPerSqft:'',rehabTotal:'',taxes:'',insurance:'',hoaFees:'',otherMonthly:'',grossRent:'',noi:'',roi:'',brrrrRefiLTV:'75',brrrrHoldMonths:'',brrrrHoldCostPerMonth:'',notes:'',closing:Object.assign({},EMPTY_CLOSING)};
-  document.getElementById('modal-title').textContent = 'Add New Property';
-  switchTab('details');
-  document.getElementById('modal-edit').classList.add('open');
+function openAdd(){editingId=null;currentForm=JSON.parse(JSON.stringify(EMPTY_FORM));currentForm.dateAdded=new Date().toISOString().split('T')[0];document.getElementById('modal-title').textContent='Add New Property';switchTab('details');document.getElementById('modal-edit').classList.add('open');}
+function openEdit(id){var p=properties.filter(function(x){return x.id===id;})[0];if(!p)return;editingId=id;currentForm=JSON.parse(JSON.stringify(p));if(!currentForm.closing)currentForm.closing=Object.assign({},EMPTY_CLOSING);document.getElementById('modal-title').textContent='Edit Property';switchTab('details');document.getElementById('modal-edit').classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+
+function switchTab(tab){
+  currentTab=tab;
+  var tabs=['details','closing','financials'];
+  document.querySelectorAll('.tab-btn').forEach(function(b,i){b.classList.toggle('active',tabs[i]===tab);});
+  collectForm();renderTab();
 }
 
-function openEdit(id) {
-  var p = properties.filter(function(x){ return x.id===id; })[0];
-  if (!p) return;
-  editingId = id;
-  currentForm = JSON.parse(JSON.stringify(p));
-  if (!currentForm.closing) currentForm.closing = Object.assign({},EMPTY_CLOSING);
-  if (!currentForm.brrrrRefiLTV) currentForm.brrrrRefiLTV = '75';
-  document.getElementById('modal-title').textContent = 'Edit Property';
-  switchTab('details');
-  document.getElementById('modal-edit').classList.add('open');
-}
-
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
-function switchTab(tab) {
-  currentTab = tab;
-  var tabs = ['details','closing','financials'];
-  document.querySelectorAll('.tab-btn').forEach(function(b,i){ b.classList.toggle('active', tabs[i]===tab); });
-  collectForm();
-  renderTab();
-}
-
-function collectForm() {
-  document.querySelectorAll('[data-field]').forEach(function(el) {
-    var k = el.dataset.field;
-    if (k.indexOf('c_') === 0) currentForm.closing[k.slice(2)] = el.value;
-    else currentForm[k] = el.value;
-  });
-}
+function collectForm(){document.querySelectorAll('[data-field]').forEach(function(el){var k=el.dataset.field;if(k.indexOf('c_')===0)currentForm.closing[k.slice(2)]=el.value;else currentForm[k]=el.value;});}
 
 // ── Tab Renderers ─────────────────────────────────────────────────────────────
-function renderTab() {
-  var b = document.getElementById('modal-body');
-  if (currentTab === 'details') {
-    b.innerHTML = renderDetailsTab();
-    setTimeout(window.initAutocomplete, 200);
-  } else if (currentTab === 'closing') {
-    b.innerHTML = renderClosingTab();
-  } else {
-    b.innerHTML = renderFinancialsTab();
-  }
+function renderTab(){
+  var b=document.getElementById('modal-body');
+  if(currentTab==='details'){b.innerHTML=renderDetailsTab();setTimeout(initAutocomplete,200);}
+  else if(currentTab==='closing')b.innerHTML=renderClosingTab();
+  else b.innerHTML=renderFinancialsTab();
 }
 
-function renderDetailsTab() {
-  var isCash = currentForm.dealType === 'cash';
-  var isBrrrr = currentForm.dealType === 'brrrr';
-  var mortgageFields = !isCash && !isBrrrr
-    ? selFld('downPct','Down Payment %',[{v:'10',l:'10%'},{v:'15',l:'15%'},{v:'20',l:'20%'},{v:'25',l:'25%'},{v:'30',l:'30%'}])
-      + fld('mortgageRate','Fixed Rate (%)','number')
-      + selFld('mortgageTerm','Term (years)',[{v:'15',l:'15 yr'},{v:'20',l:'20 yr'},{v:'30',l:'30 yr'}])
-      + fld('interestOnlyRate','Interest-Only Rate (%)','number')
-    : '';
-  var brrrrFields = isBrrrr
-    ? '<div style="font-size:11px;color:#64748b;margin:-4px 0 8px;line-height:1.5;">Buy · Rehab · Rent · Refinance · Repeat</div>'
-      + fld('brrrrRefiLTV','Refi LTV %','number','e.g. 75')
-      + fld('mortgageRate','Refi Fixed Rate (%)','number')
-      + selFld('mortgageTerm','Refi Term (years)',[{v:'15',l:'15 yr'},{v:'20',l:'20 yr'},{v:'30',l:'30 yr'}])
-      + fld('brrrrHoldMonths','Hold / Rehab Period (months)','number','e.g. 4')
-      + fld('brrrrHoldCostPerMonth','Monthly Hold Cost ($)','number','e.g. 800')
-    : '';
-  var btnMort = '<button type="button" onclick="setDealType(\'mortgage\')" class="' + (!isCash&&!isBrrrr?'active':'') + '">🏦 Mortgage</button>';
-  var btnCash = '<button type="button" onclick="setDealType(\'cash\')" class="' + (isCash?'active':'') + '">💵 Cash</button>';
-  var btnBrrrr = '<button type="button" onclick="setDealType(\'brrrr\')" class="' + (isBrrrr?'active-brrrr':'') + '" style="' + (isBrrrr?'border-color:#15803d;background:#15803d;color:#fff;':'') + '">♻️ BRRRR</button>';
-  var brrrrPanel = isBrrrr ? '<div id="brrrr-panel">' + brrrrPanelHTML(currentForm) + '</div>' : '';
-  return '<div class="form-grid">'
-    + '<div>'
-    + '<div class="form-section"><div class="section-title">Location &amp; Status</div>'
-    + '<div class="field"><label>Street Address</label><input type="text" data-field="address" value="' + esc(currentForm.address) + '" placeholder="123 Main St" oninput="onFieldChange(this)"></div>'
-    + fld('city','City') + fld('state','State') + fld('zip','ZIP')
-    + selFld('stage','Deal Stage',['Prospect','Under Review','Due Diligence','Offer Made','Under Contract','Acquired','Passed'])
-    + selFld('leadSource','Lead Source',['MLS','Wholesaler','Direct Mail','Driving for Dollars','Referral','Cold Call','Auction','Off-Market','Agent','Other'])
-    + fld('dateAdded','Date Added','date')
-    + '</div>'
-    + '<div class="form-section"><div class="section-title">Property Details</div>'
-    + '<div class="field-row">' + fld('sqft','Sq Ft','number') + fld('yearBuilt','Year Built','number') + '</div>'
-    + '<div class="field-row">' + fld('beds','Beds','number') + fld('baths','Baths','number') + '</div>'
-    + '</div></div>'
-    + '<div>'
-    + '<div class="form-section"><div class="section-title">Deal Type</div>'
-    + '<div class="field"><label>Financing Method</label>'
-    + '<div class="deal-type-toggle">' + btnMort + btnCash + btnBrrrr + '</div></div>'
-    + mortgageFields + brrrrFields
-    + '</div>'
-    + '<div class="form-section"><div class="section-title">Pricing &amp; Offers</div>'
-    + '<div class="field-row">' + fld('askingPrice','Asking Price ($)','number') + fld('amountOffered','Amount Offered ($)','number') + '</div>'
-    + '<div class="field-row">' + fld('purchasePrice','Purchase Price ($)','number') + fld('arv','ARV ($)','number') + '</div>'
-    + '</div>'
-    + '<div class="form-section"><div class="section-title">Rehab</div>'
-    + '<div class="field-row">' + fld('rehabCostPerSqft','Rehab $/Sq Ft','number') + fld('rehabTotal','Rehab Total (override)','number') + '</div>'
-    + '</div>'
-    + brrrrPanel
-    + '</div></div>';
+function renderDetailsTab(){
+  var isCash=currentForm.dealType==='cash';
+  var isBrrrr=currentForm.dealType==='brrrr';
+  var isFF=currentForm.dealType==='fixflip';
+  var btnMort='<button type="button" onclick="setDealType(\'mortgage\')" class="'+(!isCash&&!isBrrrr&&!isFF?'active':'')+'" style="'+(!isCash&&!isBrrrr&&!isFF?'border-color:#6366f1;background:#6366f1;color:#fff;':'')+'">🏦 Mortgage</button>';
+  var btnCash='<button type="button" onclick="setDealType(\'cash\')" class="'+(isCash?'active':'')+'" style="'+(isCash?'border-color:#6366f1;background:#6366f1;color:#fff;':'')+'">💵 Cash</button>';
+  var btnBrrrr='<button type="button" onclick="setDealType(\'brrrr\')" style="'+(isBrrrr?'border-color:#15803d;background:#15803d;color:#fff;':'')+'">♻️ BRRRR</button>';
+  var btnFF='<button type="button" onclick="setDealType(\'fixflip\')" style="'+(isFF?'border-color:#92400e;background:#d97706;color:#fff;':'')+'">🔨 Fix&amp;Flip</button>';
+  var mortFields=(!isCash&&!isBrrrr&&!isFF)?selFld('downPct','Down Payment %',[{v:'10',l:'10%'},{v:'15',l:'15%'},{v:'20',l:'20%'},{v:'25',l:'25%'},{v:'30',l:'30%'}])+fld('mortgageRate','Rate (%)','number')+selFld('mortgageTerm','Term',[{v:'15',l:'15 yr'},{v:'20',l:'20 yr'},{v:'30',l:'30 yr'}]):'';
+  var brrrrFields=isBrrrr?'<div style="font-size:11px;color:#64748b;margin:-4px 0 8px;line-height:1.5;">Buy · Rehab · Rent · Refinance · Repeat</div>'+fld('brrrrRefiLTV','Refi LTV %','number','e.g. 75')+fld('mortgageRate','Refi Rate (%)','number')+selFld('mortgageTerm','Refi Term',[{v:'15',l:'15 yr'},{v:'20',l:'20 yr'},{v:'30',l:'30 yr'}])+fld('brrrrHoldMonths','Hold Period (months)','number','e.g. 5')+fld('brrrrHoldCostPerMonth','Monthly Hold Cost ($)','number','e.g. 900'):'';
+  var ffFields=isFF?'<div style="font-size:11px;color:#64748b;margin:-4px 0 8px;line-height:1.5;">Hard money loan for purchase, rehab &amp; flip.</div>'+fld('ffLoanAmt','Hard Money Loan Amount ($)','number')+fld('ffRate','Interest Rate (%)','number','e.g. 12')+fld('ffTerm','Loan Term (months)','number','e.g. 12')+fld('ffOriginationPts','Origination Points (%)','number','e.g. 2')+fld('ffHoldMonths','Hold Period (months)','number','e.g. 6')+fld('ffHoldCostPerMonth','Other Monthly Hold Cost ($)','number','e.g. 500'):'';
+  var analysisPanel=isBrrrr?'<div id="brrrr-panel">'+brrrrPanelHTML(currentForm)+'</div>':isFF?'<div id="fixflip-panel">'+fixFlipPanelHTML(currentForm)+'</div>':'';
+  return'<div class="form-grid"><div>'
+    +'<div class="form-section"><div class="section-title">Location &amp; Status</div>'
+    +'<div class="field addr-wrap"><label>Street Address</label><input type="text" data-field="address" value="'+esc(currentForm.address)+'" placeholder="123 Main St" oninput="onFieldChange(this)"><div id="ac-dropdown" class="autocomplete-dropdown" style="display:none;"></div></div>'
+    +fld('city','City')+fld('state','State')+fld('zip','ZIP')
+    +selFld('stage','Deal Stage',['Prospect','Under Review','Due Diligence','Offer Made','Under Contract','Acquired','Passed'])
+    +selFld('leadSource','Lead Source',['MLS','Wholesaler','Direct Mail','Driving for Dollars','Referral','Cold Call','Auction','Off-Market','Agent','Other'])
+    +fld('dateAdded','Date Added','date')
+    +'</div>'
+    +'<div class="form-section"><div class="section-title">Property Details</div>'
+    +'<div class="field-row">'+fld('sqft','Sq Ft','number')+fld('yearBuilt','Year Built','number')+'</div>'
+    +'<div class="field-row">'+fld('beds','Beds','number')+fld('baths','Baths','number')+'</div>'
+    +'</div></div>'
+    +'<div>'
+    +'<div class="form-section"><div class="section-title">Deal Type</div>'
+    +'<div class="field"><label>Financing Method</label><div class="deal-type-toggle">'+btnMort+btnCash+btnBrrrr+btnFF+'</div></div>'
+    +mortFields+brrrrFields+ffFields
+    +'</div>'
+    +'<div class="form-section"><div class="section-title">Pricing &amp; Offers</div>'
+    +'<div class="field-row">'+fld('askingPrice','Asking Price ($)','number')+fld('amountOffered','Amount Offered ($)','number')+'</div>'
+    +'<div class="field-row">'+fld('purchasePrice','Purchase Price ($)','number')+fld('arv','ARV ($)','number')+'</div>'
+    +'</div>'
+    +'<div class="form-section"><div class="section-title">Rehab</div>'
+    +'<div class="field-row">'+fld('rehabCostPerSqft','Rehab $/Sq Ft','number')+fld('rehabTotal','Rehab Total (override)','number')+'</div>'
+    +'</div>'
+    +analysisPanel
+    +'</div></div>';
 }
 
-function setDealType(dt) { currentForm.dealType = dt; renderTab(); }
-function updateBrrrrPanel() { var el=document.getElementById('brrrr-panel'); if(el) el.innerHTML=brrrrPanelHTML(currentForm); }
+function setDealType(dt){currentForm.dealType=dt;renderTab();}
+function updateBrrrrPanel(){var el=document.getElementById('brrrr-panel');if(el)el.innerHTML=brrrrPanelHTML(currentForm);}
+function updateFixFlipPanel(){var el=document.getElementById('fixflip-panel');if(el)el.innerHTML=fixFlipPanelHTML(currentForm);}
 
-function renderClosingTab() {
-  var isCash = currentForm.dealType === 'cash';
-  var items = closingItems(currentForm.closing, currentForm.dealType);
-  var groups = [];
-  items.forEach(function(i){ if(groups.indexOf(i.g)===-1) groups.push(i.g); });
-  var tot = items.reduce(function(s,i){ return s+i.v; },0);
-  var summaryHTML = '';
-  groups.forEach(function(g) {
-    var gi = items.filter(function(i){ return i.g===g && i.v>0; });
-    if (gi.length) {
-      summaryHTML += '<div class="closing-group"><div class="closing-group-title">'+g+'</div>';
-      gi.forEach(function(i){ summaryHTML += '<div class="closing-row"><span>'+i.l+'</span><span>'+f$(i.v)+'</span></div>'; });
-      summaryHTML += '</div>';
-    }
-  });
-  return '<div class="form-grid"><div>'
-    + (!isCash ? '<div class="form-section"><div class="section-title">Lender Fees</div>'
-      + '<div class="field-row">'+cfld('originationFee','Origination Fee')+cfld('discountPoints','Discount Points')+'</div>'
-      + '<div class="field-row">'+cfld('appraisalFee','Appraisal Fee')+cfld('creditReport','Credit Report')+'</div>'
-      + '<div class="field-row">'+cfld('floodDetermination','Flood Determination')+cfld('taxServiceFee','Tax Service Fee')+'</div>'
-      + cfld('underwritingFee','Underwriting Fee')+'</div>' : '')
-    + '<div class="form-section"><div class="section-title">Title &amp; Escrow</div>'
-    + '<div class="field-row">'+cfld('titleSearch','Title Search')+(!isCash?cfld('titleInsuranceLender','Lender Title Ins.'):'')+'</div>'
-    + '<div class="field-row">'+cfld('titleInsuranceOwner',"Owner's Title Ins.")+cfld('escrowFee','Escrow / Closing Fee')+'</div>'
-    + '<div class="field-row">'+cfld('settlementFee','Settlement Fee')+cfld('recordingFee','Recording Fee')+'</div>'
-    + cfld('wireTransferFee','Wire Transfer Fee')+'</div>'
-    + '<div class="form-section"><div class="section-title">Government Taxes</div>'
-    + '<div class="field-row">'+cfld('transferTax','Transfer / Deed Tax')+cfld('mansionTax','Mansion / Excise Tax')+'</div></div>'
-    + '</div><div>'
-    + (!isCash ? '<div class="form-section"><div class="section-title">Prepaids &amp; Reserves</div>'
-      + '<div class="field-row">'+cfld('prepaidInterest','Prepaid Interest')+cfld('prepaidInsurance','Prepaid Insurance')+'</div>'
-      + '<div class="field-row">'+cfld('prepaidTaxes','Prepaid Property Taxes')+cfld('escrowReserves','Escrow Reserves')+'</div></div>' : '')
-    + '<div class="form-section"><div class="section-title">Inspections</div>'
-    + '<div class="field-row">'+cfld('homeInspection','Home Inspection')+cfld('pestInspection','Pest Inspection')+'</div>'
-    + '<div class="field-row">'+cfld('radonTest','Radon Test')+cfld('sewerscopeInspection','Sewer Scope')+'</div></div>'
-    + '<div class="form-section"><div class="section-title">Other</div>'
-    + '<div class="field-row">'+cfld('surveyFee','Survey Fee')+cfld('attorneyFee','Attorney Fee')+'</div>'
-    + '<div class="field-row">'+cfld('HOATransferFee','HOA Transfer Fee')+cfld('otherClosingCost','Other')+'</div></div>'
-    + '<div class="closing-summary" id="closing-summary">'
-    + '<div class="section-title" style="color:#4338ca;border-color:#a5b4fc;">Closing Cost Summary</div>'
-    + (summaryHTML || '<div style="font-size:12px;color:#94a3b8;padding:6px 0;">Enter amounts to see summary</div>')
-    + '<div class="closing-total"><span>Total Closing Costs</span><span>'+f$(tot)+'</span></div>'
-    + '</div></div></div>';
+function renderClosingTab(){
+  var isCash=currentForm.dealType==='cash';
+  var items=closingItems(currentForm.closing,currentForm.dealType);
+  var groups=[];items.forEach(function(i){if(groups.indexOf(i.g)===-1)groups.push(i.g);});
+  var tot=items.reduce(function(s,i){return s+i.v;},0);
+  var summaryHTML='';
+  groups.forEach(function(g){var gi=items.filter(function(i){return i.g===g&&i.v>0;});if(gi.length){summaryHTML+='<div class="closing-group"><div class="closing-group-title">'+g+'</div>';gi.forEach(function(i){summaryHTML+='<div class="closing-row"><span>'+i.l+'</span><span>'+f$(i.v)+'</span></div>';});summaryHTML+='</div>';}});
+  return'<div class="form-grid"><div>'
+    +(!isCash?'<div class="form-section"><div class="section-title">Lender Fees</div><div class="field-row">'+cfld('originationFee','Origination Fee')+cfld('discountPoints','Discount Points')+'</div><div class="field-row">'+cfld('appraisalFee','Appraisal Fee')+cfld('creditReport','Credit Report')+'</div><div class="field-row">'+cfld('floodDetermination','Flood Determination')+cfld('taxServiceFee','Tax Service Fee')+'</div>'+cfld('underwritingFee','Underwriting Fee')+'</div>':'')
+    +'<div class="form-section"><div class="section-title">Title &amp; Escrow</div><div class="field-row">'+cfld('titleSearch','Title Search')+(!isCash?cfld('titleInsuranceLender','Lender Title Ins.'):'')+'</div><div class="field-row">'+cfld('titleInsuranceOwner',"Owner's Title Ins.")+cfld('escrowFee','Escrow / Closing Fee')+'</div><div class="field-row">'+cfld('settlementFee','Settlement Fee')+cfld('recordingFee','Recording Fee')+'</div>'+cfld('wireTransferFee','Wire Transfer Fee')+'</div>'
+    +'<div class="form-section"><div class="section-title">Government Taxes</div><div class="field-row">'+cfld('transferTax','Transfer / Deed Tax')+cfld('mansionTax','Mansion / Excise Tax')+'</div></div>'
+    +'</div><div>'
+    +(!isCash?'<div class="form-section"><div class="section-title">Prepaids &amp; Reserves</div><div class="field-row">'+cfld('prepaidInterest','Prepaid Interest')+cfld('prepaidInsurance','Prepaid Insurance')+'</div><div class="field-row">'+cfld('prepaidTaxes','Prepaid Property Taxes')+cfld('escrowReserves','Escrow Reserves')+'</div></div>':'')
+    +'<div class="form-section"><div class="section-title">Inspections</div><div class="field-row">'+cfld('homeInspection','Home Inspection')+cfld('pestInspection','Pest Inspection')+'</div><div class="field-row">'+cfld('radonTest','Radon Test')+cfld('sewerscopeInspection','Sewer Scope')+'</div></div>'
+    +'<div class="form-section"><div class="section-title">Other</div><div class="field-row">'+cfld('surveyFee','Survey Fee')+cfld('attorneyFee','Attorney Fee')+'</div><div class="field-row">'+cfld('HOATransferFee','HOA Transfer Fee')+cfld('otherClosingCost','Other')+'</div></div>'
+    +'<div class="closing-summary" id="closing-summary"><div class="section-title" style="color:#4338ca;border-color:#a5b4fc;">Closing Cost Summary</div>'+(summaryHTML||'<div style="font-size:12px;color:#94a3b8;padding:6px 0;">Enter amounts to see summary</div>')+'<div class="closing-total"><span>Total Closing Costs</span><span>'+f$(tot)+'</span></div></div>'
+    +'</div></div>';
 }
 
-function updateClosingSummary() {
-  var el = document.getElementById('closing-summary');
-  if (!el) return;
-  var items = closingItems(currentForm.closing, currentForm.dealType);
-  var groups = [];
-  items.forEach(function(i){ if(groups.indexOf(i.g)===-1) groups.push(i.g); });
-  var tot = items.reduce(function(s,i){ return s+i.v; },0);
-  var summaryHTML = '';
-  groups.forEach(function(g) {
-    var gi = items.filter(function(i){ return i.g===g && i.v>0; });
-    if (gi.length) {
-      summaryHTML += '<div class="closing-group"><div class="closing-group-title">'+g+'</div>';
-      gi.forEach(function(i){ summaryHTML += '<div class="closing-row"><span>'+i.l+'</span><span>'+f$(i.v)+'</span></div>'; });
-      summaryHTML += '</div>';
-    }
-  });
-  el.innerHTML = '<div class="section-title" style="color:#4338ca;border-color:#a5b4fc;">Closing Cost Summary</div>'
-    + (summaryHTML || '<div style="font-size:12px;color:#94a3b8;padding:6px 0;">Enter amounts to see summary</div>')
-    + '<div class="closing-total"><span>Total Closing Costs</span><span>'+f$(tot)+'</span></div>';
+function updateClosingSummary(){
+  var el=document.getElementById('closing-summary');if(!el)return;
+  var items=closingItems(currentForm.closing,currentForm.dealType);
+  var groups=[];items.forEach(function(i){if(groups.indexOf(i.g)===-1)groups.push(i.g);});
+  var tot=items.reduce(function(s,i){return s+i.v;},0);
+  var summaryHTML='';
+  groups.forEach(function(g){var gi=items.filter(function(i){return i.g===g&&i.v>0;});if(gi.length){summaryHTML+='<div class="closing-group"><div class="closing-group-title">'+g+'</div>';gi.forEach(function(i){summaryHTML+='<div class="closing-row"><span>'+i.l+'</span><span>'+f$(i.v)+'</span></div>';});summaryHTML+='</div>';}});
+  el.innerHTML='<div class="section-title" style="color:#4338ca;border-color:#a5b4fc;">Closing Cost Summary</div>'+(summaryHTML||'<div style="font-size:12px;color:#94a3b8;padding:6px 0;">Enter amounts to see summary</div>')+'<div class="closing-total"><span>Total Closing Costs</span><span>'+f$(tot)+'</span></div>';
 }
 
-function renderFinancialsTab() {
-  var d = derive(currentForm);
-  return '<div class="form-grid"><div>'
-    + '<div class="form-section"><div class="section-title">Annual Operating Costs</div>'
-    + '<div class="field-row">'+fld('taxes','Property Taxes ($/yr)','number')+fld('insurance','Insurance ($/yr)','number')+'</div>'
-    + '<div class="field-row">'+fld('hoaFees','HOA ($/mo)','number')+fld('otherMonthly','Other Monthly ($)','number')+'</div>'
-    + '</div>'
-    + '<div class="form-section"><div class="section-title">Income</div>'
-    + '<div class="field-row">'+fld('grossRent','Gross Rent ($/mo)','number')+fld('noi','NOI ($/yr override)','number')+'</div>'
-    + fld('roi','Projected ROI (%)','number')+'</div>'
-    + '<div class="form-section"><div class="section-title">Notes</div>'
-    + '<div class="field"><textarea data-field="notes" oninput="onFieldChange(this)">'+esc(currentForm.notes||'')+'</textarea></div>'
-    + '</div></div>'
-    + '<div><div class="section-title">Live Calculations</div>'
-    + '<div class="calc-grid" id="calc-grid">'+calcBoxesHTML(d,currentForm)+'</div>'
-    + '</div></div>';
+function renderFinancialsTab(){
+  var d=derive(currentForm);
+  var isFF=currentForm.dealType==='fixflip';
+  return'<div class="form-grid"><div>'
+    +'<div class="form-section"><div class="section-title">Fixed Annual Expenses</div>'
+    +'<div class="field-row">'+fld('taxes','Property Taxes ($/yr)','number')+fld('insurance','Insurance ($/mo)','number')+'</div>'
+    +'<div class="field-row">'+fld('brokerageFees','Brokerage Fees ($/yr)','number')+fld('rentalPermits','Rental Permits ($/yr)','number')+'</div>'
+    +'</div>'
+    +(!isFF?'<div class="form-section"><div class="section-title">% of Rent Expenses</div>'
+    +'<div class="field-row">'+fld('propMgmtPct','Property Mgmt (% of rent)','number')+fld('vacancyPct','Vacancy Loss (%)','number')+'</div>'
+    +'<div class="field-row">'+fld('capexPct','CapEx (%)','number')+fld('repairsPct','Repairs (%)','number')+'</div>'
+    +'</div>':'')
+    +'<div class="form-section"><div class="section-title">Utilities ($/mo)</div>'
+    +'<div class="field-row">'+fld('waterUsage','Water Usage','number')+fld('sanitation','Sanitation','number')+'</div>'
+    +'<div class="field-row">'+fld('otherElectric','Other Electric','number')+fld('heating','Heating','number')+'</div>'
+    +'<div class="field-row">'+fld('sewerTax','Sewer (if not in taxes)','number')+fld('waterHeating','Water Heating','number')+'</div>'
+    +'<div class="field-row">'+fld('cooking','Cooking','number')+fld('hoaFees','HOA ($/mo)','number')+'</div>'
+    +fld('otherMonthly','Other Monthly ($)','number')
+    +'</div>'
+    +(!isFF?'<div class="form-section"><div class="section-title">Income</div>'
+    +'<div class="field-row">'+fld('grossRent','Gross Rent ($/mo)','number')+fld('noi','NOI ($/yr override)','number')+'</div>'
+    +fld('roi','Projected ROI (%)','number')+'</div>':'')
+    +'<div class="form-section"><div class="section-title">Notes</div><div class="field"><textarea data-field="notes" oninput="onFieldChange(this)">'+esc(currentForm.notes||'')+'</textarea></div></div>'
+    +'</div>'
+    +'<div><div class="section-title">Live Calculations</div><div class="calc-grid" id="calc-grid">'+calcBoxesHTML(d,currentForm)+'</div></div>'
+    +'</div>';
 }
 
-function calcBoxesHTML(d, f) {
-  var isBrrrr = f.dealType === 'brrrr';
-  var isCash = f.dealType === 'cash';
-  var boxes = [];
-  if (isBrrrr) {
-    boxes = [
-      ['Total Invested', f$(d.totalIn), 'hi'],
-      ['Refi Loan', f$(d.loan), ''],
-      ['Cash-Out', f$(d.bData ? d.bData.cashOut : 0), ''],
-      ['Cash Left In', d.bData && d.bData.cashLeftIn <= 0 ? '$0 ✅' : f$(d.bData ? d.bData.cashLeftIn : 0), 'hi'],
-      ['Refi P&I', f$(d.fixedPmt,2)+'/mo', ''],
-      ['Monthly Carry', f$(d.carryFixed,2)+'/mo', 'warn'],
-      ['Cash Flow', f$(d.cashFlow,2)+'/mo', 'hi'],
-      ['Cap Rate', fPct(d.capRate), ''],
-      ['CoC Return', d.coc >= 9999 ? '∞ %' : fPct(d.coc), 'hi'],
-      ['Equity Retained', f$(d.equity), 'hi'],
+function calcBoxesHTML(d,f){
+  var isFF=f.dealType==='fixflip';
+  var isBrrrr=f.dealType==='brrrr';
+  var isCash=f.dealType==='cash';
+  var boxes=[];
+  if(isFF){
+    var ff=d.ffData||fixFlipCalc(f);
+    boxes=[
+      ['Hard Money Loan',f$(ff.loanAmt),''],
+      ['Down + Closing',f$(ff.downPayment),''],
+      ['Rehab Total',f$(ff.rehab),''],
+      ['Origination Cost',f$(ff.originationCost),''],
+      ['── Interest Only ──','',''],
+      ['I/O Payment',f$(ff.ioPmt,2)+'/mo','warn'],
+      ['Total Hold Cost',f$(ff.totalHoldCostIO),'warn'],
+      ['Total Invested',f$(ff.totalInvestedIO),'hi'],
+      ['Projected Profit',f$(ff.profitIO),ff.profitIO>0?'good':'warn'],
+      ['ROI (I/O)',fPct(ff.roiIO),ff.roiIO>0?'good':'warn'],
+      ['── Fixed Rate ──','',''],
+      ['Fixed Payment',f$(ff.fixedPmt,2)+'/mo','warn'],
+      ['Total Hold Cost',f$(ff.totalHoldCostFixed),'warn'],
+      ['Total Invested',f$(ff.totalInvestedFixed),'hi'],
+      ['Projected Profit',f$(ff.profitFixed),ff.profitFixed>0?'good':'warn'],
+      ['ROI (Fixed)',fPct(ff.roiFixed),ff.roiFixed>0?'good':'warn'],
+      ['6-Mo Carry (I/O)',f$(ff.sixMoCarryIO),'warn'],
+      ['6-Mo Carry (Fixed)',f$(ff.sixMoCarryFixed),'warn'],
+      ['ARV',f$(ff.arv),''],
+      ['Selling Costs (~6%)',f$(ff.saleCosts),''],
+    ];
+  } else if(isBrrrr){
+    var b=d.bData||brrrrCalc(f);
+    boxes=[
+      ['Total Invested',f$(b.totalInvested),'hi'],
+      ['Refi Loan',f$(b.refiLoan),''],
+      ['Cash-Out',f$(b.cashOut),''],
+      ['Cash Left In',b.cashLeftIn<=0?'$0 ✅':f$(b.cashLeftIn),'hi'],
+      ['Refi P&I/mo',f$(b.refiPmt,2)+'/mo',''],
+      ['Monthly Carry',f$(b.carry,2)+'/mo','warn'],
+      ['Cash Flow',f$(b.cashFlow,2)+'/mo','hi'],
+      ['Cap Rate',fPct(b.capRate),''],
+      ['CoC Return',b.coc>=9999?'∞ %':fPct(b.coc),'hi'],
+      ['Equity Retained',f$(b.equity),'hi'],
+      ['6-Month Carry',f$(b.carry*6),'warn'],
     ];
   } else {
-    boxes = [
-      [isCash ? 'Purchase Price' : 'Down Payment ('+f.downPct+'%)', f$(d.down), ''],
-      ['Closing Costs', f$(d.cTotal), ''],
-      ['Rehab Total', f$(d.rehab), ''],
-      ['Total Cash Needed', f$(d.totalIn), 'hi'],
+    boxes=[
+      [isCash?'Purchase Price':'Down Payment ('+f.downPct+'%)',f$(d.down),''],
+      ['Closing Costs',f$(d.cTotal),''],
+      ['Rehab Total',f$(d.rehab),''],
+      ['Total Cash Needed',f$(d.totalIn),'hi'],
     ];
-    if (!isCash) {
-      boxes.push(['Loan Amount', f$(d.loan), '']);
-      boxes.push(['Fixed P&I ('+f.mortgageTerm+'yr)', f$(d.fixedPmt,2)+'/mo', '']);
-      boxes.push(['Interest-Only / mo', f$(d.ioPmt,2)+'/mo', '']);
-      boxes.push(['Carry Cost (Fixed)', f$(d.carryFixed,2)+'/mo', 'warn']);
-    } else {
-      boxes.push(['Monthly Carry (no debt)', f$(d.carryCash,2)+'/mo', 'warn']);
+    if(!isCash){
+      boxes.push(['P&I Payment',f$(d.piMo,2)+'/mo','']);
+      boxes.push(['Taxes/mo',f$(d.taxesMo,2)+'/mo','']);
+      boxes.push(['Insurance/mo',f$(d.insuranceMo,2)+'/mo','']);
+      boxes.push(['PITI Total',f$(d.pitiMo,2)+'/mo','hi']);
     }
-    boxes.push(['Monthly Cash Flow', f$(d.cashFlow,2)+'/mo', 'hi']);
-    boxes.push(['Cash-on-Cash', fPct(d.coc), 'hi']);
-    boxes.push(['Cap Rate', fPct(d.capRate), '']);
-    boxes.push(['Equity After Rehab', f$(d.equity), 'hi']);
-    boxes.push(['NOI / yr', f$(d.noi), '']);
+    boxes.push(['Op. Expenses/mo',f$(d.opExMo,2)+'/mo','warn']);
+    boxes.push(['Monthly Cash Flow',f$(d.cashFlow,2)+'/mo','hi']);
+    boxes.push(['Cash-on-Cash',fPct(d.coc),'hi']);
+    boxes.push(['Cap Rate',fPct(d.capRate),'']);
+    boxes.push(['6-Month Carry',f$(d.sixMoCarry),'warn']);
+    boxes.push(['Equity After Rehab',f$(d.equity),'hi']);
+    boxes.push(['NOI / yr',f$(d.noi),'']);
   }
-  return boxes.map(function(bx){
-    return '<div class="calc-box '+bx[2]+'"><div class="cl">'+bx[0]+'</div><div class="cv">'+bx[1]+'</div></div>';
-  }).join('');
+  return boxes.map(function(bx){return'<div class="calc-box '+bx[2]+'"><div class="cl">'+bx[0]+'</div><div class="cv">'+bx[1]+'</div></div>';}).join('');
 }
 
-function updateCalcBoxes() {
-  var el = document.getElementById('calc-grid');
-  if (el) el.innerHTML = calcBoxesHTML(derive(currentForm), currentForm);
-}
+function updateCalcBoxes(){var el=document.getElementById('calc-grid');if(el)el.innerHTML=calcBoxesHTML(derive(currentForm),currentForm);}
 
-function saveProperty() {
+function saveProperty(){
   collectForm();
-  var p = currentForm;
-  if (!p.address || !p.address.trim()) { toast('Please enter an address.'); return; }
-  if (editingId) {
-    for (var i=0;i<properties.length;i++) {
-      if (properties[i].id === editingId) { properties[i] = Object.assign({},p,{id:editingId}); break; }
-    }
-  } else {
-    properties.push(Object.assign({},p,{id:Date.now()}));
-  }
-  saveData();
-  renderAll();
-  closeModal('modal-edit');
-  toast(editingId ? 'Property updated ✓' : 'Property added ✓');
+  var p=currentForm;
+  if(!p.address||!p.address.trim()){toast('Please enter an address.');return;}
+  if(editingId){for(var i=0;i<properties.length;i++){if(properties[i].id===editingId){properties[i]=Object.assign({},p,{id:editingId});break;}}}
+  else{properties.push(Object.assign({},p,{id:Date.now()}));}
+  saveData();renderAll();closeModal('modal-edit');
+  toast(editingId?'Property updated ✓':'Property added ✓');
 }
 
 // ── Detail View ───────────────────────────────────────────────────────────────
-function openDetail(id) {
-  detailId = id;
-  var p = properties.filter(function(x){ return x.id===id; })[0];
-  if (!p) return;
-  var d = derive(p);
-  var items = closingItems(p.closing||{}, p.dealType);
-  var groups = [];
-  items.forEach(function(i){ if(groups.indexOf(i.g)===-1) groups.push(i.g); });
-  var closingHTML = '';
-  groups.forEach(function(g) {
-    var gi = items.filter(function(i){ return i.g===g && i.v>0; });
-    if (gi.length) {
-      closingHTML += '<div class="closing-group"><div class="closing-group-title">'+g+'</div>';
-      gi.forEach(function(i){ closingHTML += '<div class="closing-row"><span>'+i.l+'</span><span><strong>'+f$(i.v)+'</strong></span></div>'; });
-      closingHTML += '</div>';
-    }
-  });
-  function dc(l,v){ return '<div class="detail-cell"><div class="dl">'+l+'</div><div class="dv">'+v+'</div></div>'; }
-  function ds(title,cells){ return '<div class="detail-section"><div class="section-title">'+title+'</div><div class="detail-grid">'+cells+'</div></div>'; }
+function openDetail(id){
+  detailId=id;
+  var p=properties.filter(function(x){return x.id===id;})[0];if(!p)return;
+  var d=derive(p);
+  var items=closingItems(p.closing||{},p.dealType);
+  var groups=[];items.forEach(function(i){if(groups.indexOf(i.g)===-1)groups.push(i.g);});
+  var closingHTML='';
+  groups.forEach(function(g){var gi=items.filter(function(i){return i.g===g&&i.v>0;});if(gi.length){closingHTML+='<div class="closing-group"><div class="closing-group-title">'+g+'</div>';gi.forEach(function(i){closingHTML+='<div class="closing-row"><span>'+i.l+'</span><span><strong>'+f$(i.v)+'</strong></span></div>';});closingHTML+='</div>';}});
+  function dc(l,v){return'<div class="detail-cell"><div class="dl">'+l+'</div><div class="dv">'+v+'</div></div>';}
+  function ds(title,cells){return'<div class="detail-section"><div class="section-title">'+title+'</div><div class="detail-grid">'+cells+'</div></div>';}
 
-  var returnsSection = d.isBrrrr
-    ? ds('BRRRR — Refinance',
-        dc('Refi LTV', p.brrrrRefiLTV+'%')
-        + dc('Refi Loan', f$(d.bData.refiLoan))
-        + dc('Cash-Out from Refi', f$(d.bData.cashOut))
-        + dc('Cash Left In Deal', d.bData.cashLeftIn<=0?'$0 ✅':f$(d.bData.cashLeftIn))
-        + dc('Hold Period', nv(p.brrrrHoldMonths)+' mo')
-        + dc('Hold Cost', f$(d.bData.holdCost)))
-      + ds('BRRRR — Post-Refi Returns',
-        dc('Refi P&I', f$(d.fixedPmt,2)+'/mo')
-        + dc('Monthly Carry', f$(d.carryFixed,2)+'/mo')
-        + dc('Cash Flow', f$(d.cashFlow,2)+'/mo')
-        + dc('Cap Rate', fPct(d.capRate))
-        + dc('CoC (cash left in)', d.bData.cashLeftIn<=0?'∞ %':fPct(d.coc))
-        + dc('Equity Retained', f$(d.equity)))
-    : ds('Monthly Costs &amp; Returns',
-        dc('Taxes/mo', f$(nv(p.taxes)/12,2))
-        + dc('Insurance/mo', f$(nv(p.insurance)/12,2))
-        + dc('HOA', f$(p.hoaFees||0)+'/mo')
-        + dc(d.isCash?'Carry (no debt)':'Carry (Fixed)', f$(d.isCash?d.carryCash:d.carryFixed,2)+'/mo')
-        + dc('Gross Rent', f$(p.grossRent)+'/mo')
-        + dc('Cash Flow', f$(d.cashFlow,2)+'/mo')
-        + dc('NOI/yr', f$(d.noi))
-        + dc('Cap Rate', fPct(d.capRate))
-        + dc('Cash-on-Cash', fPct(d.coc))
-        + dc('Projected ROI', fPct(p.roi)));
+  var dealSection='';
+  if(d.isFixFlip&&d.ffData){
+    var ff=d.ffData;
+    dealSection=ds('Fix &amp; Flip — Loan',dc('Hard Money Loan',f$(ff.loanAmt))+dc('Interest Rate',ff.rate+'%')+dc('I/O Payment',f$(ff.ioPmt,2)+'/mo')+dc('Hold Period',ff.holdMonths+' months')+dc('Origination Cost',f$(ff.originationCost))+dc('Total Hold Cost',f$(ff.totalHoldCost)))
+      +ds('Fix &amp; Flip — Returns',dc('Total Cash Invested',f$(ff.totalInvested))+dc('ARV',f$(ff.arv))+dc('Est. Selling Costs',f$(ff.saleCosts))+dc('Projected Profit',f$(ff.profit))+dc('ROI on Capital',fPct(ff.roi))+dc('6-Month Carry',f$(ff.sixMoCarry)));
+  } else if(d.isBrrrr&&d.bData){
+    var b=d.bData;
+    dealSection=ds('BRRRR — Refinance',dc('Refi LTV',p.brrrrRefiLTV+'%')+dc('Refi Loan',f$(b.refiLoan))+dc('Cash-Out',f$(b.cashOut))+dc('Cash Left In',b.cashLeftIn<=0?'$0 ✅':f$(b.cashLeftIn))+dc('Hold Period',nv(p.brrrrHoldMonths)+' mo')+dc('Hold Cost',f$(b.holdCost)))
+      +ds('BRRRR — Returns',dc('Refi P&I',f$(b.refiPmt,2)+'/mo')+dc('Monthly Carry',f$(b.carry,2)+'/mo')+dc('Cash Flow',f$(b.cashFlow,2)+'/mo')+dc('Cap Rate',fPct(b.capRate))+dc('CoC',b.coc>=9999?'∞ %':fPct(b.coc))+dc('Equity',f$(b.equity)));
+  } else {
+    var pitiLabel=d.isCash?'Monthly Carry':'PITI Payment';
+    dealSection=ds('Monthly Costs &amp; Returns',
+      (!d.isCash?dc('P&I Payment',f$(d.piMo,2)+'/mo'):'')
+      +dc('Taxes/mo',f$(d.taxesMo,2)+'/mo')
+      +dc('Insurance/mo',f$(d.insuranceMo,2)+'/mo')
+      +(!d.isCash?dc('PITI Total',f$(d.pitiMo,2)+'/mo'):'')
+      +dc('Op. Expenses/mo',f$(d.opExMo,2)+'/mo')
+      +dc('Gross Rent',f$(p.grossRent)+'/mo')
+      +dc('Cash Flow',f$(d.cashFlow,2)+'/mo')
+      +dc('NOI/yr',f$(d.noi))
+      +dc('Cap Rate',fPct(d.capRate))
+      +dc('Cash-on-Cash',fPct(d.coc))
+      +dc('6-Month Carry',f$(d.sixMoCarry))
+      +dc('Projected ROI',fPct(p.roi)));
+  }
 
-  document.getElementById('detail-title').textContent = p.address;
-  document.getElementById('detail-body').innerHTML = ''
-    + '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">'
-    + '<span class="badge '+stageCls(p.stage)+'">'+esc(p.stage)+'</span>'
-    + typeBadge(p)+'</div>'
-    + '<div style="color:#64748b;font-size:13px;margin-bottom:4px;">'+esc([p.city,p.state,p.zip].filter(Boolean).join(', '))+'</div>'
-    + '<div style="color:#94a3b8;font-size:12px;margin-bottom:10px;">'+(p.beds?p.beds+'bd':'')+' '+(p.baths?'/'+p.baths+'ba':'')+' '+(p.sqft?'· '+nv(p.sqft).toLocaleString()+' sqft':'')+' '+(p.yearBuilt?'· '+p.yearBuilt:'')+' · Lead: '+esc(p.leadSource||'—')+' · '+esc(p.dateAdded||'')+'</div>'
-    + '<div class="detail-actions">'
-    + '<button class="btn-pdf3" onclick="printPDF('+p.id+')">🖨️ Save / Print PDF</button>'
-    + '<button class="btn-email3" onclick="openEmail('+p.id+')">📧 Email to Richard</button>'
-    + '</div>'
-    + ds('Pricing', dc('Asking',f$(p.askingPrice))+dc('Offered',f$(p.amountOffered))+dc('Purchase Price',f$(d.purchase))+dc('ARV',f$(p.arv)))
-    + ds('Rehab &amp; Cash Needed',
-        dc('Rehab $/sqft',f$(p.rehabCostPerSqft,2))
-        +dc('Rehab Total',f$(d.rehab))
-        +dc(d.isCash?'Cash Purchase':d.isBrrrr?'Purchase Price':'Down ('+p.downPct+'%)',f$(d.down))
-        +dc('Closing Costs',f$(d.cTotal))
-        +dc('Total Cash Needed',f$(d.totalIn))
-        +dc('Equity After Rehab',f$(d.equity)))
-    + (!d.isCash && !d.isBrrrr ? ds('Mortgage', dc('Loan Amount',f$(d.loan))+dc('Fixed P&I ('+p.mortgageRate+'%/'+p.mortgageTerm+'yr)',f$(d.fixedPmt,2)+'/mo')+dc('Interest Only ('+p.interestOnlyRate+'%)',f$(d.ioPmt,2)+'/mo')) : '')
-    + (d.isBrrrr ? ds('Mortgage',dc('Loan Amount',f$(d.loan))+dc('Refi P&I',f$(d.fixedPmt,2)+'/mo')) : '')
-    + returnsSection
-    + '<div class="detail-section"><div class="section-title">Itemized Closing Costs</div>'
-    + '<div style="background:#f8fafc;border-radius:10px;padding:12px;">'
-    + (closingHTML || '<div style="font-size:12px;color:#94a3b8;">No closing costs entered.</div>')
-    + '<div class="closing-total"><span>Total Closing Costs</span><span>'+f$(d.cTotal)+'</span></div>'
-    + '</div></div>'
-    + (p.notes ? '<div class="detail-section"><div class="section-title">Notes</div><div class="notes-box">'+esc(p.notes)+'</div></div>' : '');
-
+  document.getElementById('detail-title').textContent=p.address;
+  document.getElementById('detail-body').innerHTML=''
+    +'<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;"><span class="badge '+stageCls(p.stage)+'">'+esc(p.stage)+'</span>'+typeBadge(p)+'</div>'
+    +'<div style="color:#64748b;font-size:13px;margin-bottom:4px;">'+esc([p.city,p.state,p.zip].filter(Boolean).join(', '))+'</div>'
+    +'<div style="color:#94a3b8;font-size:12px;margin-bottom:10px;">'+(p.beds?p.beds+'bd':'')+' '+(p.baths?'/'+p.baths+'ba':'')+' '+(p.sqft?'· '+nv(p.sqft).toLocaleString()+' sqft':'')+' '+(p.yearBuilt?'· '+p.yearBuilt:'')+' · Lead: '+esc(p.leadSource||'—')+' · '+esc(p.dateAdded||'')+'</div>'
+    +'<div class="detail-actions"><button class="btn-pdf3" onclick="printPDF('+p.id+')">🖨️ Save / Print PDF</button><button class="btn-email3" onclick="openEmail('+p.id+')">📧 Email to Richard</button></div>'
+    +ds('Pricing',dc('Asking',f$(p.askingPrice))+dc('Offered',f$(p.amountOffered))+dc('Purchase Price',f$(d.purchase))+dc('ARV',f$(p.arv)))
+    +ds('Rehab &amp; Cash Needed',dc('Rehab $/sqft',f$(p.rehabCostPerSqft,2))+dc('Rehab Total',f$(d.rehab))+dc(d.isCash?'Cash Purchase':d.isFixFlip?'Down + Closing':'Down ('+p.downPct+'%)',f$(d.down))+dc('Closing Costs',f$(d.cTotal))+dc('Total Cash Needed',f$(d.totalIn))+dc('Equity',f$(d.equity)))
+    +dealSection
+    +'<div class="detail-section"><div class="section-title">Itemized Closing Costs</div><div style="background:#f8fafc;border-radius:10px;padding:12px;">'+(closingHTML||'<div style="font-size:12px;color:#94a3b8;">No closing costs entered.</div>')+'<div class="closing-total"><span>Total</span><span>'+f$(d.cTotal)+'</span></div></div></div>'
+    +(p.notes?'<div class="detail-section"><div class="section-title">Notes</div><div class="notes-box">'+esc(p.notes)+'</div></div>':'');
   document.getElementById('modal-detail').classList.add('open');
 }
 
-function editFromDetail() { closeModal('modal-detail'); openEdit(detailId); }
-function deleteProperty() {
-  if (!confirm('Remove this property?')) return;
-  properties = properties.filter(function(p){ return p.id !== detailId; });
-  saveData(); renderAll(); closeModal('modal-detail');
-  toast('Property deleted');
-}
+function editFromDetail(){closeModal('modal-detail');openEdit(detailId);}
+function deleteProperty(){if(!confirm('Remove this property?'))return;properties=properties.filter(function(p){return p.id!==detailId;});saveData();renderAll();closeModal('modal-detail');toast('Property deleted');}
 
 // ── PDF ───────────────────────────────────────────────────────────────────────
-function printPDF(id) {
-  var p = properties.filter(function(x){ return x.id===id; })[0];
-  if (!p) return;
-  var d = derive(p);
-  var items = closingItems(p.closing||{}, p.dealType);
-  var groups = [];
-  items.forEach(function(i){ if(groups.indexOf(i.g)===-1) groups.push(i.g); });
-  function tr(l,v){ return '<tr><td style="padding:4px 8px;color:#555;font-size:12px;">'+l+'</td><td style="padding:4px 8px;font-weight:600;font-size:12px;text-align:right;">'+v+'</td></tr>'; }
-  function sec(title,rows){ return '<div style="margin-bottom:14px;"><div style="background:#1e1b4b;color:white;padding:5px 10px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;">'+title+'</div><table style="width:100%;border-collapse:collapse;border:1px solid #e5e7eb;border-top:none;">'+rows+'</table></div>'; }
-  var closingRows = '';
-  groups.forEach(function(g){
-    var gi = items.filter(function(i){ return i.g===g && i.v>0; });
-    if (gi.length) {
-      closingRows += '<tr><td colspan="2" style="padding:3px 8px;font-size:11px;font-weight:700;color:#6366f1;background:#f5f3ff;">'+g+'</td></tr>';
-      gi.forEach(function(i){ closingRows += tr(i.l, f$(i.v)); });
-    }
-  });
-  closingRows += tr('Total Closing Costs', f$(d.cTotal));
-  var dealSummaryRows = tr('Asking Price',f$(p.askingPrice))+tr('Amount Offered',f$(p.amountOffered))+tr('Purchase Price',f$(d.purchase))+tr('ARV',f$(p.arv))
-    +(d.isBrrrr ? tr('Refi Loan ('+d.bData.refiLTV+'% LTV)',f$(d.bData.refiLoan))+tr('Cash-Out from Refi',f$(d.bData.cashOut))+tr('Hold Cost',f$(d.bData.holdCost)) : tr(d.isCash?'Total Cash':'Down Payment ('+p.downPct+'%)',f$(d.down)))
-    +tr('Closing Costs',f$(d.cTotal))+tr('Rehab Total',f$(d.rehab))+tr('Total Cash Needed',f$(d.totalIn))
-    +(d.isBrrrr ? tr('Cash Left In Deal',d.bData.cashLeftIn<=0?'$0 ✅':f$(d.bData.cashLeftIn)) : tr('Equity After Rehab',f$(d.equity)));
-  var returnsRows = tr('Gross Rent',f$(p.grossRent)+'/mo')+tr('Monthly Cash Flow',f$(d.cashFlow,2)+'/mo')+tr('NOI / yr',f$(d.noi))+tr('Cap Rate',fPct(d.capRate))+tr('Cash-on-Cash',d.isBrrrr&&d.coc>=9999?'∞ %':fPct(d.coc))+tr('Projected ROI',fPct(p.roi));
-  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>NYEG - '+p.address+'</title>'
-    +'<style>body{font-family:Arial,sans-serif;margin:0;padding:20px;background:#f8fafc;}@media print{.noprint{display:none}body{padding:0}}</style>'
-    +'</head><body><div style="max-width:860px;margin:0 auto;background:white;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.1);">'
+function printPDF(id){
+  var p=properties.filter(function(x){return x.id===id;})[0];if(!p)return;
+  var d=derive(p);
+  var items=closingItems(p.closing||{},p.dealType);
+  var groups=[];items.forEach(function(i){if(groups.indexOf(i.g)===-1)groups.push(i.g);});
+  function tr(l,v){return'<tr><td style="padding:4px 8px;color:#555;font-size:12px;">'+l+'</td><td style="padding:4px 8px;font-weight:600;font-size:12px;text-align:right;">'+v+'</td></tr>';}
+  function sec(title,rows){return'<div style="margin-bottom:14px;"><div style="background:#1e1b4b;color:white;padding:5px 10px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;">'+title+'</div><table style="width:100%;border-collapse:collapse;border:1px solid #e5e7eb;border-top:none;">'+rows+'</table></div>';}
+  var closingRows='';
+  groups.forEach(function(g){var gi=items.filter(function(i){return i.g===g&&i.v>0;});if(gi.length){closingRows+='<tr><td colspan="2" style="padding:3px 8px;font-size:11px;font-weight:700;color:#6366f1;background:#f5f3ff;">'+g+'</td></tr>';gi.forEach(function(i){closingRows+=tr(i.l,f$(i.v));});}});
+  closingRows+=tr('Total Closing Costs',f$(d.cTotal));
+  var dealRows='';
+  if(d.isFixFlip&&d.ffData){
+    var ff=d.ffData;
+    dealRows=tr('Hard Money Loan',f$(ff.loanAmt))+tr('Interest Rate',ff.rate+'%')+tr('I/O Payment',f$(ff.ioPmt,2)+'/mo')+tr('Hold Period',ff.holdMonths+' months')+tr('Origination Cost',f$(ff.originationCost))+tr('Total Hold Cost',f$(ff.totalHoldCost))+tr('Selling Costs (~6%)',f$(ff.saleCosts))+tr('Projected Profit',f$(ff.profit))+tr('ROI on Capital',fPct(ff.roi))+tr('6-Month Carry',f$(ff.sixMoCarry));
+  } else {
+    dealRows=(!d.isCash?tr('P&I Payment',f$(d.piMo,2)+'/mo')+tr('Taxes/mo',f$(d.taxesMo,2)+'/mo')+tr('Insurance/mo',f$(d.insuranceMo,2)+'/mo')+tr('PITI Total',f$(d.pitiMo,2)+'/mo'):'')+tr('Op. Expenses/mo',f$(d.opExMo,2)+'/mo')+tr('Gross Rent',f$(p.grossRent)+'/mo')+tr('Cash Flow',f$(d.cashFlow,2)+'/mo')+tr('Cap Rate',fPct(d.capRate))+tr('Cash-on-Cash',fPct(d.coc))+tr('NOI/yr',f$(d.noi))+tr('6-Month Carry',f$(d.sixMoCarry));
+  }
+  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>NYEG – '+p.address+'</title><style>body{font-family:Arial,sans-serif;margin:0;padding:20px;background:#f8fafc;}@media print{.noprint{display:none}body{padding:0}}</style></head><body>'
+    +'<div style="max-width:860px;margin:0 auto;background:white;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.1);">'
     +'<div style="background:#1e1b4b;color:white;padding:20px 28px;display:flex;justify-content:space-between;align-items:center;">'
     +'<div><div style="font-size:20px;font-weight:700;">NY English Group</div><div style="font-size:12px;opacity:.8;margin-top:4px;">'+p.address+(p.city?', '+p.city:'')+(p.state?', '+p.state:'')+(p.zip?' '+p.zip:'')+'</div></div>'
     +'<div style="text-align:right;"><div style="background:rgba(255,255,255,.2);padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;">'+p.stage+'</div><div style="font-size:10px;opacity:.6;margin-top:6px;">Generated '+new Date().toLocaleDateString()+'</div></div>'
@@ -969,15 +953,11 @@ function printPDF(id) {
     +(p.baths?'<span style="background:#f3f4f6;padding:3px 10px;border-radius:20px;font-size:11px;">'+p.baths+' Baths</span>':'')
     +(p.sqft?'<span style="background:#f3f4f6;padding:3px 10px;border-radius:20px;font-size:11px;">'+nv(p.sqft).toLocaleString()+' Sq Ft</span>':'')
     +(p.yearBuilt?'<span style="background:#f3f4f6;padding:3px 10px;border-radius:20px;font-size:11px;">Built '+p.yearBuilt+'</span>':'')
-    +'<span style="background:#f3f4f6;padding:3px 10px;border-radius:20px;font-size:11px;">'+(d.isBrrrr?'♻️ BRRRR':d.isCash?'💵 Cash Deal':'🏦 Mortgage')+'</span>'
+    +'<span style="background:#f3f4f6;padding:3px 10px;border-radius:20px;font-size:11px;">'+(d.isFixFlip?'🔨 Fix & Flip':d.isBrrrr?'♻️ BRRRR':d.isCash?'💵 Cash':'🏦 Mortgage')+'</span>'
     +'</div>'
     +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">'
-    +'<div>'+sec('Deal Summary',dealSummaryRows)
-    +(!d.isCash?sec('Mortgage',[tr((d.isBrrrr?'Refi':'Fixed')+' Rate ('+p.mortgageRate+'%/'+p.mortgageTerm+'yr)',f$(d.fixedPmt,2)+'/mo'),(!d.isBrrrr?tr('Interest Only ('+p.interestOnlyRate+'%)',f$(d.ioPmt,2)+'/mo'):''),tr('Loan Amount',f$(d.loan))].join('')):'')
-    +sec('Monthly Operating',[tr('Property Taxes',f$(nv(p.taxes)/12,2)+'/mo'),tr('Insurance',f$(nv(p.insurance)/12,2)+'/mo'),tr('HOA',f$(p.hoaFees||0,2)+'/mo'),tr('Other',f$(p.otherMonthly||0,2)+'/mo'),tr('Total Carry',f$(d.carryFixed,2)+'/mo')].join(''))
-    +(d.isBrrrr?sec('BRRRR',[tr('Cash-Out from Refi',f$(d.bData.cashOut)),tr('Cash Left In Deal',d.bData.cashLeftIn<=0?'$0 ✅':f$(d.bData.cashLeftIn)),tr('Hold Period',nv(p.brrrrHoldMonths)+' months'),tr('Hold Cost',f$(d.bData.holdCost))].join('')):'')
-    +'</div>'
-    +'<div>'+sec('Returns',returnsRows)+sec('Itemized Closing Costs',closingRows)+'</div>'
+    +'<div>'+sec('Deal Summary',tr('Asking',f$(p.askingPrice))+tr('Offered',f$(p.amountOffered))+tr('Purchase Price',f$(d.purchase))+tr('ARV',f$(p.arv))+tr('Down / Cash',f$(d.down))+tr('Closing Costs',f$(d.cTotal))+tr('Rehab Total',f$(d.rehab))+tr('Total Cash Needed',f$(d.totalIn))+tr('Equity',f$(d.equity)))+sec(d.isFixFlip?'Fix & Flip Analysis':'Monthly Costs & Returns',dealRows)+'</div>'
+    +'<div>'+sec('Itemized Closing Costs',closingRows)+'</div>'
     +'</div>'
     +(p.notes?'<div style="background:#fefce8;border:1px solid #fde68a;border-radius:6px;padding:12px;margin-top:8px;"><div style="font-size:11px;font-weight:700;color:#92400e;margin-bottom:4px;">NOTES</div><div style="font-size:12px;">'+p.notes+'</div></div>':'')
     +'</div>'
@@ -988,42 +968,30 @@ function printPDF(id) {
     +'<button onclick="window.print()" style="flex:1;background:#1e1b4b;color:white;border:none;padding:12px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;">🖨️ Print / Save as PDF</button>'
     +'<button onclick="window.close()" style="background:#e5e7eb;border:none;padding:12px 20px;border-radius:8px;font-size:14px;cursor:pointer;">Close</button>'
     +'</div></body></html>';
-  var w = window.open('','_blank');
-  w.document.write(html);
-  w.document.close();
+  var w=window.open('','_blank');w.document.write(html);w.document.close();
 }
 
 // ── Email ─────────────────────────────────────────────────────────────────────
-function openEmail(id) {
-  emailPropId = id;
-  closeModal('modal-detail');
-  var p = properties.filter(function(x){ return x.id===id; })[0];
-  if (!p) return;
-  var d = derive(p);
-  emailSubject = 'NYEG Acquisition Analysis — ' + p.address + (p.city?', '+p.city:'');
-  emailBody = 'Hi Richard,\n\nAcquisition analysis for:\n'+p.address+(p.city?', '+p.city:'')+(p.state?', '+p.state:'')+'\nStage: '+p.stage+' | Type: '+(d.isBrrrr?'BRRRR':d.isCash?'Cash':'Mortgage')+' | Lead: '+(p.leadSource||'—')
+function openEmail(id){
+  emailPropId=id;closeModal('modal-detail');
+  var p=properties.filter(function(x){return x.id===id;})[0];if(!p)return;
+  var d=derive(p);
+  emailSubject='NYEG Acquisition Analysis — '+p.address+(p.city?', '+p.city:'');
+  emailBody='Hi Richard,\n\nAcquisition analysis for:\n'+p.address+(p.city?', '+p.city:'')+(p.state?', '+p.state:'')+'\nStage: '+p.stage+' | Type: '+(d.isFixFlip?'Fix & Flip':d.isBrrrr?'BRRRR':d.isCash?'Cash':'Mortgage')+' | Lead: '+(p.leadSource||'—')
     +'\n\n── DEAL SUMMARY ──────────────────────'
     +'\nAsking Price:        '+f$(p.askingPrice)
     +'\nAmount Offered:      '+f$(p.amountOffered)
     +'\nPurchase Price:      '+f$(d.purchase)
     +'\nARV:                 '+f$(p.arv)
-    +(d.isBrrrr?'\nRefi Loan:           '+f$(d.loan)+'\nCash-Out from Refi:  '+f$(d.bData.cashOut)+'\nCash Left In Deal:   '+(d.bData.cashLeftIn<=0?'$0 (full pull)':f$(d.bData.cashLeftIn)):'\n'+(d.isCash?'Total Cash:          '+f$(d.totalIn):'Down Payment ('+p.downPct+'%): '+f$(d.down)))
+    +'\nDown / Cash:         '+f$(d.down)
     +'\nClosing Costs:       '+f$(d.cTotal)
     +'\nRehab Total:         '+f$(d.rehab)
     +'\nTotal Cash Needed:   '+f$(d.totalIn)
     +'\nEquity:              '+f$(d.equity)
-    +'\n\n── RETURNS ───────────────────────────'
-    +'\nGross Rent:          '+f$(p.grossRent)+'/mo'
-    +'\nCash Flow:           '+f$(d.cashFlow,2)+'/mo'
-    +'\nCap Rate:            '+fPct(d.capRate)
-    +'\nCash-on-Cash:        '+(d.isBrrrr&&d.coc>=9999?'∞ %':fPct(d.coc))
-    +'\nNOI/yr:              '+f$(d.noi)
-    +(!d.isCash?'\nP&I Payment:         '+f$(d.fixedPmt,2)+'/mo':'')
-    +'\nMonthly Carry:       '+f$(d.carryFixed,2)+'/mo'
+    +(d.isFixFlip&&d.ffData?'\n\n── FIX & FLIP ────────────────────────\nHard Money Loan:     '+f$(d.ffData.loanAmt)+'\nI/O Payment:         '+f$(d.ffData.ioPmt,2)+'/mo\nTotal Hold Cost:     '+f$(d.ffData.totalHoldCost)+'\nProjected Profit:    '+f$(d.ffData.profit)+'\nROI:                 '+fPct(d.ffData.roi)+'\n6-Month Carry:       '+f$(d.sixMoCarry):'\n\n── RETURNS ───────────────────────────\nGross Rent:          '+f$(p.grossRent)+'/mo'+(d.isCash?'':'\nPITI:                '+f$(d.pitiMo,2)+'/mo')+'\nOp. Expenses/mo:     '+f$(d.opExMo,2)+'/mo\nCash Flow:           '+f$(d.cashFlow,2)+'/mo\nCap Rate:            '+fPct(d.capRate)+'\nCash-on-Cash:        '+fPct(d.coc)+'\nNOI/yr:              '+f$(d.noi)+'\n6-Month Carry:       '+f$(d.sixMoCarry))
     +(p.notes?'\n\n── NOTES ─────────────────────────────\n'+p.notes:'')
     +'\n\n──────────────────────────────────────\nNY English Group · richard@nyenglishgroup.com\nGenerated: '+new Date().toLocaleDateString();
-
-  document.getElementById('email-body').innerHTML = ''
+  document.getElementById('email-body').innerHTML=''
     +'<div style="background:#f8fafc;border-radius:10px;padding:12px;margin-bottom:14px;">'
     +'<div style="font-size:13px;margin-bottom:4px;"><strong style="color:#64748b;">To:</strong> <span style="color:#4338ca;">richard@nyenglishgroup.com</span></div>'
     +'<div style="font-size:12px;"><strong style="color:#64748b;">Subject:</strong> '+esc(emailSubject)+'</div>'
@@ -1034,39 +1002,15 @@ function openEmail(id) {
   document.getElementById('modal-email').classList.add('open');
 }
 
-function copyEmailText() {
-  var note = (document.getElementById('email-note')||{}).value || '';
-  var full = emailBody + (note ? '\n\nAdditional Notes:\n'+note : '');
-  navigator.clipboard.writeText(full).then(function(){
-    var el = document.getElementById('email-status');
-    el.className='email-status copied'; el.textContent='✅ Copied to clipboard.';
-  }).catch(function(){ toast('Could not copy — please copy manually.'); });
-}
+function copyEmailText(){var note=(document.getElementById('email-note')||{}).value||'';var full=emailBody+(note?'\n\nAdditional Notes:\n'+note:'');navigator.clipboard.writeText(full).then(function(){var el=document.getElementById('email-status');el.className='email-status copied';el.textContent='✅ Copied to clipboard.';}).catch(function(){toast('Could not copy — please copy manually.');});}
+function openMailClient(){var note=(document.getElementById('email-note')||{}).value||'';var full=emailBody+(note?'\n\nAdditional Notes:\n'+note:'');window.open('mailto:richard@nyenglishgroup.com?subject='+encodeURIComponent(emailSubject)+'&body='+encodeURIComponent(full),'_blank');var el=document.getElementById('email-status');el.className='email-status ok';el.textContent='✅ Mail client opened — check your mail app to send.';}
 
-function openMailClient() {
-  var note = (document.getElementById('email-note')||{}).value || '';
-  var full = emailBody + (note ? '\n\nAdditional Notes:\n'+note : '');
-  window.open('mailto:richard@nyenglishgroup.com?subject='+encodeURIComponent(emailSubject)+'&body='+encodeURIComponent(full),'_blank');
-  var el = document.getElementById('email-status');
-  el.className='email-status ok'; el.textContent='✅ Mail client opened — check your mail app to send.';
-}
-
-// ── Address Autocomplete ──────────────────────────────────────────────────────
-var MAPS_KEY = 'AIzaSyARQWBlAzzijttWAQtUHzIdlo7tFES0waI';
-var acTimer = null;
-var acActive = -1;
+// ── Autocomplete ──────────────────────────────────────────────────────────────
 window.initAutocomplete = function() {
   var input = document.querySelector('[data-field="address"]');
   if (!input) return;
-  var old = document.getElementById('ac-dropdown');
-  if (old) old.parentNode.removeChild(old);
-  var wrap = input.parentNode;
-  if (!wrap.classList.contains('addr-wrap')) wrap.classList.add('addr-wrap');
-  var dropdown = document.createElement('div');
-  dropdown.id = 'ac-dropdown';
-  dropdown.className = 'autocomplete-dropdown';
-  dropdown.style.display = 'none';
-  wrap.appendChild(dropdown);
+  var dropdown = document.getElementById('ac-dropdown');
+  if (!dropdown) return;
   input.addEventListener('input', function() {
     var val = input.value.trim();
     if (val.length < 3) { dropdown.style.display = 'none'; return; }
@@ -1074,62 +1018,41 @@ window.initAutocomplete = function() {
     acTimer = setTimeout(function() { fetchSuggestions(val, dropdown); }, 400);
   });
   document.addEventListener('click', function(e) {
-    if (!wrap.contains(e.target)) dropdown.style.display = 'none';
+    if (!input.parentNode.contains(e.target)) dropdown.style.display = 'none';
   });
 };
-function highlightItem(items) {
-  for (var i=0;i<items.length;i++) items[i].classList.toggle('active', i===acActive);
-}
 function fetchSuggestions(query, dropdown) {
   var url = 'https://api.allorigins.win/get?url=' + encodeURIComponent('https://maps.googleapis.com/maps/api/place/autocomplete/json?input='+encodeURIComponent(query)+'&types=address&components=country:us&key='+MAPS_KEY);
-  fetch(url).then(function(r){ return r.json(); }).then(function(data) {
-    var parsed = JSON.parse(data.contents);
-    dropdown.innerHTML = ''; acActive = -1;
-    if (!parsed.predictions||!parsed.predictions.length) { dropdown.style.display='none'; return; }
-    parsed.predictions.slice(0,5).forEach(function(p) {
-      var item = document.createElement('div');
-      item.className = 'autocomplete-item';
-      item.innerHTML = '<strong>'+esc(p.structured_formatting.main_text)+'</strong> <span style="color:#94a3b8;font-size:12px;">'+esc(p.structured_formatting.secondary_text||'')+'</span>';
-      item.addEventListener('mousedown', function(e) {
-        e.preventDefault();
-        dropdown.style.display = 'none';
-        fetchPlaceDetails(p.place_id);
-      });
+  fetch(url).then(function(r){return r.json();}).then(function(data){
+    var parsed=JSON.parse(data.contents);
+    dropdown.innerHTML='';acActive=-1;
+    if(!parsed.predictions||!parsed.predictions.length){dropdown.style.display='none';return;}
+    parsed.predictions.slice(0,5).forEach(function(p){
+      var item=document.createElement('div');item.className='autocomplete-item';
+      item.innerHTML='<strong>'+esc(p.structured_formatting.main_text)+'</strong> <span style="color:#94a3b8;font-size:12px;">'+esc(p.structured_formatting.secondary_text||'')+'</span>';
+      item.addEventListener('mousedown',function(e){e.preventDefault();dropdown.style.display='none';fetchPlaceDetails(p.place_id);});
       dropdown.appendChild(item);
     });
-    dropdown.style.display = 'block';
-  }).catch(function(e){ console.error('Fetch error:',e); });
+    dropdown.style.display='block';
+  }).catch(function(e){console.error('Fetch error:',e);});
 }
-function fetchPlaceDetails(placeId) {
-  var url = 'https://api.allorigins.win/get?url=' + encodeURIComponent('https://maps.googleapis.com/maps/api/place/details/json?place_id='+placeId+'&fields=address_components&key='+MAPS_KEY);
-  fetch(url).then(function(r){ return r.json(); }).then(function(data) {
-    var parsed = JSON.parse(data.contents);
-    if (!parsed.result||!parsed.result.address_components) return;
-    var comps=parsed.result.address_components, num='',route='',city='',state='',zip='';
-    for (var i=0;i<comps.length;i++) {
-      var c=comps[i],t=c.types;
-      if (t.indexOf('street_number')!==-1) num=c.long_name;
-      if (t.indexOf('route')!==-1) route=c.long_name;
-      if (t.indexOf('locality')!==-1) city=c.long_name;
-      if (t.indexOf('sublocality_level_1')!==-1&&!city) city=c.long_name;
-      if (t.indexOf('administrative_area_level_1')!==-1) state=c.short_name;
-      if (t.indexOf('postal_code')!==-1) zip=c.long_name;
-    }
+function fetchPlaceDetails(placeId){
+  var url='https://api.allorigins.win/get?url='+encodeURIComponent('https://maps.googleapis.com/maps/api/place/details/json?place_id='+placeId+'&fields=address_components&key='+MAPS_KEY);
+  fetch(url).then(function(r){return r.json();}).then(function(data){
+    var parsed=JSON.parse(data.contents);
+    if(!parsed.result||!parsed.result.address_components)return;
+    var comps=parsed.result.address_components,num='',route='',city='',state='',zip='';
+    for(var i=0;i<comps.length;i++){var c=comps[i],t=c.types;if(t.indexOf('street_number')!==-1)num=c.long_name;if(t.indexOf('route')!==-1)route=c.long_name;if(t.indexOf('locality')!==-1)city=c.long_name;if(t.indexOf('sublocality_level_1')!==-1&&!city)city=c.long_name;if(t.indexOf('administrative_area_level_1')!==-1)state=c.short_name;if(t.indexOf('postal_code')!==-1)zip=c.long_name;}
     var fullStreet=(num+' '+route).trim();
-    currentForm.address=fullStreet; currentForm.city=city; currentForm.state=state; currentForm.zip=zip;
-    var a=document.querySelector('[data-field="address"]');
-    var ci=document.querySelector('[data-field="city"]');
-    var st=document.querySelector('[data-field="state"]');
-    var zi=document.querySelector('[data-field="zip"]');
-    if(a) a.value=fullStreet; if(ci) ci.value=city; if(st) st.value=state; if(zi) zi.value=zip;
+    currentForm.address=fullStreet;currentForm.city=city;currentForm.state=state;currentForm.zip=zip;
+    var a=document.querySelector('[data-field="address"]');var ci=document.querySelector('[data-field="city"]');var st=document.querySelector('[data-field="state"]');var zi=document.querySelector('[data-field="zip"]');
+    if(a)a.value=fullStreet;if(ci)ci.value=city;if(st)st.value=state;if(zi)zi.value=zip;
     toast('Address filled ✓');
-  }).catch(function(e){ console.error('Details error:',e); });
+  }).catch(function(e){console.error('Details error:',e);});
 }
-  // ── Init ──────────────────────────────────────────────────────────────────────
-document.querySelectorAll('.overlay').forEach(function(el){
-  el.addEventListener('click', function(e){ if(e.target===el) el.classList.remove('open'); });
-});
 
+// ── Init ──────────────────────────────────────────────────────────────────────
+document.querySelectorAll('.overlay').forEach(function(el){el.addEventListener('click',function(e){if(e.target===el)el.classList.remove('open');});});
 loadData();
 renderAll();
 </script>
